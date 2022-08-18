@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require "config/config.php";
+require_once "config/config.php";
 include_once "controller/Controller.php";
 include_once "controller/AnimalController.php";
 include_once "controller/UsuarioController.php";

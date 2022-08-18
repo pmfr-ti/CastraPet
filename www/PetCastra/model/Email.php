@@ -3,7 +3,7 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require "config/config.php";
+require_once "config/config.php";
 require "recursos/PHPMailer/Exception.php";
 require "recursos/PHPMailer/PHPMailer.php";
 require "recursos/PHPMailer/SMTP.php";
@@ -14,7 +14,7 @@ require "recursos/PHPMailer/SMTP.php";
         private $host = ENV_CONFIG['MAIL']['HOST'];                 //servidor do protocolo de envio de email     
         private $emailRemetente = ENV_CONFIG['MAIL']['USER'];       //email do remetente
         private $senhaRemetente = ENV_CONFIG['MAIL']['PASS'];       //senha do remetente
-        private $nomeRemetente = ENV_CONFIG['MAIL']['NAME'];        //nome do remetente
+        private $nomeRemetente = utf8_encode(ENV_CONFIG['MAIL']['NAME']);        //nome do remetente
         private $porta = ENV_CONFIG['MAIL']['PORT'];                //porta do servidor TLS/STARTTLS/SSL
         private $emailDestinatario;                                 //email a ser enviado
         private $nomeDestinatario;                                  //nome do destinatário
