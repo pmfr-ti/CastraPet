@@ -97,9 +97,9 @@ CREATE TABLE `castracao` (
   `idclinica` int(11) DEFAULT NULL,
   `horario` datetime DEFAULT NULL,
   `status` tinyint(4) NOT NULL COMMENT '0 - Solicitação em análise; 1 - Solicitação aprovada; 2 - Animal Castrado; 3 - Solicitação Reprovada; 4 - Tutor não compareceu; 5 - Solicitação Cancelada; 6 - Solicitação Reagendada; 7 - Animal foi a óbito',
-  `observacao` varchar(100) DEFAULT NULL,
-  `obsclinica` varchar(100) DEFAULT NULL,
-  `msgrecusa` varchar(200) DEFAULT NULL
+  `observacao` TEXT DEFAULT NULL,
+  `obsclinica` TEXT DEFAULT NULL,
+  `msgrecusa` TEXT DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --

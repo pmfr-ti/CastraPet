@@ -9129,7 +9129,7 @@ function ajaxHandleResponses( s, jqXHR, responses ) {
 	while ( dataTypes[ 0 ] === "*" ) {
 		dataTypes.shift();
 		if ( ct === undefined ) {
-			ct = s.mimeType || jqXHR.getResponseHeader( "Content-Type" );
+			ct = s.mimeType || jqXHR.getResponseheader( "Content-Type" );
 		}
 	}
 
@@ -9384,8 +9384,8 @@ jQuery.extend( {
 			cacheURL,
 
 			// Response headers
-			responseHeadersString,
-			responseHeaders,
+			responseheadersString,
+			responseheaders,
 
 			// timeout handle
 			timeoutTimer,
@@ -9424,9 +9424,9 @@ jQuery.extend( {
 			// Status-dependent callbacks
 			statusCode = s.statusCode || {},
 
-			// Headers (they are sent all at once)
-			requestHeaders = {},
-			requestHeadersNames = {},
+			// headers (they are sent all at once)
+			requestheaders = {},
+			requestheadersNames = {},
 
 			// Default abort message
 			strAbort = "canceled",
@@ -9436,33 +9436,33 @@ jQuery.extend( {
 				readyState: 0,
 
 				// Builds headers hashtable if needed
-				getResponseHeader: function( key ) {
+				getResponseheader: function( key ) {
 					var match;
 					if ( completed ) {
-						if ( !responseHeaders ) {
-							responseHeaders = {};
-							while ( ( match = rheaders.exec( responseHeadersString ) ) ) {
-								responseHeaders[ match[ 1 ].toLowerCase() + " " ] =
-									( responseHeaders[ match[ 1 ].toLowerCase() + " " ] || [] )
+						if ( !responseheaders ) {
+							responseheaders = {};
+							while ( ( match = rheaders.exec( responseheadersString ) ) ) {
+								responseheaders[ match[ 1 ].toLowerCase() + " " ] =
+									( responseheaders[ match[ 1 ].toLowerCase() + " " ] || [] )
 										.concat( match[ 2 ] );
 							}
 						}
-						match = responseHeaders[ key.toLowerCase() + " " ];
+						match = responseheaders[ key.toLowerCase() + " " ];
 					}
 					return match == null ? null : match.join( ", " );
 				},
 
 				// Raw string
-				getAllResponseHeaders: function() {
-					return completed ? responseHeadersString : null;
+				getAllResponseheaders: function() {
+					return completed ? responseheadersString : null;
 				},
 
 				// Caches the header
-				setRequestHeader: function( name, value ) {
+				setRequestheader: function( name, value ) {
 					if ( completed == null ) {
-						name = requestHeadersNames[ name.toLowerCase() ] =
-							requestHeadersNames[ name.toLowerCase() ] || name;
-						requestHeaders[ name ] = value;
+						name = requestheadersNames[ name.toLowerCase() ] =
+							requestheadersNames[ name.toLowerCase() ] || name;
+						requestheaders[ name ] = value;
 					}
 					return this;
 				},
@@ -9609,20 +9609,20 @@ jQuery.extend( {
 		// Set the If-Modified-Since and/or If-None-Match header, if in ifModified mode.
 		if ( s.ifModified ) {
 			if ( jQuery.lastModified[ cacheURL ] ) {
-				jqXHR.setRequestHeader( "If-Modified-Since", jQuery.lastModified[ cacheURL ] );
+				jqXHR.setRequestheader( "If-Modified-Since", jQuery.lastModified[ cacheURL ] );
 			}
 			if ( jQuery.etag[ cacheURL ] ) {
-				jqXHR.setRequestHeader( "If-None-Match", jQuery.etag[ cacheURL ] );
+				jqXHR.setRequestheader( "If-None-Match", jQuery.etag[ cacheURL ] );
 			}
 		}
 
 		// Set the correct header, if data is being sent
 		if ( s.data && s.hasContent && s.contentType !== false || options.contentType ) {
-			jqXHR.setRequestHeader( "Content-Type", s.contentType );
+			jqXHR.setRequestheader( "Content-Type", s.contentType );
 		}
 
 		// Set the Accepts header for the server, depending on the dataType
-		jqXHR.setRequestHeader(
+		jqXHR.setRequestheader(
 			"Accept",
 			s.dataTypes[ 0 ] && s.accepts[ s.dataTypes[ 0 ] ] ?
 				s.accepts[ s.dataTypes[ 0 ] ] +
@@ -9632,7 +9632,7 @@ jQuery.extend( {
 
 		// Check for headers option
 		for ( i in s.headers ) {
-			jqXHR.setRequestHeader( i, s.headers[ i ] );
+			jqXHR.setRequestheader( i, s.headers[ i ] );
 		}
 
 		// Allow custom headers/mimetypes and early abort
@@ -9679,7 +9679,7 @@ jQuery.extend( {
 
 			try {
 				completed = false;
-				transport.send( requestHeaders, done );
+				transport.send( requestheaders, done );
 			} catch ( e ) {
 
 				// Rethrow post-completion exceptions
@@ -9714,7 +9714,7 @@ jQuery.extend( {
 			transport = undefined;
 
 			// Cache response headers
-			responseHeadersString = headers || "";
+			responseheadersString = headers || "";
 
 			// Set readyState
 			jqXHR.readyState = status > 0 ? 4 : 0;
@@ -9740,11 +9740,11 @@ jQuery.extend( {
 
 				// Set the If-Modified-Since and/or If-None-Match header, if in ifModified mode.
 				if ( s.ifModified ) {
-					modified = jqXHR.getResponseHeader( "Last-Modified" );
+					modified = jqXHR.getResponseheader( "Last-Modified" );
 					if ( modified ) {
 						jQuery.lastModified[ cacheURL ] = modified;
 					}
-					modified = jqXHR.getResponseHeader( "etag" );
+					modified = jqXHR.getResponseheader( "etag" );
 					if ( modified ) {
 						jQuery.etag[ cacheURL ] = modified;
 					}
@@ -10015,7 +10015,7 @@ jQuery.ajaxTransport( function( options ) {
 
 				// Set headers
 				for ( i in headers ) {
-					xhr.setRequestHeader( i, headers[ i ] );
+					xhr.setRequestheader( i, headers[ i ] );
 				}
 
 				// Callback
@@ -10055,7 +10055,7 @@ jQuery.ajaxTransport( function( options ) {
 									typeof xhr.responseText !== "string" ?
 										{ binary: xhr.response } :
 										{ text: xhr.responseText },
-									xhr.getAllResponseHeaders()
+									xhr.getAllResponseheaders()
 								);
 							}
 						}

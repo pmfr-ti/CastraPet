@@ -133,13 +133,13 @@
 
             //Preparar comando SQL para consultar
             //$cmd = $con->prepare("SELECT * FROM castracao");
-            $cmd = $con->prepare("SELECT idcastracao, clinica.idclinica, animal.foto, animal.aninome, nome AS 'nometutor', horario, status, observacao, cpf, usuario.idusuario, email, rg, telefone, celular, whatsapp, animal.idanimal 
+            $cmd = $con->prepare("SELECT idcastracao, clinica.idclinica, animal.foto, animal.aninome, nome AS 'nometutor', horario, status, observacao, obsclinica, cpf, usuario.idusuario, email, rg, telefone, celular, whatsapp, animal.idanimal 
                                     FROM castracao 
                                         JOIN animal ON castracao.idanimal = animal.idanimal 
                                         JOIN usuario ON animal.idusuario = usuario.idusuario 
                                         JOIN login ON login.idlogin = usuario.idlogin 
                                         JOIN clinica ON castracao.idclinica = clinica.idclinica 
-                                    WHERE clinica.idclinica = :idclinica and horario <> 'null' ORDER BY horario DESC");
+                                    WHERE clinica.idclinica = :idclinica and horario IS NOT NULL ORDER BY horario DESC");
             
             $cmd->bindParam(":idclinica", $this->idclinica);
 
@@ -172,7 +172,7 @@
             $con = Conexao::conectar();
 
             //Preparar o comando SQL para atualizar
-            $cmd = $con->prepare("UPDATE castracao SET status = :status, obsclinica = NULLIF(:obsclinica, '') WHERE idcastracao = :idcastracao");
+            $cmd = $con->prepare("UPDATE castracao SET status = :status, obsclinica = :obsclinica WHERE idcastracao = :idcastracao");
             
             //Parâmetros SQL
             $cmd->bindParam(":status",      $this->status);

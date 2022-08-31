@@ -38,7 +38,7 @@ class Controller
     // USUÁRIO
     function abrirHomeUsuario(){
         //caso o usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
 
         //Controle de privilégio
         if ($_SESSION["dadosLogin"]->nivelacesso == 0) {
@@ -51,7 +51,7 @@ class Controller
     }
     function abrirPerfil(){  
         //Caso o usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
         //Controle de privilégio
         if ($_SESSION["dadosLogin"]->nivelacesso == 0) {
             $login = new Login();
@@ -70,7 +70,7 @@ class Controller
     }
     function abrirCadAnimal(){
         //caso o usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
 
         //Controle de privilégio
         if ($_SESSION["dadosLogin"]->nivelacesso == 0) {
@@ -83,7 +83,7 @@ class Controller
     }
     function abrirMeusAnimais(){
         //Caso o usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
         //Controle de privilégio
         if($_SESSION["dadosLogin"]->nivelacesso == 0) {
             $animal = new Animal();
@@ -114,7 +114,7 @@ class Controller
     // ADMINISTRADOR
     function abrirHomeAdm(){
         //Caso o usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
         //Controle de privilégio
         if($_SESSION["dadosLogin"]->nivelacesso == 2) { include_once "view/homeAdm.php"; }
         else{ include_once "view/paginaNaoEncontrada.php"; }
@@ -122,7 +122,7 @@ class Controller
     #CADASTROS
     function abrirCadRaca(){
         //Caso o usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
         //Controle de privilégio
         if($_SESSION["dadosLogin"]->nivelacesso == 2) { include_once "view/cadRaca.php"; }
         else{ include_once "view/paginaNaoEncontrada.php"; }
@@ -130,7 +130,7 @@ class Controller
     }
     function abrirCadClinica(){
         //Caso o usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
         //Controle de privilégio
         if($_SESSION["dadosLogin"]->nivelacesso == 2) { include_once "view/cadClinica.php"; }
         else{ include_once "view/paginaNaoEncontrada.php"; }
@@ -138,7 +138,7 @@ class Controller
     #CONSULTAS
     function abrirConsultaUsuario($cpf){
         //caso o usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
         //caso não tenha privilégio
         if($_SESSION["dadosLogin"]->nivelacesso == 2) {
             $usuario = new Usuario();
@@ -150,7 +150,7 @@ class Controller
     }
     function abrirConsultaClinica($cnpj){
         //caso o usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
         //caso não tenha privilégio
         if($_SESSION["dadosLogin"]->nivelacesso == 2) {
             $clinica = new Clinica();
@@ -162,7 +162,7 @@ class Controller
     }
     function abrirConsultaCastracao(){
         //caso o usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return;}
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return;}
 
         if($_SESSION["dadosLogin"]->nivelacesso == 2) {
             
@@ -182,7 +182,7 @@ class Controller
 
     function abrirConsultaAnimais($idusuario){
         //caso o usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
         //caso não tenha privilégio
         if($_SESSION["dadosLogin"]->nivelacesso == 2){
             
@@ -200,7 +200,7 @@ class Controller
 
     function abrirConsultaRaca(){
         //caso o usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
         //caso não tenha privilégio
         if($_SESSION["dadosLogin"]->nivelacesso == 2) {
             $raca = new Raca();
@@ -212,7 +212,7 @@ class Controller
     #AGENDAMENTO
     function abrirListaSolicitacao(){
         //caso o usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
    
         if($_SESSION["dadosLogin"]->nivelacesso == 2) { 
             $castracao = new Castracao();
@@ -229,7 +229,7 @@ class Controller
     }
     function abrirAgendamento($id){
         //Caso o usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
    
         if ($_SESSION["dadosLogin"]->nivelacesso > 0) {
             $agendamento = new Castracao();
@@ -247,7 +247,7 @@ class Controller
     // CLÍNICA
     function abrirHomeClinica(){
         //caso o usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
         
         //Controle de privilégio
         if($_SESSION["dadosLogin"]->nivelacesso == 1) { include_once "view/homeClinica.php"; }

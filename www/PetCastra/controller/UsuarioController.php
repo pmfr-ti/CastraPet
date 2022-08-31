@@ -195,7 +195,7 @@ class UsuarioController
                 $cadastra->idlogin = $login->cadastrar();
                 $cadastra->cadastrar();
                 $this->logar();
-                header("Location:".URL);
+                @header("Location:".URL);
             }
             else
             {
@@ -240,7 +240,7 @@ class UsuarioController
     function atualizarUsuario()
     {
         //caso não usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
 
         //Controle de privilégio
         if($_SESSION["dadosLogin"]->nivelacesso == 2) {
@@ -369,7 +369,7 @@ class UsuarioController
     function atualizarDadosUsuario()
     {
         //caso não usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
         
         //Controle de privilégio
         if($_SESSION["dadosLogin"]->nivelacesso == 0) {
@@ -431,7 +431,7 @@ class UsuarioController
     function atualizarEnderecoUsuario()
     {
         //caso não usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
 
         //Controle de privilégio
         if($_SESSION["dadosLogin"]->nivelacesso == 0) {
@@ -492,7 +492,7 @@ class UsuarioController
     function alterarSenha()
     {
         //caso não usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
 
         //Controle de privilégio
         if($_SESSION["dadosLogin"]->nivelacesso == 0) {
@@ -501,7 +501,7 @@ class UsuarioController
             $alterar->senha = password_hash($_POST["senha"], PASSWORD_DEFAULT);
             $alterar->alterarSenha();
 
-            header("Location:".URL."perfil");
+            @header("Location:".URL."perfil");
         }
         else{ include_once "view/paginaNaoEncontrada.php"; } 
     }
@@ -509,7 +509,7 @@ class UsuarioController
     function solicitarCastracao()
     {
         //caso não usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
 
         //Controle de privilégio
         if($_SESSION["dadosLogin"]->nivelacesso == 0) {
@@ -534,7 +534,7 @@ class UsuarioController
                     $castracao->cadastrar();
                     $usuario->atualizarQuantCastracoes();
 
-                    header("Location:".URL."meus-animais");
+                    @header("Location:".URL."meus-animais");
                 }
                 catch (Exception $e)
                 {
@@ -554,7 +554,7 @@ class UsuarioController
     function agendarClinicaCastracao()
     {
         //caso não usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
 
         //Controle de privilégio
         if($_SESSION["dadosLogin"]->nivelacesso == 2) {
@@ -579,7 +579,7 @@ class UsuarioController
                     $clinica->vagas = $dadosClinica->vagas - 1;
                     $clinica->alterarVagas();
         
-                    header("Location:".URL."lista-solicitacao");
+                    @header("Location:".URL."lista-solicitacao");
                 }
                 else
                 {
@@ -596,7 +596,7 @@ class UsuarioController
 
                 $castracao->recusarCastracao();
 
-                header("Location:".URL."lista-solicitacao");
+                @header("Location:".URL."lista-solicitacao");
             }
         }
         else{ include_once "view/paginaNaoEncontrada.php"; } 
@@ -605,20 +605,23 @@ class UsuarioController
     function atualizarCastracao()
     {
         //caso não usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
 
         //Controle de privilégio
         if($_SESSION["dadosLogin"]->nivelacesso == 1) {
 
             $castracao = new Castracao();
             $castracao->idcastracao = $_POST["idCastracao"];
+            $castracao->obsclinica = isset($_POST["obsClinica"]) ? $_POST["obsClinica"] : '';
+            
+            $_POST["statusAtualizado"] = (int) $_POST["statusAtualizado"];
 
             switch($_POST["statusAtualizado"])
             {
                 case 2:
                     // Animal castrado
 
-                    $castracao->status = 2;  
+                    $castracao->status = 2;
                     $castracao->atualizar();
 
                     $animal = new Animal();
@@ -743,7 +746,7 @@ class UsuarioController
                     echo"<script>alert('Insira um valor válido'); window.location='".URL."consulta-castracao'; </script>"; return; 
             }
             
-            header("Location:".URL."consulta-castracao");
+            @header("Location:".URL."consulta-castracao");
         }
         else{ include_once "view/paginaNaoEncontrada.php"; } 
     }
@@ -752,7 +755,7 @@ class UsuarioController
     function excluirCastracao($id)
     {
         //caso não usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
 
         //Controle de privilégio
         if($_SESSION["dadosLogin"]->nivelacesso == 2) {
@@ -761,7 +764,7 @@ class UsuarioController
             $castracao->idcastracao = $id;
             $castracao->excluir();
 
-            header("Location:".URL."consulta-castracao");
+            @header("Location:".URL."consulta-castracao");
         }
         else{ include_once "view/paginaNaoEncontrada.php"; } 
     }
@@ -813,13 +816,13 @@ class UsuarioController
                     echo"<script>alert('Usuário Administrador Logado'); window.location='".URL."home-adm'; </script>";
                 break;
                 default:
-                    header("location:".URL."login");
+                    @header("Location:".URL."login");
             }
         }
         else
         {
-            setcookie("msg","Email ou senha estão errados");
-            header("Location:".URL."login");
+            @setcookie("msg","Email ou senha estão errados");
+            @header("Location:".URL."login");
             return;
         }
     }
@@ -828,13 +831,13 @@ class UsuarioController
     {
         $_SESSION[] = null;
         session_destroy();
-        header("Location:".URL);
+        @header("Location:".URL);
     }
 
     function excluir($idUsuario, $idLogin)
     {
         //caso não usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
 
         //Controle de privilégio
         if($_SESSION["dadosLogin"]->nivelacesso == 2) {
@@ -847,7 +850,7 @@ class UsuarioController
             $login->idlogin = $idLogin;
             $login->excluir();
 
-            header("location:".URL."consulta-usuario/");
+            @header("Location:".URL."consulta-usuario/");
         }
         else{ include_once "view/paginaNaoEncontrada.php"; } 
     }
@@ -857,7 +860,8 @@ class UsuarioController
         $login = new Login();
         $login->email = $_POST["txtEmail"];
         $dadosRecuperacao = $login->logar();
-        if($dadosRecuperacao && $dadosRecuperacao->nivelacesso == 0)
+
+        if($dadosRecuperacao)
         {
             $codigo = rand(100000,999999);
     
@@ -869,12 +873,12 @@ class UsuarioController
             $login->codsenha = $codigo;
             $login->gerarCodigo();
 
-            header("Location:".URL."codigo-de-recuperacao/$dadosRecuperacao->email");
+            @header("Location:".URL."codigo-de-recuperacao/$dadosRecuperacao->email");
         }
         else
         {
-            setcookie("msg","Parece que esse E-mail não existe no sistema");
-            header("Location:".URL."esqueci-a-senha");
+            @setcookie("msg","Parece que esse E-mail não existe no sistema");
+            @header("Location:".URL."esqueci-a-senha");
         }
     }
     function confirmarCodigo()
@@ -885,29 +889,28 @@ class UsuarioController
 
         $_SESSION["idlogin"] = $dadosConfirmacao->idlogin;
         $codigo = $_POST["txtCod"];
-
         
-        if(empty($_COOKIE["tentativas"])){setcookie("tentativas", 1, time() + 3600, "/");}
+        if(empty($_COOKIE["tentativas"])){@setcookie("tentativas", 1, time() + 3600, "/");}
         
 
         //RESETAR O COOKIE QUE LIMITA A QUANTITADE DE TENTATIVAS PARA O CÓDIGO. USAR PARA DEBUGAR
-        //setcookie("tentativas", "", time() - 1000, "/");
+        //@setcookie("tentativas", "", time() - 1000, "/");
 
         if($_COOKIE["tentativas"] < 5)
         {
             if(isset($codigo) && strlen($codigo) === 6 && $codigo === $dadosConfirmacao->codsenha)
             { 
                 //cookie para permitir o usuário de abrir a tela alterarsenha
-                setcookie("tentativas", "", time() - 1000, "/");
-                setcookie("confirmacao",$dadosConfirmacao->idlogin);
-                header("Location:".URL."alterar-senha/$dadosConfirmacao->idlogin");
+                @setcookie("tentativas", "", time() - 1000, "/");
+                @setcookie("confirmacao",$dadosConfirmacao->idlogin);
+                @header("Location:".URL."alterar-senha/$dadosConfirmacao->idlogin");
                 return;
             }
             else
             {
-                setcookie("tentativas", 1 + $_COOKIE["tentativas"], time() + 3600, "/");
-                setcookie("msg","Codigo inválido! Tente novamente");
-                header("Location:".URL."codigo-de-recuperacao/".$_POST["txtEmail"]);
+                @setcookie("tentativas", 1 + $_COOKIE["tentativas"], time() + 3600, "/");
+                @setcookie("msg","Codigo inválido! Tente novamente");
+                @header("Location:".URL."codigo-de-recuperacao/".$_POST["txtEmail"]);
                 return;
             }
         }
@@ -931,7 +934,7 @@ class UsuarioController
             $_SESSION["idlogin"] = null;
             $this->sair();
 
-            header("Location:".URL."login");
+            @header("Location:".URL."login");
         }
         else if(!isset($_SESSION["dadosLogin"]) && $_COOKIE["confirmacao"] == $_SESSION["idlogin"])
         {
@@ -941,12 +944,12 @@ class UsuarioController
             $login->senha = password_hash($_POST["confSenha"], PASSWORD_DEFAULT);
             $login->redefinirSenha();
 
-            setcookie("confirmacao","", time() - 3600);
+            @setcookie("confirmacao","", time() - 3600);
 
             $_SESSION["idlogin"] = null;
             $this->sair();
 
-            header("Location:".URL."login");
+            @header("Location:".URL."login");
         }
         else
         echo"<script>alert('Erro ao alterar a senha'); window.location='".URL."alterar-senha'; </script>";

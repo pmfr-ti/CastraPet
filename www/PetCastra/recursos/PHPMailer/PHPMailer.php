@@ -187,14 +187,14 @@ class PHPMailer
      *
      * @var string
      */
-    protected $MIMEHeader = '';
+    protected $MIMEheader = '';
 
     /**
-     * Extra headers that createHeader() doesn't fold in.
+     * Extra headers that createheader() doesn't fold in.
      *
      * @var string
      */
-    protected $mailHeader = '';
+    protected $mailheader = '';
 
     /**
      * Word-wrap the message body to this number of chars.
@@ -511,7 +511,7 @@ class PHPMailer
      *
      * @var bool
      */
-    public $DKIM_copyHeaderFields = true;
+    public $DKIM_copyheaderFields = true;
 
     /**
      * DKIM Extra signing headers.
@@ -520,7 +520,7 @@ class PHPMailer
      *
      * @var array
      */
-    public $DKIM_extraHeaders = [];
+    public $DKIM_extraheaders = [];
 
     /**
      * DKIM private key file path.
@@ -665,7 +665,7 @@ class PHPMailer
      *
      * @var array
      */
-    protected $CustomHeader = [];
+    protected $Customheader = [];
 
     /**
      * The most recent Message-ID (including angular brackets).
@@ -850,7 +850,7 @@ class PHPMailer
      * @param string      $to      To
      * @param string      $subject Subject
      * @param string      $body    Message Body
-     * @param string      $header  Additional Header(s)
+     * @param string      $header  Additional header(s)
      * @param string|null $params  Params
      *
      * @return bool
@@ -859,9 +859,9 @@ class PHPMailer
     {
         //Check overloading of mail function to avoid double-encoding
         if (ini_get('mbstring.func_overload') & 1) {
-            $subject = $this->secureHeader($subject);
+            $subject = $this->secureheader($subject);
         } else {
-            $subject = $this->encodeHeader($this->secureHeader($subject));
+            $subject = $this->encodeheader($this->secureheader($subject));
         }
         //Calling mail() with null params breaks
         $this->edebug('Sending with mail()');
@@ -869,7 +869,7 @@ class PHPMailer
         $this->edebug("Envelope sender: {$this->Sender}");
         $this->edebug("To: {$to}");
         $this->edebug("Subject: {$subject}");
-        $this->edebug("Headers: {$header}");
+        $this->edebug("headers: {$header}");
         if (!$this->UseSendmailOptions || null === $params) {
             $result = @mail($to, $subject, $body, $header);
         } else {
@@ -1499,7 +1499,7 @@ class PHPMailer
 
             return $this->postSend();
         } catch (Exception $exc) {
-            $this->mailHeader = '';
+            $this->mailheader = '';
             $this->setError($exc->getMessage());
             if ($this->exceptions) {
                 throw $exc;
@@ -1542,7 +1542,7 @@ class PHPMailer
 
         try {
             $this->error_count = 0; //Reset errors
-            $this->mailHeader = '';
+            $this->mailheader = '';
 
             //Dequeue recipient and Reply-To addresses with IDN
             foreach (array_merge($this->RecipientsQueue, $this->ReplyToQueue) as $params) {
@@ -1591,24 +1591,24 @@ class PHPMailer
             //Trim subject consistently
             $this->Subject = trim($this->Subject);
             //Create body before headers in case body makes changes to headers (e.g. altering transfer encoding)
-            $this->MIMEHeader = '';
+            $this->MIMEheader = '';
             $this->MIMEBody = $this->createBody();
             //createBody may have added some headers, so retain them
-            $tempheaders = $this->MIMEHeader;
-            $this->MIMEHeader = $this->createHeader();
-            $this->MIMEHeader .= $tempheaders;
+            $tempheaders = $this->MIMEheader;
+            $this->MIMEheader = $this->createheader();
+            $this->MIMEheader .= $tempheaders;
 
             //To capture the complete message when using mail(), create
-            //an extra header list which createHeader() doesn't fold in
+            //an extra header list which createheader() doesn't fold in
             if ('mail' === $this->Mailer) {
                 if (count($this->to) > 0) {
-                    $this->mailHeader .= $this->addrAppend('To', $this->to);
+                    $this->mailheader .= $this->addrAppend('To', $this->to);
                 } else {
-                    $this->mailHeader .= $this->headerLine('To', 'undisclosed-recipients:;');
+                    $this->mailheader .= $this->headerLine('To', 'undisclosed-recipients:;');
                 }
-                $this->mailHeader .= $this->headerLine(
+                $this->mailheader .= $this->headerLine(
                     'Subject',
-                    $this->encodeHeader($this->secureHeader($this->Subject))
+                    $this->encodeheader($this->secureheader($this->Subject))
                 );
             }
 
@@ -1624,11 +1624,11 @@ class PHPMailer
                 )
             ) {
                 $header_dkim = $this->DKIM_Add(
-                    $this->MIMEHeader . $this->mailHeader,
-                    $this->encodeHeader($this->secureHeader($this->Subject)),
+                    $this->MIMEheader . $this->mailheader,
+                    $this->encodeheader($this->secureheader($this->Subject)),
                     $this->MIMEBody
                 );
-                $this->MIMEHeader = static::stripTrailingWSP($this->MIMEHeader) . static::$LE .
+                $this->MIMEheader = static::stripTrailingWSP($this->MIMEheader) . static::$LE .
                     static::normalizeBreaks($header_dkim) . static::$LE;
             }
 
@@ -1657,18 +1657,18 @@ class PHPMailer
             switch ($this->Mailer) {
                 case 'sendmail':
                 case 'qmail':
-                    return $this->sendmailSend($this->MIMEHeader, $this->MIMEBody);
+                    return $this->sendmailSend($this->MIMEheader, $this->MIMEBody);
                 case 'smtp':
-                    return $this->smtpSend($this->MIMEHeader, $this->MIMEBody);
+                    return $this->smtpSend($this->MIMEheader, $this->MIMEBody);
                 case 'mail':
-                    return $this->mailSend($this->MIMEHeader, $this->MIMEBody);
+                    return $this->mailSend($this->MIMEheader, $this->MIMEBody);
                 default:
                     $sendMethod = $this->Mailer . 'Send';
                     if (method_exists($this, $sendMethod)) {
-                        return $this->$sendMethod($this->MIMEHeader, $this->MIMEBody);
+                        return $this->$sendMethod($this->MIMEheader, $this->MIMEBody);
                     }
 
-                    return $this->mailSend($this->MIMEHeader, $this->MIMEBody);
+                    return $this->mailSend($this->MIMEheader, $this->MIMEBody);
             }
         } catch (Exception $exc) {
             if ($this->Mailer === 'smtp' && $this->SMTPKeepAlive == true) {
@@ -1738,7 +1738,7 @@ class PHPMailer
         $this->edebug('Sendmail path: ' . $this->Sendmail);
         $this->edebug('Sendmail command: ' . $sendmail);
         $this->edebug('Envelope sender: ' . $this->Sender);
-        $this->edebug("Headers: {$header}");
+        $this->edebug("headers: {$header}");
 
         if ($this->SingleTo) {
             foreach ($this->SingleToArray as $toAddr) {
@@ -2397,11 +2397,11 @@ class PHPMailer
     public function addrFormat($addr)
     {
         if (empty($addr[1])) { //No name provided
-            return $this->secureHeader($addr[0]);
+            return $this->secureheader($addr[0]);
         }
 
-        return $this->encodeHeader($this->secureHeader($addr[1]), 'phrase') .
-            ' <' . $this->secureHeader($addr[0]) . '>';
+        return $this->encodeheader($this->secureheader($addr[1]), 'phrase') .
+            ' <' . $this->secureheader($addr[0]) . '>';
     }
 
     /**
@@ -2584,7 +2584,7 @@ class PHPMailer
      *
      * @return string The assembled headers
      */
-    public function createHeader()
+    public function createheader()
     {
         $result = '';
 
@@ -2625,7 +2625,7 @@ class PHPMailer
 
         //mail() sets the subject itself
         if ('mail' !== $this->Mailer) {
-            $result .= $this->headerLine('Subject', $this->encodeHeader($this->secureHeader($this->Subject)));
+            $result .= $this->headerLine('Subject', $this->encodeheader($this->secureheader($this->Subject)));
         }
 
         //Only allow a custom message ID if it conforms to RFC 5322 section 3.6.4
@@ -2665,10 +2665,10 @@ class PHPMailer
         }
 
         //Add custom headers
-        foreach ($this->CustomHeader as $header) {
+        foreach ($this->Customheader as $header) {
             $result .= $this->headerLine(
                 trim($header[0]),
-                $this->encodeHeader(trim($header[1]))
+                $this->encodeheader(trim($header[1]))
             );
         }
         if (!$this->sign_key_file) {
@@ -2738,7 +2738,7 @@ class PHPMailer
      */
     public function getSentMIMEMessage()
     {
-        return static::stripTrailingWSP($this->MIMEHeader . $this->mailHeader) .
+        return static::stripTrailingWSP($this->MIMEheader . $this->mailheader) .
             static::$LE . static::$LE . $this->MIMEBody;
     }
 
@@ -3041,7 +3041,7 @@ class PHPMailer
                     @unlink($signed);
                     //The message returned by openssl contains both headers and body, so need to split them up
                     $parts = explode("\n\n", $body, 2);
-                    $this->MIMEHeader .= $parts[0] . static::$LE . static::$LE;
+                    $this->MIMEheader .= $parts[0] . static::$LE . static::$LE;
                     $body = $parts[1];
                 } else {
                     @unlink($signed);
@@ -3280,7 +3280,7 @@ class PHPMailer
                     $mime[] = sprintf(
                         'Content-Type: %s; name=%s%s',
                         $type,
-                        static::quotedString($this->encodeHeader($this->secureHeader($name))),
+                        static::quotedString($this->encodeheader($this->secureheader($name))),
                         static::$LE
                     );
                 } else {
@@ -3297,12 +3297,12 @@ class PHPMailer
 
                 //Only set Content-IDs on inline attachments
                 if ((string) $cid !== '' && $disposition === 'inline') {
-                    $mime[] = 'Content-ID: <' . $this->encodeHeader($this->secureHeader($cid)) . '>' . static::$LE;
+                    $mime[] = 'Content-ID: <' . $this->encodeheader($this->secureheader($cid)) . '>' . static::$LE;
                 }
 
                 //Allow for bypassing the Content-Disposition header
                 if (!empty($disposition)) {
-                    $encoded_name = $this->encodeHeader($this->secureHeader($name));
+                    $encoded_name = $this->encodeheader($this->secureheader($name));
                     if (!empty($encoded_name)) {
                         $mime[] = sprintf(
                             'Content-Disposition: %s; filename=%s%s',
@@ -3429,7 +3429,7 @@ class PHPMailer
      *
      * @return string
      */
-    public function encodeHeader($str, $position = 'text')
+    public function encodeheader($str, $position = 'text')
     {
         $matchcount = 0;
         switch (strtolower($position)) {
@@ -4005,9 +4005,9 @@ class PHPMailer
     /**
      * Clear all custom headers.
      */
-    public function clearCustomHeaders()
+    public function clearCustomheaders()
     {
-        $this->CustomHeader = [];
+        $this->Customheader = [];
     }
 
     /**
@@ -4176,11 +4176,11 @@ class PHPMailer
      * both header name and value (name:value).
      *
      * @param string      $name  Custom header name
-     * @param string|null $value Header value
+     * @param string|null $value header value
      *
      * @throws Exception
      */
-    public function addCustomHeader($name, $value = null)
+    public function addCustomheader($name, $value = null)
     {
         if (null === $value && strpos($name, ':') !== false) {
             //Value passed in as name:value
@@ -4196,7 +4196,7 @@ class PHPMailer
 
             return false;
         }
-        $this->CustomHeader[] = [$name, $value];
+        $this->Customheader[] = [$name, $value];
 
         return true;
     }
@@ -4206,9 +4206,9 @@ class PHPMailer
      *
      * @return array
      */
-    public function getCustomHeaders()
+    public function getCustomheaders()
     {
-        return $this->CustomHeader;
+        return $this->Customheader;
     }
 
     /**
@@ -4595,7 +4595,7 @@ class PHPMailer
      *
      * @return string
      */
-    public function secureHeader($str)
+    public function secureheader($str)
     {
         return trim(str_replace(["\r", "\n"], '', $str));
     }
@@ -4699,13 +4699,13 @@ class PHPMailer
     /**
      * Generate a DKIM signature.
      *
-     * @param string $signHeader
+     * @param string $signheader
      *
      * @throws Exception
      *
      * @return string The DKIM signature value
      */
-    public function DKIM_Sign($signHeader)
+    public function DKIM_Sign($signheader)
     {
         if (!defined('PKCS7_TEXT')) {
             if ($this->exceptions) {
@@ -4722,7 +4722,7 @@ class PHPMailer
         } else {
             $privKey = openssl_pkey_get_private($privKeyStr);
         }
-        if (openssl_sign($signHeader, $signature, $privKey, 'sha256WithRSAEncryption')) {
+        if (openssl_sign($signheader, $signature, $privKey, 'sha256WithRSAEncryption')) {
             if (\PHP_MAJOR_VERSION < 8) {
                 openssl_pkey_free($privKey);
             }
@@ -4743,21 +4743,21 @@ class PHPMailer
      *
      * @see https://tools.ietf.org/html/rfc6376#section-3.4.2
      *
-     * @param string $signHeader Header
+     * @param string $signheader header
      *
      * @return string
      */
-    public function DKIM_HeaderC($signHeader)
+    public function DKIM_headerC($signheader)
     {
         //Normalize breaks to CRLF (regardless of the mailer)
-        $signHeader = static::normalizeBreaks($signHeader, self::CRLF);
+        $signheader = static::normalizeBreaks($signheader, self::CRLF);
         //Unfold header lines
         //Note PCRE \s is too broad a definition of whitespace; RFC5322 defines it as `[ \t]`
         //@see https://tools.ietf.org/html/rfc5322#section-2.2
         //That means this may break if you do something daft like put vertical tabs in your headers.
-        $signHeader = preg_replace('/\r\n[ \t]+/', ' ', $signHeader);
+        $signheader = preg_replace('/\r\n[ \t]+/', ' ', $signheader);
         //Break headers out into an array
-        $lines = explode(self::CRLF, $signHeader);
+        $lines = explode(self::CRLF, $signheader);
         foreach ($lines as $key => $line) {
             //If the header is missing a :, skip it as it's invalid
             //This is likely to happen because the explode() above will also split
@@ -4806,7 +4806,7 @@ class PHPMailer
     /**
      * Create the DKIM header and body in a new message header.
      *
-     * @param string $headers_line Header lines
+     * @param string $headers_line header lines
      * @param string $subject      Subject
      * @param string $body         Body
      *
@@ -4822,7 +4822,7 @@ class PHPMailer
         $DKIMtime = time();
         //Always sign these headers without being asked
         //Recommended list from https://tools.ietf.org/html/rfc6376#section-5.4.1
-        $autoSignHeaders = [
+        $autoSignheaders = [
             'from',
             'to',
             'cc',
@@ -4838,53 +4838,53 @@ class PHPMailer
             $headers_line .= 'Subject: ' . $subject . static::$LE;
         }
         $headerLines = explode(static::$LE, $headers_line);
-        $currentHeaderLabel = '';
-        $currentHeaderValue = '';
-        $parsedHeaders = [];
+        $currentheaderLabel = '';
+        $currentheaderValue = '';
+        $parsedheaders = [];
         $headerLineIndex = 0;
         $headerLineCount = count($headerLines);
         foreach ($headerLines as $headerLine) {
             $matches = [];
             if (preg_match('/^([^ \t]*?)(?::[ \t]*)(.*)$/', $headerLine, $matches)) {
-                if ($currentHeaderLabel !== '') {
+                if ($currentheaderLabel !== '') {
                     //We were previously in another header; This is the start of a new header, so save the previous one
-                    $parsedHeaders[] = ['label' => $currentHeaderLabel, 'value' => $currentHeaderValue];
+                    $parsedheaders[] = ['label' => $currentheaderLabel, 'value' => $currentheaderValue];
                 }
-                $currentHeaderLabel = $matches[1];
-                $currentHeaderValue = $matches[2];
+                $currentheaderLabel = $matches[1];
+                $currentheaderValue = $matches[2];
             } elseif (preg_match('/^[ \t]+(.*)$/', $headerLine, $matches)) {
                 //This is a folded continuation of the current header, so unfold it
-                $currentHeaderValue .= ' ' . $matches[1];
+                $currentheaderValue .= ' ' . $matches[1];
             }
             ++$headerLineIndex;
             if ($headerLineIndex >= $headerLineCount) {
                 //This was the last line, so finish off this header
-                $parsedHeaders[] = ['label' => $currentHeaderLabel, 'value' => $currentHeaderValue];
+                $parsedheaders[] = ['label' => $currentheaderLabel, 'value' => $currentheaderValue];
             }
         }
-        $copiedHeaders = [];
+        $copiedheaders = [];
         $headersToSignKeys = [];
         $headersToSign = [];
-        foreach ($parsedHeaders as $header) {
+        foreach ($parsedheaders as $header) {
             //Is this header one that must be included in the DKIM signature?
-            if (in_array(strtolower($header['label']), $autoSignHeaders, true)) {
+            if (in_array(strtolower($header['label']), $autoSignheaders, true)) {
                 $headersToSignKeys[] = $header['label'];
                 $headersToSign[] = $header['label'] . ': ' . $header['value'];
-                if ($this->DKIM_copyHeaderFields) {
-                    $copiedHeaders[] = $header['label'] . ':' . //Note no space after this, as per RFC
+                if ($this->DKIM_copyheaderFields) {
+                    $copiedheaders[] = $header['label'] . ':' . //Note no space after this, as per RFC
                         str_replace('|', '=7C', $this->DKIM_QP($header['value']));
                 }
                 continue;
             }
             //Is this an extra custom header we've been asked to sign?
-            if (in_array($header['label'], $this->DKIM_extraHeaders, true)) {
+            if (in_array($header['label'], $this->DKIM_extraheaders, true)) {
                 //Find its value in custom headers
-                foreach ($this->CustomHeader as $customHeader) {
-                    if ($customHeader[0] === $header['label']) {
+                foreach ($this->Customheader as $customheader) {
+                    if ($customheader[0] === $header['label']) {
                         $headersToSignKeys[] = $header['label'];
                         $headersToSign[] = $header['label'] . ': ' . $header['value'];
-                        if ($this->DKIM_copyHeaderFields) {
-                            $copiedHeaders[] = $header['label'] . ':' . //Note no space after this, as per RFC
+                        if ($this->DKIM_copyheaderFields) {
+                            $copiedheaders[] = $header['label'] . ':' . //Note no space after this, as per RFC
                                 str_replace('|', '=7C', $this->DKIM_QP($header['value']));
                         }
                         //Skip straight to the next header
@@ -4893,28 +4893,28 @@ class PHPMailer
                 }
             }
         }
-        $copiedHeaderFields = '';
-        if ($this->DKIM_copyHeaderFields && count($copiedHeaders) > 0) {
+        $copiedheaderFields = '';
+        if ($this->DKIM_copyheaderFields && count($copiedheaders) > 0) {
             //Assemble a DKIM 'z' tag
-            $copiedHeaderFields = ' z=';
+            $copiedheaderFields = ' z=';
             $first = true;
-            foreach ($copiedHeaders as $copiedHeader) {
+            foreach ($copiedheaders as $copiedheader) {
                 if (!$first) {
-                    $copiedHeaderFields .= static::$LE . ' |';
+                    $copiedheaderFields .= static::$LE . ' |';
                 }
                 //Fold long values
-                if (strlen($copiedHeader) > self::STD_LINE_LENGTH - 3) {
-                    $copiedHeaderFields .= substr(
-                        chunk_split($copiedHeader, self::STD_LINE_LENGTH - 3, static::$LE . self::FWS),
+                if (strlen($copiedheader) > self::STD_LINE_LENGTH - 3) {
+                    $copiedheaderFields .= substr(
+                        chunk_split($copiedheader, self::STD_LINE_LENGTH - 3, static::$LE . self::FWS),
                         0,
                         -strlen(static::$LE . self::FWS)
                     );
                 } else {
-                    $copiedHeaderFields .= $copiedHeader;
+                    $copiedheaderFields .= $copiedheader;
                 }
                 $first = false;
             }
-            $copiedHeaderFields .= ';' . static::$LE;
+            $copiedheaderFields .= ';' . static::$LE;
         }
         $headerKeys = ' h=' . implode(':', $headersToSignKeys) . ';' . static::$LE;
         $headerValues = implode(static::$LE, $headersToSign);
@@ -4928,7 +4928,7 @@ class PHPMailer
         //The DKIM-Signature header is included in the signature *except for* the value of the `b` tag
         //which is appended after calculating the signature
         //https://tools.ietf.org/html/rfc6376#section-3.5
-        $dkimSignatureHeader = 'DKIM-Signature: v=1;' .
+        $dkimSignatureheader = 'DKIM-Signature: v=1;' .
             ' d=' . $this->DKIM_domain . ';' .
             ' s=' . $this->DKIM_selector . ';' . static::$LE .
             ' a=' . $DKIMsignatureType . ';' .
@@ -4937,17 +4937,17 @@ class PHPMailer
             ' c=' . $DKIMcanonicalization . ';' . static::$LE .
             $headerKeys .
             $ident .
-            $copiedHeaderFields .
+            $copiedheaderFields .
             ' bh=' . $DKIMb64 . ';' . static::$LE .
             ' b=';
         //Canonicalize the set of headers
-        $canonicalizedHeaders = $this->DKIM_HeaderC(
-            $headerValues . static::$LE . $dkimSignatureHeader
+        $canonicalizedheaders = $this->DKIM_headerC(
+            $headerValues . static::$LE . $dkimSignatureheader
         );
-        $signature = $this->DKIM_Sign($canonicalizedHeaders);
+        $signature = $this->DKIM_Sign($canonicalizedheaders);
         $signature = trim(chunk_split($signature, self::STD_LINE_LENGTH - 3, static::$LE . self::FWS));
 
-        return static::normalizeBreaks($dkimSignatureHeader . $signature);
+        return static::normalizeBreaks($dkimSignatureheader . $signature);
     }
 
     /**

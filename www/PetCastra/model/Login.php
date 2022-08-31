@@ -31,23 +31,31 @@
         //Método cadastrar
         function cadastrar()
         {
-            //Conectando ao banco de dados
-            $con = Conexao::conectar();
+            try {
+                //code...//Conectando ao banco de dados
+                $con = Conexao::conectar();
 
-            //Preparar comando SQL para cadastrar
-            $cmd = $con->prepare("INSERT INTO login (nome, email, senha, nivelacesso) 
-                                    VALUES (:nome, :email, :senha, :nivelacesso)");
+                //Preparar comando SQL para cadastrar
+                $cmd = $con->prepare("INSERT INTO login (nome, email, senha, nivelacesso) 
+                                        VALUES (:nome, :email, :senha, :nivelacesso)");
+                
+                //Parâmetros SQL
+                $cmd->bindParam(":nome",        $this->nome);
+                $cmd->bindParam(":email",       $this->email);
+                $cmd->bindParam(":senha",       $this->senha);
+                $cmd->bindParam(":nivelacesso", $this->nivelacesso);
+
+                //Executando o comando SQL
+                $cmd->execute();
+
+                return $con->lastInsertId();
+
+            } catch (\Throwable $th) {
+                
+                error_log($th->getMessage(), 0);
+                return null;
+            }
             
-            //Parâmetros SQL
-            $cmd->bindParam(":nome",        $this->nome);
-            $cmd->bindParam(":email",       $this->email);
-            $cmd->bindParam(":senha",       $this->senha);
-            $cmd->bindParam(":nivelacesso", $this->nivelacesso);
-
-            //Executando o comando SQL
-            $cmd->execute();
-
-            return $con->lastInsertId();
         }
 
         //Método consultar

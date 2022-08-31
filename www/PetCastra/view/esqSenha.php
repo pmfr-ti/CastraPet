@@ -1,3 +1,4 @@
+<?php ob_start(); ?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -29,7 +30,7 @@
                                     </div>";
                                 }
                                 //excluindo cookie de erro
-                                setcookie("msg","",time() - 3600);
+                                @setcookie("msg","",time() - 3600);
                             ?>
                             
                             <div class="form-group mb-4">

@@ -14,7 +14,7 @@ require "recursos/PHPMailer/SMTP.php";
         private $host = ENV_CONFIG['MAIL']['HOST'];                 //servidor do protocolo de envio de email     
         private $emailRemetente = ENV_CONFIG['MAIL']['USER'];       //email do remetente
         private $senhaRemetente = ENV_CONFIG['MAIL']['PASS'];       //senha do remetente
-        private $nomeRemetente = utf8_encode(ENV_CONFIG['MAIL']['NAME']);        //nome do remetente
+        private $nomeRemetente = ENV_CONFIG['MAIL']['NAME'];        //nome do remetente
         private $porta = ENV_CONFIG['MAIL']['PORT'];                //porta do servidor TLS/STARTTLS/SSL
         private $emailDestinatario;                                 //email a ser enviado
         private $nomeDestinatario;                                  //nome do destinatário
@@ -129,8 +129,6 @@ require "recursos/PHPMailer/SMTP.php";
                     
                 //envia
                 $email->send();
-
-                echo "Mensagem enviada com sucesso";
             }
             catch(Exception $e)
             {
@@ -189,8 +187,6 @@ require "recursos/PHPMailer/SMTP.php";
                     
                 //envia
                 $email->send();
-
-                echo "Mensagem enviada com sucesso";
             }
             catch(Exception $e)
             {
@@ -245,8 +241,6 @@ require "recursos/PHPMailer/SMTP.php";
                     
                 //envia
                 $email->send();
-
-                echo "Mensagem enviada com sucesso";
             }
             catch(Exception $e)
             {

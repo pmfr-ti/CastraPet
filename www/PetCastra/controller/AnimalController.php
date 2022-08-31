@@ -8,7 +8,7 @@ class AnimalController
 {
     function carregarRaca($id){
         //caso não usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
 
         $raca = new Raca();
         $raca->tipoespecie = $id;
@@ -25,7 +25,7 @@ class AnimalController
     {
         
         //caso não usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
 
         //Controle de privilégio
         if($_SESSION["dadosLogin"]->nivelacesso == 0) {
@@ -68,7 +68,7 @@ class AnimalController
 
             $animal->cadastrar();
 
-            header("Location:".URL."meus-animais");
+            @header("Location:".URL."meus-animais");
         }
         else{ include_once "view/paginaNaoEncontrada.php"; } 
     }
@@ -76,7 +76,7 @@ class AnimalController
     function atualizarAnimal()
     {
         //caso não usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
 
         //Controle de privilégio
         if($_SESSION["dadosLogin"]->nivelacesso == 0 || $_SESSION["dadosLogin"]->nivelacesso == 2) {
@@ -180,8 +180,8 @@ class AnimalController
                 $usuario->atualizarQuantCastracoes();
             }
 
-            if($_SESSION["dadosLogin"]->nivelacesso == 0){ header("Location:".URL."meus-animais"); }
-            else{ header("Location:".URL."consulta-animais/".$_POST['idusuario']);}
+            if($_SESSION["dadosLogin"]->nivelacesso == 0){ @header("Location:".URL."meus-animais"); }
+            else{ @header("Location:".URL."consulta-animais/".$_POST['idusuario']);}
            
         } else{ include_once "view/paginaNaoEncontrada.php"; }
     }
@@ -189,7 +189,7 @@ class AnimalController
     function excluirAnimal($idanimal,$idusuario,$foto)
     {
         //caso não usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
 
         //Controle de privilégio
         if($_SESSION["dadosLogin"]->nivelacesso == 0 || $_SESSION["dadosLogin"]->nivelacesso == 2) {
@@ -242,8 +242,8 @@ class AnimalController
             {
                 unlink("recursos/img/Animais/$foto");
             }
-            if($_SESSION["dadosLogin"]->nivelacesso == 0){ header("Location:".URL."meus-animais"); }
-            else{ header("Location:".URL."consulta-animais/$idusuario");}
+            if($_SESSION["dadosLogin"]->nivelacesso == 0){ @header("Location:".URL."meus-animais"); }
+            else{ @header("Location:".URL."consulta-animais/$idusuario");}
         }
         else{ include_once "view/paginaNaoEncontrada.php"; } 
     }
@@ -251,7 +251,7 @@ class AnimalController
     function cadastrarRaca()
     {
         //caso não usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
 
         //Controle de privilégio
         if($_SESSION["dadosLogin"]->nivelacesso == 2) {
@@ -276,7 +276,7 @@ class AnimalController
     function atualizarRaca()
     {
         //caso não usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
 
         //Controle de privilégio
         if($_SESSION["dadosLogin"]->nivelacesso == 2) {
@@ -302,7 +302,7 @@ class AnimalController
     function excluirRaca($idraca)
     {
         //caso não usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
 
         //Controle de privilégio
         if($_SESSION["dadosLogin"]->nivelacesso == 2) {
@@ -317,7 +317,7 @@ class AnimalController
             {
                 echo "<script>alert('Erro: $e'); window.location='".URL."consulta-raca'; </script>";
             }
-            header("Location:".URL."consulta-raca");
+            @header("Location:".URL."consulta-raca");
         }
         else{ include_once "view/paginaNaoEncontrada.php"; } 
     }

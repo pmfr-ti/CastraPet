@@ -123,6 +123,7 @@
                                                 <th>Hora</th>
                                                 <th>Status</th>
                                                 <th>Observação</th>
+                                                <th>Observação Clínica</th>
                                                 <th>Ações</th>
                                             </th>
                                         </thead>
@@ -161,6 +162,7 @@
                                             <td>". date('H:i',strtotime($value->horario)) ."</td>
                                             <td>$value->status</td>
                                             <td>$value->observacao</td>
+                                            <td>$value->obsclinica</td>
                                             <td>
                                                 <button type='button' class='btn btn-warning' data-bs-toggle='modal' data-bs-target='#modalAtualizar' 
                                                         data-idcastracao='$value->idcastracao' data-emailTutor='$value->email' data-idTutor='$value->idusuario' 

@@ -1,5 +1,4 @@
 <?php
-use FFI\Exception;
 
 include_once "model/Usuario.php";
 include_once "model/Clinica.php";
@@ -7,52 +6,72 @@ include_once "model/Castracao.php";
 include_once "model/Email.php";
 
 class ClinicaController
-{    
+{
 
     function cadastrarClinica()
     {
-        //caso não usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        try {
 
-        //Controle de privilégio
-        if($_SESSION["dadosLogin"]->nivelacesso == 2) {
+            //caso não usuário não esteja logado
+            if (!isset($_SESSION["dadosLogin"])) {
+                @header("Location:" . URL . "login");
+                return;
+            }
 
-            $filtros = array(".", "-", "(", ")", "/", " ");
-            $cnpj = str_replace($filtros,'',$_POST["txtCNPJ"]);
-            $cep = str_replace($filtros,'',$_POST["txtCEP"]);
-            $tel = str_replace($filtros,'',$_POST["txtTelefone"]);
+            //Controle de privilégio
+            if ($_SESSION["dadosLogin"]->nivelacesso == 2) {
 
-            $login = new Login();
-            $login->nome =  $_POST["txtNome"];
-            $login->email = $_POST["txtEmail"];
-            $login->senha = password_hash($_POST["txtSenha"], PASSWORD_DEFAULT);
-            $login->nivelacesso = 1;
+                $filtros = array(".", "-", "(", ")", "/", " ");
+                $cnpj = str_replace($filtros, '', $_POST["txtCNPJ"]);
+                $cep = str_replace($filtros, '', $_POST["txtCEP"]);
+                $tel = str_replace($filtros, '', $_POST["txtTelefone"]);
 
-            $clinica = new Clinica();
-            $clinica->idlogin = $login->cadastrar();
-            $clinica->cnpj = $cnpj;
-            $clinica->clitelefone = $tel;
-            $clinica->vagas =       $_POST["txtVagas"];
-            $clinica->clirua =      $_POST["txtRua"];
-            $clinica->clibairro =   $_POST["txtBairro"];
-            $clinica->clinumero =   $_POST["txtNumero"];
-            $clinica->clicep = $cep;
-            $clinica->ativo = 1;
+                $login = new Login();
+                $login->nome =  $_POST["txtNome"];
+                $login->email = $_POST["txtEmail"];
+                $login->senha = password_hash($_POST["txtSenha"], PASSWORD_DEFAULT);
+                $login->nivelacesso = 1;
 
-            $clinica->cadastrar();
+                $idLogin = $login->cadastrar();
 
-            echo "<script>alert('Clínica cadastrada com sucesso!'); window.location='".URL."cadastra-clinica';</script>";
+                if ($idLogin === null) {
+                    echo "<script>alert('Já existe um perfil com esse e-mail'); window.location='" . URL . "cadastra-clinica'; </script>";
+                    return;
+                }
+
+                $clinica = new Clinica();
+                $clinica->idlogin = $idLogin;
+                $clinica->cnpj = $cnpj;
+                $clinica->clitelefone = $tel;
+                $clinica->vagas =       $_POST["txtVagas"];
+                $clinica->clirua =      $_POST["txtRua"];
+                $clinica->clibairro =   $_POST["txtBairro"];
+                $clinica->clinumero =   $_POST["txtNumero"];
+                $clinica->clicep = $cep;
+                $clinica->ativo = 1;
+
+                $clinica->cadastrar();
+
+                echo "<script>alert('Clínica cadastrada com sucesso!'); window.location='" . URL . "cadastra-clinica';</script>";
+            } else {
+                include_once "view/paginaNaoEncontrada.php";
+            }
+        } catch (\Throwable $th) {
+            error_log($th->getMessage(), 0);
+            echo "<script>alert('Não foi possível realizar essa ação. Contate o administrador do sistema'); window.location='" . URL . "cadastra-clinica'; </script>";
         }
-        else{ include_once "view/paginaNaoEncontrada.php"; } 
     }
 
     function atualizarClinica()
     {
         //caso não usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if (!isset($_SESSION["dadosLogin"])) {
+            @header("Location:" . URL . "login");
+            return;
+        }
 
         //Controle de privilégio
-        if($_SESSION["dadosLogin"]->nivelacesso == 2) {
+        if ($_SESSION["dadosLogin"]->nivelacesso == 2) {
 
             $login = new Login();
             $login->idlogin = $_POST["idLogin"];
@@ -71,26 +90,28 @@ class ClinicaController
             $clinica->clibairro =   $_POST["txtBairro"];
             $clinica->clinumero =   $_POST["txtNumero"];
             $clinica->clicep =      $_POST["txtCEP"];
-            if($_POST["chkAtivo"] == 1)
-            {
+            if ($_POST["chkAtivo"] == 1) {
                 $clinica->ativo = 1;
-            }
-            else
-            $clinica->ativo = 0;
+            } else
+                $clinica->ativo = 0;
             $clinica->atualizar();
 
-            header("location:".URL."consulta-clinica/");
+            @header("Location:" . URL . "consulta-clinica/");
+        } else {
+            include_once "view/paginaNaoEncontrada.php";
         }
-        else{ include_once "view/paginaNaoEncontrada.php"; } 
     }
 
     function excluirClinica($idClinica, $idLogin)
     {
         //caso não usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if (!isset($_SESSION["dadosLogin"])) {
+            @header("Location:" . URL . "login");
+            return;
+        }
 
         //Controle de privilégio
-        if($_SESSION["dadosLogin"]->nivelacesso == 2) {
+        if ($_SESSION["dadosLogin"]->nivelacesso == 2) {
 
             $clinica = new Clinica();
             $clinica->idclinica = $idClinica;
@@ -100,18 +121,22 @@ class ClinicaController
             $login->idlogin = $idLogin;
             $login->excluir();
 
-            header("Location:".URL."consulta-clinica/");
+            @header("Location:" . URL . "consulta-clinica/");
+        } else {
+            include_once "view/paginaNaoEncontrada.php";
         }
-        else{ include_once "view/paginaNaoEncontrada.php"; } 
     }
 
     function agendarDataCastracao()
     {
         //caso não usuário não esteja logado
-        if(!isset($_SESSION["dadosLogin"])) { header("Location:".URL."login"); return; }
+        if (!isset($_SESSION["dadosLogin"])) {
+            @header("Location:" . URL . "login");
+            return;
+        }
 
         //Controle de privilégio
-        if($_SESSION["dadosLogin"]->nivelacesso == 1) {
+        if ($_SESSION["dadosLogin"]->nivelacesso == 1) {
 
             $castracao = new Castracao();
             $castracao->idcastracao = $_POST["idcastracao"];
@@ -135,10 +160,9 @@ class ClinicaController
 
             $email->enviarConfirmacao();
 
-            header("Location:".URL."lista-solicitacao");
+            @header("Location:" . URL . "lista-solicitacao");
+        } else {
+            include_once "view/paginaNaoEncontrada.php";
         }
-        else{ include_once "view/paginaNaoEncontrada.php"; } 
     }
 }
-
-?>

@@ -22,7 +22,7 @@
  */
 
 /*jslint evil: true, undef: true, browser: true */
-/*globals $,require,jQuery,define,_selector_run,_selector_opts,_selector_first,_selector_row_indexes,_ext,_Api,_api_register,_api_registerPlural,_re_new_lines,_re_html,_re_formatted_numeric,_re_escape_regex,_empty,_intVal,_numToDecimal,_isNumber,_isHtml,_htmlNumeric,_pluck,_pluck_order,_range,_stripHtml,_unique,_fnBuildAjax,_fnAjaxUpdate,_fnAjaxParameters,_fnAjaxUpdateDraw,_fnAjaxDataSrc,_fnAddColumn,_fnColumnOptions,_fnAdjustColumnSizing,_fnVisibleToColumnIndex,_fnColumnIndexToVisible,_fnVisbleColumns,_fnGetColumns,_fnColumnTypes,_fnApplyColumnDefs,_fnHungarianMap,_fnCamelToHungarian,_fnLanguageCompat,_fnBrowserDetect,_fnAddData,_fnAddTr,_fnNodeToDataIndex,_fnNodeToColumnIndex,_fnGetCellData,_fnSetCellData,_fnSplitObjNotation,_fnGetObjectDataFn,_fnSetObjectDataFn,_fnGetDataMaster,_fnClearTable,_fnDeleteIndex,_fnInvalidate,_fnGetRowElements,_fnCreateTr,_fnBuildHead,_fnDrawHead,_fnDraw,_fnReDraw,_fnAddOptionsHtml,_fnDetectHeader,_fnGetUniqueThs,_fnFeatureHtmlFilter,_fnFilterComplete,_fnFilterCustom,_fnFilterColumn,_fnFilter,_fnFilterCreateSearch,_fnEscapeRegex,_fnFilterData,_fnFeatureHtmlInfo,_fnUpdateInfo,_fnInfoMacros,_fnInitialise,_fnInitComplete,_fnLengthChange,_fnFeatureHtmlLength,_fnFeatureHtmlPaginate,_fnPageChange,_fnFeatureHtmlProcessing,_fnProcessingDisplay,_fnFeatureHtmlTable,_fnScrollDraw,_fnApplyToChildren,_fnCalculateColumnWidths,_fnThrottle,_fnConvertToWidth,_fnGetWidestNode,_fnGetMaxLenString,_fnStringToCss,_fnSortFlatten,_fnSort,_fnSortAria,_fnSortListener,_fnSortAttachListener,_fnSortingClasses,_fnSortData,_fnSaveState,_fnLoadState,_fnSettingsFromNode,_fnLog,_fnMap,_fnBindAction,_fnCallbackReg,_fnCallbackFire,_fnLengthOverflow,_fnRenderer,_fnDataSource,_fnRowAttributes*/
+/*globals $,require,jQuery,define,_selector_run,_selector_opts,_selector_first,_selector_row_indexes,_ext,_Api,_api_register,_api_registerPlural,_re_new_lines,_re_html,_re_formatted_numeric,_re_escape_regex,_empty,_intVal,_numToDecimal,_isNumber,_isHtml,_htmlNumeric,_pluck,_pluck_order,_range,_stripHtml,_unique,_fnBuildAjax,_fnAjaxUpdate,_fnAjaxParameters,_fnAjaxUpdateDraw,_fnAjaxDataSrc,_fnAddColumn,_fnColumnOptions,_fnAdjustColumnSizing,_fnVisibleToColumnIndex,_fnColumnIndexToVisible,_fnVisbleColumns,_fnGetColumns,_fnColumnTypes,_fnApplyColumnDefs,_fnHungarianMap,_fnCamelToHungarian,_fnLanguageCompat,_fnBrowserDetect,_fnAddData,_fnAddTr,_fnNodeToDataIndex,_fnNodeToColumnIndex,_fnGetCellData,_fnSetCellData,_fnSplitObjNotation,_fnGetObjectDataFn,_fnSetObjectDataFn,_fnGetDataMaster,_fnClearTable,_fnDeleteIndex,_fnInvalidate,_fnGetRowElements,_fnCreateTr,_fnBuildHead,_fnDrawHead,_fnDraw,_fnReDraw,_fnAddOptionsHtml,_fnDetectheader,_fnGetUniqueThs,_fnFeatureHtmlFilter,_fnFilterComplete,_fnFilterCustom,_fnFilterColumn,_fnFilter,_fnFilterCreateSearch,_fnEscapeRegex,_fnFilterData,_fnFeatureHtmlInfo,_fnUpdateInfo,_fnInfoMacros,_fnInitialise,_fnInitComplete,_fnLengthChange,_fnFeatureHtmlLength,_fnFeatureHtmlPaginate,_fnPageChange,_fnFeatureHtmlProcessing,_fnProcessingDisplay,_fnFeatureHtmlTable,_fnScrollDraw,_fnApplyToChildren,_fnCalculateColumnWidths,_fnThrottle,_fnConvertToWidth,_fnGetWidestNode,_fnGetMaxLenString,_fnStringToCss,_fnSortFlatten,_fnSort,_fnSortAria,_fnSortListener,_fnSortAttachListener,_fnSortingClasses,_fnSortData,_fnSaveState,_fnLoadState,_fnSettingsFromNode,_fnLog,_fnMap,_fnBindAction,_fnCallbackReg,_fnCallbackFire,_fnLengthOverflow,_fnRenderer,_fnDataSource,_fnRowAttributes*/
 
 (function( factory ) {
 	"use strict";
@@ -1018,7 +1018,7 @@
 			_fnCallbackReg( oSettings, 'aoStateLoaded',        oInit.fnStateLoaded,       'user' );
 			_fnCallbackReg( oSettings, 'aoRowCallback',        oInit.fnRowCallback,       'user' );
 			_fnCallbackReg( oSettings, 'aoRowCreatedCallback', oInit.fnCreatedRow,        'user' );
-			_fnCallbackReg( oSettings, 'aoHeaderCallback',     oInit.fnHeaderCallback,    'user' );
+			_fnCallbackReg( oSettings, 'aoheaderCallback',     oInit.fnheaderCallback,    'user' );
 			_fnCallbackReg( oSettings, 'aoFooterCallback',     oInit.fnFooterCallback,    'user' );
 			_fnCallbackReg( oSettings, 'aoInitComplete',       oInit.fnInitComplete,      'user' );
 			_fnCallbackReg( oSettings, 'aoPreDrawCallback',    oInit.fnPreDrawCallback,   'user' );
@@ -1111,7 +1111,7 @@
 			var nThead = this.getElementsByTagName('thead');
 			if ( nThead.length !== 0 )
 			{
-				_fnDetectHeader( oSettings.aoHeader, nThead[0] );
+				_fnDetectheader( oSettings.aoheader, nThead[0] );
 				anThs = _fnGetUniqueThs( oSettings );
 			}
 			
@@ -1247,7 +1247,7 @@
 				}
 				else if ( tfoot.length > 0 ) {
 					oSettings.nTFoot = tfoot[0];
-					_fnDetectHeader( oSettings.aoFooter, oSettings.nTFoot );
+					_fnDetectheader( oSettings.aoFooter, oSettings.nTFoot );
 				}
 			
 				/* Check if there is data passing into the constructor */
@@ -3240,11 +3240,11 @@
 		var i, ien, cell, row, column;
 		var thead = oSettings.nTHead;
 		var tfoot = oSettings.nTFoot;
-		var createHeader = $('th, td', thead).length === 0;
+		var createheader = $('th, td', thead).length === 0;
 		var classes = oSettings.oClasses;
 		var columns = oSettings.aoColumns;
 	
-		if ( createHeader ) {
+		if ( createheader ) {
 			row = $('<tr/>').appendTo( thead );
 		}
 	
@@ -3252,7 +3252,7 @@
 			column = columns[i];
 			cell = $( column.nTh ).addClass( column.sClass );
 	
-			if ( createHeader ) {
+			if ( createheader ) {
 				cell.appendTo( row );
 			}
 	
@@ -3278,12 +3278,12 @@
 			);
 		}
 	
-		if ( createHeader ) {
-			_fnDetectHeader( oSettings.aoHeader, thead );
+		if ( createheader ) {
+			_fnDetectheader( oSettings.aoheader, thead );
 		}
 	
 		/* Deal with the footer - add classes if required */
-		$(thead).children('tr').children('th, td').addClass( classes.sHeaderTH );
+		$(thead).children('tr').children('th, td').addClass( classes.sheaderTH );
 		$(tfoot).children('tr').children('th, td').addClass( classes.sFooterTH );
 	
 		// Cache the footer cells. Note that we only take the cells from the first
@@ -3307,14 +3307,14 @@
 	
 	/**
 	 * Draw the header (or footer) element based on the column visibility states. The
-	 * methodology here is to use the layout array from _fnDetectHeader, modified for
+	 * methodology here is to use the layout array from _fnDetectheader, modified for
 	 * the instantaneous column visibility, to construct the new layout. The grid is
 	 * traversed over cell at a time in a rows x columns grid fashion, although each
 	 * cell insert can cover multiple elements in the grid - which is tracks using the
 	 * aApplied array. Cell inserts in the grid will only occur where there isn't
 	 * already a cell in that position.
 	 *  @param {object} oSettings dataTables settings object
-	 *  @param array {objects} aoSource Layout array from _fnDetectHeader
+	 *  @param array {objects} aoSource Layout array from _fnDetectheader
 	 *  @param {boolean} [bIncludeHidden=false] If true then include the hidden columns in the calc,
 	 *  @memberof DataTable#oApi
 	 */
@@ -3517,8 +3517,8 @@
 				} ).html( sZero ) )[0];
 		}
 	
-		/* Header and footer callbacks */
-		_fnCallbackFire( oSettings, 'aoHeaderCallback', 'header', [ $(oSettings.nTHead).children('tr')[0],
+		/* header and footer callbacks */
+		_fnCallbackFire( oSettings, 'aoheaderCallback', 'header', [ $(oSettings.nTHead).children('tr')[0],
 			_fnGetDataMaster( oSettings ), iDisplayStart, iDisplayEnd, aiDisplay ] );
 	
 		_fnCallbackFire( oSettings, 'aoFooterCallback', 'footer', [ $(oSettings.nTFoot).children('tr')[0],
@@ -3629,7 +3629,7 @@
 					/* Replace jQuery UI constants @todo depreciated */
 					if ( sAttr == "H" )
 					{
-						sAttr = classes.sJUIHeader;
+						sAttr = classes.sJUIheader;
 					}
 					else if ( sAttr == "F" )
 					{
@@ -3740,7 +3740,7 @@
 	 *  @param {node} nThead The header/footer element for the table
 	 *  @memberof DataTable#oApi
 	 */
-	function _fnDetectHeader ( aLayout, nThead )
+	function _fnDetectheader ( aLayout, nThead )
 	{
 		var nTrs = $(nThead).children('tr');
 		var nTr, nCell;
@@ -3810,21 +3810,21 @@
 	/**
 	 * Get an array of unique th elements, one for each column
 	 *  @param {object} oSettings dataTables settings object
-	 *  @param {node} nHeader automatically detect the layout from this node - optional
-	 *  @param {array} aLayout thead/tfoot layout from _fnDetectHeader - optional
+	 *  @param {node} nheader automatically detect the layout from this node - optional
+	 *  @param {array} aLayout thead/tfoot layout from _fnDetectheader - optional
 	 *  @returns array {node} aReturn list of unique th's
 	 *  @memberof DataTable#oApi
 	 */
-	function _fnGetUniqueThs ( oSettings, nHeader, aLayout )
+	function _fnGetUniqueThs ( oSettings, nheader, aLayout )
 	{
 		var aReturn = [];
 		if ( !aLayout )
 		{
-			aLayout = oSettings.aoHeader;
-			if ( nHeader )
+			aLayout = oSettings.aoheader;
+			if ( nheader )
 			{
 				aLayout = [];
-				_fnDetectHeader( aLayout, nHeader );
+				_fnDetectheader( aLayout, nheader );
 			}
 		}
 	
@@ -4771,7 +4771,7 @@
 	
 		/* Build and draw the header / footer for the table */
 		_fnBuildHead( settings );
-		_fnDrawHead( settings, settings.aoHeader );
+		_fnDrawHead( settings, settings.aoheader );
 		_fnDrawHead( settings, settings.aoFooter );
 	
 		/* Okay to show that something is going on now */
@@ -5267,11 +5267,11 @@
 			scrollXInner   = scroll.sXInner,
 			scrollY        = scroll.sY,
 			barWidth       = scroll.iBarWidth,
-			divHeader      = $(settings.nScrollHead),
-			divHeaderStyle = divHeader[0].style,
-			divHeaderInner = divHeader.children('div'),
-			divHeaderInnerStyle = divHeaderInner[0].style,
-			divHeaderTable = divHeaderInner.children('table'),
+			divheader      = $(settings.nScrollHead),
+			divheaderStyle = divheader[0].style,
+			divheaderInner = divheader.children('div'),
+			divheaderInnerStyle = divheaderInner[0].style,
+			divheaderTable = divheaderInner.children('table'),
 			divBodyEl      = settings.nScrollBody,
 			divBody        = $(divBodyEl),
 			divBodyStyle   = divBodyEl.style,
@@ -5285,7 +5285,7 @@
 			footer         = settings.nTFoot ? $(settings.nTFoot) : null,
 			browser        = settings.oBrowser,
 			ie67           = browser.bScrollOversize,
-			dtHeaderCells  = _pluck( settings.aoColumns, 'nTh' ),
+			dtheaderCells  = _pluck( settings.aoColumns, 'nTh' ),
 			headerTrgEls, footerTrgEls,
 			headerSrcEls, footerSrcEls,
 			headerCopy, footerCopy,
@@ -5345,7 +5345,7 @@
 		if ( ! scrollX )
 		{
 			divBodyStyle.width = '100%';
-			divHeader[0].style.width = '100%';
+			divheader[0].style.width = '100%';
 		}
 	
 		$.each( _fnGetUniqueThs( settings, headerCopy ), function ( i, el ) {
@@ -5480,7 +5480,7 @@
 	
 		// Apply to the container elements
 		divBodyStyle.width = _fnStringToCss( correction );
-		divHeaderStyle.width = _fnStringToCss( correction );
+		divheaderStyle.width = _fnStringToCss( correction );
 	
 		if ( footer ) {
 			settings.nScrollFoot.style.width = _fnStringToCss( correction );
@@ -5502,14 +5502,14 @@
 	
 		/* Finally set the width's of the header and footer tables */
 		var iOuterWidth = table.outerWidth();
-		divHeaderTable[0].style.width = _fnStringToCss( iOuterWidth );
-		divHeaderInnerStyle.width = _fnStringToCss( iOuterWidth );
+		divheaderTable[0].style.width = _fnStringToCss( iOuterWidth );
+		divheaderInnerStyle.width = _fnStringToCss( iOuterWidth );
 	
 		// Figure out if there are scrollbar present - if so then we need a the header and footer to
 		// provide a bit more space to allow "overflow" scrolling (i.e. past the scrollbar)
 		var bScrolling = table.height() > divBodyEl.clientHeight || divBody.css('overflow-y') == "scroll";
 		var padding = 'padding' + (browser.bScrollbarLeft ? 'Left' : 'Right' );
-		divHeaderInnerStyle[ padding ] = bScrolling ? barWidth+"px" : "0px";
+		divheaderInnerStyle[ padding ] = bScrolling ? barWidth+"px" : "0px";
 	
 		if ( footer ) {
 			divFooterTable[0].style.width = _fnStringToCss( iOuterWidth );
@@ -8807,7 +8807,7 @@
 		if ( vis !== undefined ) {
 			this.iterator( 'table', function ( settings ) {
 				// Redraw the header after changes
-				_fnDrawHead( settings, settings.aoHeader );
+				_fnDrawHead( settings, settings.aoheader );
 				_fnDrawHead( settings, settings.aoFooter );
 		
 				// Update colspan for no records display. Child rows and extensions will use their own
@@ -10871,7 +10871,7 @@
 		
 		
 			/**
-			 * Identical to fnHeaderCallback() but for the table footer this function
+			 * Identical to fnheaderCallback() but for the table footer this function
 			 * allows you to modify the table footer on every 'draw' event.
 			 *  @type function
 			 *  @param {node} foot "TR" element for the footer
@@ -10959,7 +10959,7 @@
 			 *      } );
 			 *    } )
 			 */
-			"fnHeaderCallback": null,
+			"fnheaderCallback": null,
 		
 		
 			/**
@@ -13412,7 +13412,7 @@
 			 *  @type array
 			 *  @default []
 			 */
-			"aoHeader": [],
+			"aoheader": [],
 		
 			/**
 			 * Store information about the table's footer
@@ -13499,7 +13499,7 @@
 			 *  @type array
 			 *  @default []
 			 */
-			"aoHeaderCallback": [],
+			"aoheaderCallback": [],
 		
 			/**
 			 * Callback function for the footer on each draw.
@@ -14609,7 +14609,7 @@
 			"sScrollFootInner": "dataTables_scrollFootInner",
 		
 			/* Misc */
-			"sHeaderTH": "",
+			"sheaderTH": "",
 			"sFooterTH": "",
 		
 			// Deprecated
@@ -14620,7 +14620,7 @@
 			"sSortJUIDescAllowed": "",
 			"sSortJUIWrapper": "",
 			"sSortIcon": "",
-			"sJUIHeader": "",
+			"sJUIheader": "",
 			"sJUIFooter": ""
 		} );
 		
@@ -15253,7 +15253,7 @@
 			_fnDraw: _fnDraw,
 			_fnReDraw: _fnReDraw,
 			_fnAddOptionsHtml: _fnAddOptionsHtml,
-			_fnDetectHeader: _fnDetectHeader,
+			_fnDetectheader: _fnDetectheader,
 			_fnGetUniqueThs: _fnGetUniqueThs,
 			_fnFeatureHtmlFilter: _fnFeatureHtmlFilter,
 			_fnFilterComplete: _fnFilterComplete,
