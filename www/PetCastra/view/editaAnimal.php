@@ -70,7 +70,7 @@
 </head>
 <body>  
     <!-- CORPO -->
-    <div class="container-fluid vh-100 d-grid corpo">
+    <div class="vh-100 d-grid corpo">
 
     <?php /*Controle de menu!*/ include_once "menuControle.php";?>
 

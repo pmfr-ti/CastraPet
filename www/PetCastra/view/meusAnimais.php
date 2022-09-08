@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
-    <?php include_once "head.php";?>
+    <?php include_once "head.php"; ?>
 
 </head>
-<body>      
+
+<body>
     <!-- CORPO -->
-    <div class="container-fluid d-grid min-vh-100 corpo">
-        
-    <?php /*Controle de menu!*/ include_once "menuControle.php";?>
-    
+    <div class="d-grid min-vh-100 corpo">
+
+        <?php /*Controle de menu!*/ include_once "menuControle.php"; ?>
+
         <div class="container-fluid">
             <div class="bg-primary h-100 row align-items-center">
                 <div class="container mx-auto p-3" style="grid-area:corpo;">
@@ -17,47 +19,46 @@
                         Meus Animais
                     </div>
                     <div class="container bg-white pt-3">
-                    <!-- Componentes aqui -->
+                        <!-- Componentes aqui -->
                         <?php
-                        foreach ($dadosAnimais as $value)
-                        {
+                        foreach ($dadosAnimais as $value) {
                             //Reescrevendo a foto
                             $valorFoto = $value->foto;
-                            $value->foto == '' ? $value->foto = "Animal_sem_imagem.png" : $value->foto = $value->foto ;
+                            $value->foto == '' ? $value->foto = "Animal_sem_imagem.png" : $value->foto = $value->foto;
 
                             //Reescrevendo a espécie
                             $valorEspecie = $value->especie;
-                            $value->especie = str_replace("0","Canina", $value->especie);
-                            $value->especie = str_replace("1","Felina", $value->especie);
+                            $value->especie = str_replace("0", "Canina", $value->especie);
+                            $value->especie = str_replace("1", "Felina", $value->especie);
 
                             //Reescrevendo o sexo
                             $valorSexo = $value->sexo;
-                            $value->sexo = str_replace("0","Fêmea", $value->sexo);
-                            $value->sexo = str_replace("1","Macho", $value->sexo);
+                            $value->sexo = str_replace("0", "Fêmea", $value->sexo);
+                            $value->sexo = str_replace("1", "Macho", $value->sexo);
 
                             //Reescrevendo a pelagem
                             $valorPelagem = $value->pelagem;
-                            $value->pelagem = str_replace("0","Curta", $value->pelagem);
-                            $value->pelagem = str_replace("1","Média", $value->pelagem);
-                            $value->pelagem = str_replace("2","Alta", $value->pelagem);
-                            
+                            $value->pelagem = str_replace("0", "Curta", $value->pelagem);
+                            $value->pelagem = str_replace("1", "Média", $value->pelagem);
+                            $value->pelagem = str_replace("2", "Alta", $value->pelagem);
+
                             //Reescrevendo o porte
                             $valorPorte = $value->porte;
-                            $value->porte = str_replace("0","Pequeno", $value->porte);
-                            $value->porte = str_replace("1","Médio", $value->porte);
-                            $value->porte = str_replace("2","Grande", $value->porte);
+                            $value->porte = str_replace("0", "Pequeno", $value->porte);
+                            $value->porte = str_replace("1", "Médio", $value->porte);
+                            $value->porte = str_replace("2", "Grande", $value->porte);
 
                             //Reescrevendo o Comunitário
                             $valorComunitario = $value->comunitario;
-                            $value->comunitario = str_replace("0","Não", $value->comunitario);
-                            $value->comunitario = str_replace("1","Sim", $value->comunitario);
+                            $value->comunitario = str_replace("0", "Não", $value->comunitario);
+                            $value->comunitario = str_replace("1", "Sim", $value->comunitario);
 
                             echo
                             "
                             <!-- Começo de um animal -->
                                 <div class='row align-items-center'>
                                     <div class='col-md-3 d-flex align-items-center'>
-                                        <img src='".URL."recursos/img/Animais/$value->foto' alt='Imagem' class='mw-100' style='height: 200px; width: 300px;'>
+                                        <img src='" . URL . "recursos/img/Animais/$value->foto' alt='Imagem' class='mw-100' style='height: 200px; width: 300px;'>
                                     </div>
                                     <div class='col-md-7'>
                                         <div class='row'>
@@ -65,37 +66,37 @@
                                                 <div class='row'>
                                                     <p>
                                                         Nome:
-                                                        ".$value->aninome."
+                                                        " . $value->aninome . "
                                                     </p>
                                                 </div>
                                                 <div class='row'>
                                                     <p>
                                                         Espécie:
-                                                        ".$value->especie."
+                                                        " . $value->especie . "
                                                     </p>
                                                 </div>
                                                 <div class='row'>
                                                     <p>
                                                         Sexo:
-                                                        ".$value->sexo."
+                                                        " . $value->sexo . "
                                                     </p>
                                                 </div>
                                                 <div class='row'>
                                                     <p>
                                                         Pelagem:
-                                                        ".$value->pelagem."
+                                                        " . $value->pelagem . "
                                                     </p>
                                                 </div>
                                                 <div class='row'>
                                                     <p>
                                                         Porte:
-                                                        ".$value->porte."
+                                                        " . $value->porte . "
                                                     </p>
                                                 </div>
                                                 <div class='row'>
                                                     <p class='mb-md-0'>
                                                         Animal Comunitário:
-                                                        ".$value->comunitario."
+                                                        " . $value->comunitario . "
                                                     </p>
                                                 </div>
                                             </div>
@@ -103,19 +104,19 @@
                                                 <div class='row'>
                                                     <p>
                                                         Idade:
-                                                        ".$value->idade."
+                                                        " . $value->idade . "
                                                     </p>
                                                 </div>
                                                 <div class='row'>
                                                     <p>
                                                         Cor:
-                                                        ".$value->cor."
+                                                        " . $value->cor . "
                                                     </p>
                                                 </div>
                                                 <div class='row'>
                                                     <p class='mb-0'>
                                                         Raça:
-                                                        ".$value->raca."
+                                                        " . $value->raca . "
                                                     </p>
                                                 </div>
                                             </div>
@@ -125,21 +126,17 @@
                                     <div class='col-md-2 mt-2 mt-md-0'>
                                         
                                     ";
-                                    if(!isset($value->status))
-                                    {
-                                        if($quantcastracoes->quantcastracoes > 0 && $_SESSION["dadosUsuario"]->punicao == 0)
-                                        {
-                                            echo "
+                            if (!isset($value->status)) {
+                                if ($quantcastracoes->quantcastracoes > 0 && $_SESSION["dadosUsuario"]->punicao == 0) {
+                                    echo "
                                             <button class='btn btn-success w-100 mb-2' id='btnSolicitar' type='button' data-bs-target='#modalSolicitar' data-bs-toggle='modal' data-idanimal='$value->idanimal' data-idusuario='$value->idusuario'>
                                                 Solicitar castração
                                             </button>
                                             ";
-                                        }
-                                        else if($_SESSION["dadosUsuario"]->punicao != 0)
-                                        {
-                                            echo "<span class='btn bg-danger w-100 mb-2 text-white' style='cursor: default;'>Solicitação Bloqueada</span> ";
-                                        }
-                                        echo "
+                                } else if ($_SESSION["dadosUsuario"]->punicao != 0) {
+                                    echo "<span class='btn bg-danger w-100 mb-2 text-white' style='cursor: default;'>Solicitação Bloqueada</span> ";
+                                }
+                                echo "
                                         <button class='btn btn-warning w-100 mb-2' id='btnEditar' type='button' data-bs-target='#modalEditar' data-bs-toggle='modal' 
                                                 data-idanimal='$value->idanimal' data-idusuario='$value->idusuario' data-nome='$value->aninome' data-especie='$valorEspecie' 
                                                 data-sexo='$valorSexo' data-cor='$value->cor' data-raca='$value->idraca' data-idade='$value->idade' data-pelagem='$valorPelagem' 
@@ -148,22 +145,19 @@
                                         </button>
                                         <a class='btn btn-danger w-100' onclick='confirmar($value->idanimal)'>Excluir</a>
                                         ";
-                                    }
-                                    else
-                                    {
-                                        switch($value->status)
-                                        {
-                                            case 0:
-                                                echo "<span class='btn btn-sm bg-warning w-100 my-3 text-white fw-bold' style='cursor: default;'>Solicitação em análise</span>";
-                                            break;
-                                            case 1:
-                                                echo "<span class='btn btn-sm bg-success w-100 my-3 text-white fw-bold' style='cursor: default;'>Solicitação aprovada</span>";
-                                            break;
-                                            case 2:
-                                                echo "<span class='btn btn-sm bg-success w-100 my-3 text-white fw-bold' style='cursor: default;'>Animal Castrado</span>";
-                                            break;
-                                            case 3:
-                                                echo "
+                            } else {
+                                switch ($value->status) {
+                                    case 0:
+                                        echo "<span class='btn btn-sm bg-warning w-100 my-3 text-white fw-bold' style='cursor: default;'>Solicitação em análise</span>";
+                                        break;
+                                    case 1:
+                                        echo "<span class='btn btn-sm bg-success w-100 my-3 text-white fw-bold' style='cursor: default;'>Solicitação aprovada</span>";
+                                        break;
+                                    case 2:
+                                        echo "<span class='btn btn-sm bg-success w-100 my-3 text-white fw-bold' style='cursor: default;'>Animal Castrado</span>";
+                                        break;
+                                    case 3:
+                                        echo "
                                                 <button class='btn btn-warning w-100 mb-2' id='btnEditar' type='button' data-bs-target='#modalEditar' data-bs-toggle='modal' 
                                                     data-idanimal='$value->idanimal' data-idusuario='$value->idusuario' data-nome='$value->aninome' data-especie='$valorEspecie' 
                                                     data-sexo='$valorSexo' data-cor='$value->cor' data-raca='$value->idraca' data-idade='$value->idade' data-pelagem='$valorPelagem' 
@@ -172,48 +166,47 @@
                                                 </button>
                                                 <span class='btn btn-sm bg-danger w-100 my-3 text-white fw-bold' style='cursor: default;'>Solicitação recusada</span>
                                                 ";
-                                                if(isset($value->msgrecusa))
-                                                {
-                                                    echo "
+                                        if (isset($value->msgrecusa)) {
+                                            echo "
                                                     <div class='alert alert-danger p-1'>$value->msgrecusa Para fazer uma nova solicitação, edite as informações do animal</div>
                                                     ";
-                                                }
-
-                                            break;
-                                            case 4:
-                                                echo "<span class='btn btn-sm bg-danger w-100 my-3 text-white fw-bold' style='cursor: default;'>Tutor não compareceu</span>";
-                                            break;
-                                            case 5:
-                                                echo "<span class='btn btn-sm bg-danger w-100 my-3 text-white fw-bold' style='cursor: default;'>Solicitação cancelada</span>";
-                                            break;
-                                            case 6:
-                                                echo "<span class='btn btn-sm bg-warning w-100 my-3 text-white fw-bold' style='cursor: default;'>Solicitação em análise</span>";
-                                            break;
-                                            case 7:
-                                                echo "<span class='btn btn-sm bg-dark w-100 my-3 text-white fw-bold' style='cursor: default;'>Animal foi a óbito</span>";
-                                            break;
-                                            case 8:
-                                                echo "<span class='btn btn-sm bg-success w-100 my-3 text-white fw-bold' style='cursor: default;'>Animal Castrado</span>";
-                                            break;
-                                            default:
-                                                echo "<span class='btn btn-sm bg-secondary w-100 my-3 text-white fw-bold' style='cursor: default;'>Ocorreu um erro</span>";
-                                            break;
                                         }
-                                    }
-                                    echo "
+
+                                        break;
+                                    case 4:
+                                        echo "<span class='btn btn-sm bg-danger w-100 my-3 text-white fw-bold' style='cursor: default;'>Tutor não compareceu</span>";
+                                        break;
+                                    case 5:
+                                        echo "<span class='btn btn-sm bg-danger w-100 my-3 text-white fw-bold' style='cursor: default;'>Solicitação cancelada</span>";
+                                        break;
+                                    case 6:
+                                        echo "<span class='btn btn-sm bg-warning w-100 my-3 text-white fw-bold' style='cursor: default;'>Solicitação em análise</span>";
+                                        break;
+                                    case 7:
+                                        echo "<span class='btn btn-sm bg-dark w-100 my-3 text-white fw-bold' style='cursor: default;'>Animal foi a óbito</span>";
+                                        break;
+                                    case 8:
+                                        echo "<span class='btn btn-sm bg-success w-100 my-3 text-white fw-bold' style='cursor: default;'>Animal Castrado</span>";
+                                        break;
+                                    default:
+                                        echo "<span class='btn btn-sm bg-secondary w-100 my-3 text-white fw-bold' style='cursor: default;'>Ocorreu um erro</span>";
+                                        break;
+                                }
+                            }
+                            echo "
                                     </div>
                                 </div>
                                 <hr>
                             <!-- Fim de um animal -->
-                            ";  
+                            ";
                         }
                         ?>
                         <div class="row align-items-center p-3">
                             <div class="col">
-                                <a href="<?php echo URL.'cadastra-animal';?>" class="btn btn-success float-end">Cadastrar Animal</a>
+                                <a href="<?php echo URL . 'cadastra-animal'; ?>" class="btn btn-success float-end">Cadastrar Animal</a>
                             </div>
                         </div>
-                    <!-- Fim dos componentes -->
+                        <!-- Fim dos componentes -->
                     </div>
                 </div>
             </div>
@@ -221,16 +214,16 @@
         <div class="container-fluid bg-dark" style="grid-area:footer;">
             <div class="row h-100 align-items-center">
                 <div class="px-5">
-                    <a href="<?php echo URL.'perfil'; ?>" class="btn btn-success my-2 my-sm-0">Voltar</a>
+                    <a href="<?php echo URL . 'perfil'; ?>" class="btn btn-success my-2 my-sm-0">Voltar</a>
                 </div>
             </div>
         </div>
-        
+
         <!-- MODAL: solicitar castração -->
         <div class='modal fade' id='modalSolicitar' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true'>
             <div class='modal-dialog modal-dialog-centered'>
                 <div class='modal-content'>
-                    <form action="<?php echo URL.'solicitar-castracao';?>" method='post'>
+                    <form action="<?php echo URL . 'solicitar-castracao'; ?>" method='post'>
                         <input type='hidden' id='idAnimalSolicita' name='idAnimal'>
                         <input type="hidden" name="idusuario" id="idusuario">
 
@@ -239,6 +232,64 @@
                             <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
                         </div>
                         <div class='modal-body'>
+                            <div class="container mb-3">
+                                <div class="header-container mb-1">
+                                    <strong style="font-size: 0.8rem;">TERMO DE RESPONSABILIDADE DE CASTRAÇÃO E DECLARAÇÃO</strong>
+                                </div>
+                                <hr />
+                                <div class="main-container p-2" style="background-color: #f0f0f0; height:300px; overflow-y: scroll;" id="TOS">
+                                    Declaro que:
+                                    <ul>
+                                        <li>
+                                            Mantive o(s) animal(is) acima identificado(s), em jejum de água e comida pelo período recomendado na data do agendamento;
+                                        </li>
+                                        <li>
+                                            Estou ciente dos riscos (como parada respiratória e cardíaca), podendo levar o animal a óbito;
+                                        </li>
+                                        <li>
+                                            Autorizo a realização da intervenção cirúrgica de castração em meu animal;
+                                        </li>
+                                        <li>
+                                            Estou ciente de que problemas com o animal, decorrentes do não cumprimento das orientações do pós operatórios são de minha inteira responsabilidade;
+                                        </li>
+                                        <li>
+                                            Estou ciente que o meu animal receberá uma identificação eletrônica (microchip), zelarei para o bem-estar do mesmo e comunicarei o Setor de Bem Estar Animal (4800-1926/4800-1927), sobre fuga, roubo, morte ou doação.
+                                        </li>
+                                        <li>A clínica veterinária credenciada ficará responsável pelo <u><b>contato e agendamento</b></u> da castração. <br />Seram realizadas três
+                                            (03) tentativas de contato, caso não atenda, automaticamente perderá a vaga cadastrada.</li>
+
+                                        <li>Comparecer no horário agendado pele clínica.</li>
+
+                                        <li>Deixar o animal em <u><b>JEJUM</b></u> (sólido e líquido) <u><b>08 horas antes da castração.</b></u> <br />(Ex: a castração será ás 08hs da manhã, portanto, a última refeição
+                                            deverá ser até as 23hs da noite).</li>
+
+                                        <li>É recomendado o uso de colar de proteção (elisabetano) ou a roupa cirúgica (você encontrará na clínica veterinária ou em petshops)
+                                            procure em lugares mais baratos ou até mesmo empréstimo. </li>
+
+                                        <li>A clínica veterinária já medica os animais, caso considerem necessário, a clínica poderá prescrever medicamentos
+                                            com nome genérico (menor custo) que podem ser comprados em farmácia humana.</li>
+
+                                        <li>Ter 18 anos ou mais e residir no município.</li>
+
+                                        <li>Levar cobertor ou um lençol limpo.</li>
+
+                                        <li>O proprietário que não fizer a retirada do animal no horário estipulado pela clínica estará sujeito a aplicação de
+                                            Auto de Infração, conforme o Art 29 da Resolução SIMA n° 05/2021 e demais legislações federais, estaduais e municipais.</li>
+
+                                        <li>Em caso de motivo que impeça o animal à cirurgia de castração (fugiu, doença, castrou no particular, óbito e etc),
+                                            entrar em contato imediatamente com a clínica veterinária para comunicar o cancelamento da cirurgia.</li>
+
+                                        <li><b>Impedem o procedimento cirúrgico:</b> Cio, prenhez, amamentação de filhotes com menos de 45 dias, animais muito idosos
+                                            (acima de 08 anos) ou filhotes com menos de 03 meses.</li>
+
+                                        <li>Todos os animais passarão por uma avaliação clínica pelos médicos veterinários da clínica credenciada e caso detectado
+                                            alguma alteração o procedimento poderá ser cancelado ou remarcado.</li>
+                                    </ul>
+
+                                </div>
+                            </div>
+
+
                             <label class='form-label' for='obsCastr'>Observação: (opcional)</label>
                             <textarea name='obsCastracao' id='obsCastr' rows='5' class='form-control' placeholder="Ex: tem alegria a dipirona"></textarea>
                             <p class="form-text">
@@ -246,7 +297,7 @@
                             </p>
                         </div>
                         <div class='modal-footer'>
-                            <button type='submit' class='btn btn-primary'>Enviar Solicitação</button>
+                            <button type='submit' class='btn btn-primary' id="acceptAndSubmitButton" disabled="true">Li e aceito os termos. Enviar solicitação</button>
                             <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Cancelar</button>
                         </div>
                     </form>
@@ -255,16 +306,16 @@
         </div>
         <!-- /MODAL -->
         <!-- MODAL: editar animal-->
-        <div class="modal fade" id="modalEditar" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
+        <div class="modal fade" id="modalEditar" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
-                    <form method="post" id="formEdita" action="<?php echo URL.'atualizar-animal';?>" enctype="multipart/form-data">
+                    <form method="post" id="formEdita" action="<?php echo URL . 'atualizar-animal'; ?>" enctype="multipart/form-data">
                         <div class="modal-header">
                             <h5 class="modal-title">Editar</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            
+
                             <input type="hidden" name="idanimal" id="idanimal">
                             <input type="hidden" name="idusuario" id="idusuario">
 
@@ -357,16 +408,16 @@
                         </div>
                     </form>
                 </div>
-            </div>    
+            </div>
         </div>
         <!--/MODAL -->
         <!-- /CORPO -->
     </div>
 
-    <!-- EXTENSÃO BOOTSTRAP -->    
+    <!-- EXTENSÃO BOOTSTRAP -->
     <script src="<?php echo URL; ?>recursos/js/jquery-3.3.1.slim.min.js"></script>
     <script src="<?php echo URL; ?>recursos/js/bootstrap.min.js"></script>
-    <script src="<?php echo URL;?>recursos/js/bootstrap.bundle.min.js"></script>
+    <script src="<?php echo URL; ?>recursos/js/bootstrap.bundle.min.js"></script>
     <!-- EXTENSÃO JQUERY PARA O AJAX -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- JS SweetAlert 2-->
@@ -376,7 +427,7 @@
     <!-- ABRIR MODAL SOLICITAR -->
     <script>
         var exampleModal = document.getElementById('modalSolicitar')
-        exampleModal.addEventListener('show.bs.modal', function (event) {
+        exampleModal.addEventListener('show.bs.modal', function(event) {
             // Button that triggered the modal
             var button = event.relatedTarget
             // Extract info from data-bs-* attributes
@@ -386,14 +437,14 @@
             $("#idAnimalSolicita").val(idanimal);
             $("#idusuario").val(idusuario)
         });
-    </script>  
+    </script>
 
     <!-- ABRIR MODAL EDITAR -->
     <script>
         //Definindo os valores nos inputs da modal
 
         var modal = document.getElementById('modalEditar')
-        modal.addEventListener('show.bs.modal', function (event) {
+        modal.addEventListener('show.bs.modal', function(event) {
             // Button that triggered the modal
             var button = event.relatedTarget
             // Extract info from data-bs-* attributes
@@ -403,29 +454,26 @@
             var especie = parseInt(button.getAttribute('data-especie'))
             var sexo = parseInt(button.getAttribute('data-sexo'))
             var cor = button.getAttribute('data-cor')
-            
+
             var idade = button.getAttribute('data-idade')
             var pelagem = parseInt(button.getAttribute('data-pelagem'))
             var foto = button.getAttribute('data-foto')
-            if (foto == "")
-            {
+            if (foto == "") {
                 foto = "imagem_exemplo.jpg";
             }
-            $(document).ready(function()
-            {
+            $(document).ready(function() {
                 $("#racas").empty(); //limpar todos antes de carregar
                 $.ajax({
-                    url: '<?php echo URL;?>carregar-raca/'+ especie,
+                    url: '<?php echo URL; ?>carregar-raca/' + especie,
                     success: function(data) {
                         $("#racas").append(data);
-                        try{
-                            $("#racas option").filter("[value="+raca+"]").attr("selected",true)
-                        }
-                        catch{}
+                        try {
+                            $("#racas option").filter("[value=" + raca + "]").attr("selected", true)
+                        } catch {}
                     }
                 });
             })
-            
+
             var raca = button.getAttribute('data-raca')
             var porte = button.getAttribute('data-porte')
             var comunitario = button.getAttribute('data-comunitario')
@@ -433,29 +481,47 @@
             $("#idusuario").val(idusuario)
             $("#idanimal").val(idanimal)
             $("#txtNome").val(nome)
-            $("#tipoEspecie option").filter("[value="+especie+"]").attr("selected",true)
-            $("#slcSexo option").filter("option[value="+sexo+"]").attr("selected",true)
-            $("#slcPelagem option").filter("option[value="+pelagem+"]").attr("selected",true)
-            $("#slcPorte option").filter("option[value="+porte+"]").attr("selected",true)
-            $("#slcComunitario option").filter("option[value="+comunitario+"]").attr("selected",true)
+            $("#tipoEspecie option").filter("[value=" + especie + "]").attr("selected", true)
+            $("#slcSexo option").filter("option[value=" + sexo + "]").attr("selected", true)
+            $("#slcPelagem option").filter("option[value=" + pelagem + "]").attr("selected", true)
+            $("#slcPorte option").filter("option[value=" + porte + "]").attr("selected", true)
+            $("#slcComunitario option").filter("option[value=" + comunitario + "]").attr("selected", true)
             $("#txtCor").val(cor)
             $("#numIdade").val(idade)
-            $("#imgAnimal").prop("src","<?php echo URL.'recursos/img/Animais/';?>"+foto);
+            $("#imgAnimal").prop("src", "<?php echo URL . 'recursos/img/Animais/'; ?>" + foto);
         })
     </script>
     <script>
         //Carregar raças
-        function carregarRaca(id)
-        {
+        function carregarRaca(id) {
             //limpar todos antes de carregar
             $("#racas").empty();
             $.ajax({
-                url: '<?php echo URL;?>carregar-raca/'+ id.value,
+                url: '<?php echo URL; ?>carregar-raca/' + id.value,
                 success: function(data) {
                     $("#racas").append(data);
                 }
             });
         }
+    </script>
+
+    <script>
+        /* TOS */
+        const tosEL = document.getElementById("TOS");
+
+        // Event Listener for Scroll
+        tosEL.onscroll = function() {
+
+            const submitButton = document.getElementById("acceptAndSubmitButton");
+
+            //The height to scroll to:
+            var x = tosEL.scrollHeight - tosEL.offsetHeight - 1;
+
+            if (tosEL.scrollTop >= x)
+                submitButton.removeAttribute("disabled");
+            else if (!submitButton.hasAttribute("disabled"))
+                submitButton.setAttribute("disabled", true);
+        };
     </script>
 
     <!-- SCRIPT PARA MOSTRAR AS FOTOS EM TEMPO REAL -->
@@ -471,8 +537,7 @@
 
     <!-- SCRIPT CONFIRMAÇÃO PARA EXCLUIR O ANIMAL -->
     <script>
-        function confirmar(id)
-        {
+        function confirmar(id) {
             Swal.fire({
                 title: 'Você tem certeza que deseja excluir?',
                 text: "Você não será capaz de desfazer esta ação!",
@@ -482,19 +547,20 @@
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Excluir',
                 cancelButtonText: 'Cancelar'
-                }).then((result) => {
+            }).then((result) => {
                 if (result.isConfirmed) {
                     Swal.fire(
                         'Excluído!', //title:
                         'Animal apagado com sucesso.', //text:
                         'success', //icon:
-                    ).then(()=> {
-                        window.location='<?php echo URL;?>excluir-animal/'+id;
-                        }
-                    )}
+                    ).then(() => {
+                        window.location = '<?php echo URL; ?>excluir-animal/' + id;
+                    })
+                }
             })
         }
     </script>
-    
+
 </body>
+
 </html>

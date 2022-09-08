@@ -15,6 +15,7 @@
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
           <li><a class="dropdown-item" href="<?php echo URL.'cadastra-clinica'; ?>">Clínicas</a></li>
           <li><a class="dropdown-item" href="<?php echo URL.'cadastra-raca'; ?>">Raças</a></li>
+          <li><a class="dropdown-item" href="<?php echo URL.'admin-cadastra-tutor'; ?>">Usuários</a></li>
         </ul>
       </li>
       <li class="nav-item dropdown">

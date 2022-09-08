@@ -7,13 +7,13 @@
 <body>
     
     <!-- CORPO -->
-    <div class="container-fluid d-grid min-vh-100 corpo">
+    <div class="d-grid min-vh-100 corpo">
         
     <?php /*Controle de menu!*/ include_once "menuControle.php";?>
     
         <div class="bg-warning container-fluid" style="grid-area: corpo;">
             <div class="row h-100 align-items-center">
-                <div class="p-3">
+                <div class="py-3 px-2">
                     <div class="container p-sm-3 p-md-3 p-lg-4 p-3 bg-white">   
                         <p>
                             <h4>Bem-vindo(a) <?php echo $_SESSION["dadosLogin"]->nome;?> !</h4>

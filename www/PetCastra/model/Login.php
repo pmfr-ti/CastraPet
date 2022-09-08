@@ -31,7 +31,7 @@
         //Método cadastrar
         function cadastrar()
         {
-            try {
+            
                 //code...//Conectando ao banco de dados
                 $con = Conexao::conectar();
 
@@ -49,12 +49,6 @@
                 $cmd->execute();
 
                 return $con->lastInsertId();
-
-            } catch (\Throwable $th) {
-                
-                error_log($th->getMessage(), 0);
-                return null;
-            }
             
         }
 
@@ -106,6 +100,7 @@
             //Executando o comando SQL
             $cmd->execute();
         }
+        
         function atualizarLogin()
         {
             //Conectando ao banco de dados
@@ -155,19 +150,24 @@
 
         function logar()
         {
-            //Conectando ao banco de dados
-            $con = Conexao::conectar();
+            if (isset($this->email) || !is_null($this->email) || !empty(trim($this->email))) {
 
-            //Preparar comando SQL para retornar
-            $cmd = $con->prepare("SELECT * FROM login WHERE email = :email");
-            
-            //Parâmetros SQL
-            $cmd->bindParam(":email", $this->email);
+                //Conectando ao banco de dados
+                $con = Conexao::conectar();
 
-            //Executando o comando SQL
-            $cmd->execute();
+                //Preparar comando SQL para retornar
+                $cmd = $con->prepare("SELECT * FROM login WHERE email = :email");
+                
+                //Parâmetros SQL
+                $cmd->bindParam(":email", $this->email);
 
-            return $cmd->fetch(PDO::FETCH_OBJ);
+                //Executando o comando SQL
+                $cmd->execute();
+
+                return $cmd->fetch(PDO::FETCH_OBJ);
+            }
+
+            return false;
         }
         
         function retornarUsuario()
@@ -253,4 +253,3 @@
             $cmd->execute();
         }    
     }
-?>

@@ -87,6 +87,10 @@ try {
                 $animal = new Controller();
                 $animal->abrirCadAnimal();
                 break;
+            case "adm-cadastra-animal":
+                $animal = new Controller();
+                $animal->abrirAdmCadAnimal($url[1]);
+                break;
             case "carregar-raca":
                 $raca = new AnimalController();
                 $raca->carregarRaca($url[1]);
@@ -94,6 +98,10 @@ try {
             case "cadastrar-animal":
                 $animal = new AnimalController();
                 $animal->cadastrarAnimal();
+                break;
+            case "adm-cadastrar-animal":
+                $animal = new AnimalController();
+                $animal->admCadastrarAnimal($url[1]);
                 break;
             case "meus-animais":
                 $usuario = new Controller();
@@ -141,6 +149,14 @@ try {
             case "cadastrar-clinica":
                 $clinica = new ClinicaController();
                 $clinica->cadastrarClinica();
+                break;
+            case "admin-cadastra-tutor":
+                $usuario = new Controller();
+                $usuario->abrirAdminCadTutor();
+                break;
+            case "admin-cadastrar-tutor":
+                $usuario = new UsuarioController();
+                $usuario->adminCadastrarUsuario();
                 break;
                 #ATUALIZAÇÕES
             case "atualiza-tutor":

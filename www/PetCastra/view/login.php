@@ -6,13 +6,13 @@
 </head>
 <body>
     <!-- CORPO -->
-    <div class="container-fluid d-grid min-vh-100 corpo">
+    <div class="d-grid min-vh-100 corpo">
         
     <?php /*Controle de menu!*/ include_once "menuControle.php";?>
     
         <div class="bg-primary container-fluid" style="grid-area: corpo;">
             <div class="row h-100 align-items-center">
-                <div class="p-3">
+                <div class="py-3 px-2">
                     <div class="container bg-dark text-light font-weight-bold p-3">
                         <h5 class="m-0">Entrar na minha conta</h5>
                     </div>

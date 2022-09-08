@@ -12,13 +12,13 @@
 </head>
 <body>
     <!-- CORPO -->
-    <div class="container-fluid d-grid min-vh-100 corpo">
+    <div class="d-grid min-vh-100 corpo">
 
     <?php /*Controle de menu!*/ include_once "menuControle.php";?>
     
         <div class="bg-danger container-fluid" style="grid-area: corpo;">
             <div class="row h-100 align-items-center" style="max-width:100vw;">
-                <div class="p-3">
+                <div class="py-3 px-2">
                     <div class="container-fluid bg-dark text-light font-weight-bold p-3">
                         <h5 class="m-0">Consultar Usuários</h5>
                     </div>
@@ -145,7 +145,7 @@
                                 </div>
                                 <div class="form-group row-6 mb-3">
                                     <label for="txtEmail" class="form-label">Email:</label>
-                                    <input class="form-control" type="email" name="txtEmail" id="txtEmail" maxlength="100" required>
+                                    <input class="form-control" type="email" name="txtEmail" id="txtEmail" maxlength="100">
                                 </div>
                                 <div class="row mb-3">
                                     <div class="form-group col-6">

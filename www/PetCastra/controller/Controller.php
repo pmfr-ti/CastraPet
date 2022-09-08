@@ -81,6 +81,24 @@ class Controller
         }
         else{ include_once "view/paginaNaoEncontrada.php"; }
     }
+    function abrirAdmCadAnimal($idLoginTutor){
+        //caso o usuário não esteja logado
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
+
+        //Controle de privilégio - apenas para administradores
+        if ($_SESSION["dadosLogin"]->nivelacesso == 2) {
+            
+            $usuario = new Usuario();
+            $usuario->idlogin = $idLoginTutor;
+            $dadosUsuario = $usuario->consultar();
+            
+            $raca = new Raca();
+            $dadosRaca = $raca->consultar();
+
+            include_once "view/admCadAnimal.php";
+        }
+        else{ include_once "view/paginaNaoEncontrada.php"; }
+    }
     function abrirMeusAnimais(){
         //Caso o usuário não esteja logado
         if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
@@ -134,7 +152,14 @@ class Controller
         //Controle de privilégio
         if($_SESSION["dadosLogin"]->nivelacesso == 2) { include_once "view/cadClinica.php"; }
         else{ include_once "view/paginaNaoEncontrada.php"; }
-    }    
+    }
+    function abrirAdminCadTutor() { 
+        //Caso o usuário não esteja logado
+        if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
+        //Controle de privilégio
+        if($_SESSION["dadosLogin"]->nivelacesso == 2) { include_once "view/adminCadTutor.php"; }
+        else{ include_once "view/paginaNaoEncontrada.php"; }
+    }
     #CONSULTAS
     function abrirConsultaUsuario($cpf){
         //caso o usuário não esteja logado

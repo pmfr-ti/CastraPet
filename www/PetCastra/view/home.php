@@ -1,42 +1,117 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
-    <?php include_once "head.php";?>
-
+    <?php include_once "head.php"; ?>
 </head>
-<body>
-    
-    <!-- CORPO -->
-    <div class="container-fluid d-grid min-vh-100 corpo">
 
-    <?php /*Controle de menu!*/ include_once "menuControle.php";?>
-    
+<body>
+
+    <!-- CORPO -->
+    <div class="d-grid min-vh-100 corpo">
+
+        <?php /*Controle de menu!*/ include_once "menuControle.php"; ?>
+
         <div class="bg-primary container-fluid" style="grid-area: corpo;">
             <div class="row h-100 align-items-center">
-                <div class="p-3">
-                    <div class="container">
-                        <div class="row ">
+                <div class="py-3 px-2">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="mt-3 p-sm-3 p-md-3 p-lg-4 p-3 bg-white">
+                                    <h3 class="mb-4">Seja bem-vindo(a)!</h3>
+                                    <p>
+                                        <strong>O projeto PetCastra</strong> é o site em que você pode se cadastrar para agendar uma castração gratuita para seu gato ou cachorro
+                                        através do programa gratuito da Prefeitura de Franco da Rocha.
+                                    </p>
+                                    <h5 class="mt-4">Você sabe a importância da castração?</h5>
+                                    <p>
+                                        Como a reprodução de cães e gatos é muito rápida, o descuido com os
+                                        animais em casa e os animais deixados soltos nas ruas é a principal
+                                        causa da grande reprodução e do aumento do número de animais
+                                        abandonados. Além do risco de contrair doenças e transmiti-las, ser
+                                        atropelado, provocar acidentes de carros, receber maus-tratos, como
+                                        pedradas, pauladas, chutes, etc., cães e gatos na rua cruzam e podem
+                                        ter 12 ou mais filhotes ao ano. Abandonados por seus guardiões, eles
+                                        acabam por sofrer, sentir fome, sede, frio, medo, ficar doentes e
+                                        transmitir doenças para as pessoas e outros animais.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
                             <div class="col-md-6">
                                 <div class="p-sm-3 p-md-3 p-lg-4 p-3 bg-white">
+                                    <h4 class="mb-4">Orientações Sobre a Castração</h4>
                                     <p>
-                                        Seja bem-vindo(a) ao projeto PetCastra, um site em que você pode se cadastrar para agendar uma castração gratuita para seu gato ou cachorro 
-                                        através do programa gratuito da Prefeitura de Franco da Rocha. Você sabe sobre as vantagens de castrar seu animalzinho? Algumas delas são:
-                                        <ul>
-                                            <li>Redução dos passeios externos e problemas associados a esta prática, como o desenvolvimento de doenças infecciosas contraídas nas ruas, traumas e atropelamentos, intoxicações e maus tratos;</li>
-                                            <li>Redução de doenças zoonóticas (transmitidas de pets para humanos), como a <span class="fw-bold text-decoration-underline">Raiva</span> e a <span class="fw-bold text-decoration-underline">Leishmaniose</span>;</li>
-                                            <li>Redução no <span class="fw-bold text-decoration-underline">comportamento de cio</span> e prevenção de doenças reprodutivas em fêmeas;</li>
-                                            <li>Redução do risco de enfermidades mamárias, uterinas e ovarianas como <span class="fw-bold text-decoration-underline">neoplasias</span> e piometra (infecção no útero);</li>
-                                            <li>Prevenção de doenças como pseudociese (<span class="fw-bold text-decoration-underline">gravidez psicológica</span>), hipertrofia mamária felina e estro persistente (cio);</li>
-                                            <li>Prevenção de <span class="fw-bold text-decoration-underline">distúrbios testiculares</span> em machos (neoplasias, orquites (inflamação do testículo), epididimites (inflamação do epidídimo), além de auxiliar no tratamento de doenças andrógeno-dependentes como a hiperplasia prostática benigna, prostatite crônica (inflamação da próstata), adenoma e hérnia perineal;</li>
-                                            <li>Auxílio no tratamento de doenças não relacionadas ao sistema reprodutivo, como diabetes e epilepsia;</li>
-                                            <li>Possível redução de comportamentos indesejados como territorialismo, agressividade e marcação de território.</li>
-                                            <li>Possível redução de animais abandonados nas ruas.</li>
-                                        </ul>
+                                    <ul>
+                                        <li>
+                                            A clínica veterinária credenciada ficará responsável pelo <strong>contato e
+                                                agendamento</strong> da castração - Será realizada <strong>três (03) tentativas de contato</strong>,
+                                            caso não atenda, automaticamente perderá a vaga cadastrada.
+                                        </li>
+                                        <li>
+                                            Comparecer no horário agendado pela clínica.
+                                        </li>
+                                        <li>
+                                            Deixar o <strong>animal em JEJUM</strong> ( sólido e líquido) <strong>08 horas</strong> antes da castração
+                                            (Ex: a castração será às 08hs da manhã, portanto , a última refeição deverá
+                                            ser até as 24hs da noite).
+                                        </li>
+                                        <li>
+                                            É <strong>recomendado o uso de colar de proteção</strong> (elisabetano) ou a <strong>roupa cirúrgica</strong>
+                                            (você encontrará na clínica veterinária ou em petshops) procure em lugares
+                                            mais baratos ou até mesmo empréstimo.
+                                        </li>
+                                        <li>
+                                            A clínica veterinária ja médica os animais, caso considerem necessário, a
+                                            clínica poderá prescrever medicamentos com nome genérico (menor custo)
+                                            que podem ser comprados em farmácia humana.
+                                        </li>
+                                        <li>
+                                            Ter 18 anos ou mais e residir no município.
+                                        </li>
+                                        <li>
+                                            Levar cobertor ou um lençol limpo.
+                                        </li>
+                                        <li>
+                                            O proprietário que não fizer a retirada do animal no horário estipulado pela
+                                            clínica estará sujeito a aplicação de Auto de Infração, conforme o Art 29 da
+                                            Resolução SIMA n° 05/2021 e demais legislações federais, estaduais e
+                                            municipais.
+                                        </li>
+                                        <li>
+                                            Em caso de motivo que impeça o animal à cirurgia de castração ( fugiu,
+                                            doença, castrou no particular, óbito e etc) entrar em contato imediatamente
+                                            com a clínica veterinária para comunicar o cancelamento da cirurgia.
+                                        </li>
+                                        <li>
+                                            Impedem o procedimento cirúrgico: Cio, Prenhez, amamentação de filhotes
+                                            com menos de 45 dias, animais muito idosos, ( acima de 08 anos) ou filhotes
+                                            com menos de 03 meses .Impedem o procedimento cirúrgico: Cio, Prenhez, amamentação de filhotes
+                                            com menos de 45 dias, animais muito idosos, ( acima de 08 anos) ou filhotes
+                                            com menos de 03 meses .
+                                        </li>
+                                        <li>
+                                            Todos os animais passarão por uma avaliação clínica pelos médicos
+                                            veterinários da clínica credenciada e caso detectado alguma alteração e ou
+                                            condição (<strong>obesidade, idade e raça</strong>) o procedimento poderá ser cancelado ou
+                                            remarcado.
+                                        </li>
+                                    </ul>
+
+                                    <strong class="text-danger">ATENÇÃO:</strong>
+                                    <ul class="mt-2">
+                                        <li>A identificação de incongruência(s) nas informações prestadas poderá resultar no cancelamento do cadastro(s) do(s) animal(is).</li>
+                                        <li>O deferimento do cadastramento do(s) animal(is) dependerá dos fatores prioritários e não da ordem de inscrição.</li>
+                                        <li>O contato será realizado pelo telefone cadastrado na inscrição. O contato será feito próximo do dia do agendamento. Pedimos que aguardem o contato das Clínicas Veterinárias.</li>
+                                        <li>Toda a atividade do serviço da Castração por parte do Bem Estar Animal é totalmente gratuita.</li>
+                                    </ul>
                                     </p>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="p-sm-3 p-md-3 p-lg-4 p-3 bg-white">
+                                <div class="p-sm-3 p-md-3 p-lg-4 p-3 mt-4 mt-md-0 bg-white">
                                     <div class="card">
                                         <h4 class="card-header">Perguntas Frequentes:</h4>
                                         <ol class="list-group list-group-flush">
@@ -50,14 +125,14 @@
                                                     </p>
                                                 </div>
                                             </div>
-                                            
+
                                             <a class="list-group-item" data-bs-toggle="collapse" href="#pergunta1" role="button" aria-expanded="false" aria-controls="collapseExample">
                                                 <li class="ms-2">Com quantos anos posso solicitar a castração de meu animal?</li>
                                             </a>
                                             <div class="collapse" id="pergunta1">
                                                 <div class="card card-body border-primary">
                                                     <p>
-                                                        <span class="fw-bold">R:</span> A partir de 18 anos você pode solicitar a castração de seu animal.
+                                                        <span class="fw-bold">R:</span> Somente maiores de idade poderão realizar o cadastro do animal.
                                                     </p>
                                                 </div>
                                             </div>
@@ -70,7 +145,7 @@
                                                     <p>
                                                         <span class="fw-bold">R:</span> As vagas são limitadas e distribuídas para os moradores de Franco da Rocha baseado nos seguintes critérios:
                                                         <br><br>
-                                                        Caso seja <span class="fw-bold">Protetor de Animais</span>: Têm direito a <span class="fw-bold">5</span> vagas para castração por mês;
+                                                        Caso seja <span class="fw-bold">)Protetor de Animais Independente e cadastrado no Bem Estar Animal</span>: Têm direito a <span class="fw-bold">5</span> vagas para castração por mês;
                                                         <br>
                                                         Caso tenha <span class="fw-bold">Benefício Social</span>: Têm direito a <span class="fw-bold">2</span> vagas para castração por mês;
                                                         <br>
@@ -107,7 +182,7 @@
                                             <div class="collapse" id="pergunta5">
                                                 <div class="card card-body border-primary">
                                                     <p>
-                                                        <span class="fw-bold">R:</span> As informações de qual clínica será a responsável por realizar a castração e o endereço junto com o horário serão enviados para o e-mail que foi usado na hora de cadastrar sua conta.
+                                                        <span class="fw-bold">R:</span> As informações de qual clínica será a responsável por realizar a castração e o endereço junto com o horário serão enviados para o <strong>e-mail</strong> ou <strong>whatsapp</strong> que foi usado na hora de cadastrar sua conta.
                                                     </p>
                                                 </div>
                                             </div>
@@ -118,7 +193,9 @@
                                             <div class="collapse" id="pergunta6">
                                                 <div class="card card-body border-primary">
                                                     <p>
-                                                        <span class="fw-bold">R:</span> A castração é um processo simples onde o animal, após ser anestesiado, tem seus órgãos reprodutivos removidos, sendo eles no caso dos machos: os testículos, e no caso das fêmeas: o útero e os ovários. Depois da cirurgia ser feita, é orientado ao tutor os cuidados e remédios que devem ser dados ao animal para uma recuperação rápida.
+                                                        <span class="fw-bold">R:</span>
+                                                        Castração é uma cirurgia feita de forma minimamente invasiva, que serve para evitar permanentemente a reprodução do seu animal. A castração também reduz a ocorrência de alguns tipos de doenças nos cães e gatos.
+                                                        Depois da cirurgia ser feita, é orientado ao tutor os cuidados e remédios que devem ser dados ao animal para uma recuperação rápida.
                                                     </p>
                                                 </div>
                                             </div>
@@ -151,16 +228,20 @@
                                             <div class="collapse" id="pergunta9">
                                                 <div class="card card-body border-primary">
                                                     <p>
-                                                        <span class="fw-bold">R:</span> Sim, não poderá ser castrado caso o animal:
+                                                        <span class="fw-bold">R:</span> Sim. Impedem o procedimento cirúrgico:
                                                         <br>
-                                                        <ul>
-                                                            <li>Esteja no período de acasalamento;</li>
-                                                            <li>Não tenha seguido as orientações pré-cirúrgicas;</li>
-                                                            <li>Tenha alergia a anestesia;</li>
-                                                            <li>Esteja amamentando filhotes com menos de 45 dias;</li>
-                                                            <li>For muito idoso (acima de 08 anos);</li>
-                                                            <li>Tenha menos de 3 meses.</li>
-                                                        </ul>
+                                                    <ul>
+                                                        <li>Cio;</li>
+                                                        <li>Prenhez;</li>
+                                                        <li>Amamentação de filhotes com menos de 45 dias;</li>
+                                                        <li>Animais muito idosos (acima de 08 anos) ou filhotes com menos de 03 meses;</li>
+                                                        <li>Tenha alergia a anestesia;</li>
+                                                        <li>Não tenha seguido as orientações pré-operatórias;</li>
+                                                    </ul>
+                                                    Todos os animais passarão por uma avaliação
+                                                    clínica pelos médicos veterinários da clínica credenciada e caso detectado
+                                                    alguma alteração e ou condição (<strong style="display: contents;">obesidade, idade e raça</strong>) o procedimento
+                                                    poderá ser cancelado ou remarcado.
                                                     </p>
                                                 </div>
                                             </div>
@@ -199,7 +280,7 @@
             <div class="row h-100 align-items-center">
                 <div class="px-5">
                 </div>
-            </div> 
+            </div>
         </div>
     </div>
     <!-- /CORPO -->
@@ -207,7 +288,8 @@
     <!-- EXTENSÃO BOOTSTRAP -->
     <script src="<?php echo URL; ?>recursos/js/jquery-3.3.1.slim.min.js"></script>
     <!--<script src="<?php echo URL; ?>recursos/js/popper.min.js"></script> Ultrapassado-->
-    <script src="<?php echo URL;?>recursos/js/bootstrap.min.js"></script>
-    <script src="<?php echo URL;?>recursos/js/bootstrap.bundle.min.js"></script>
+    <script src="<?php echo URL; ?>recursos/js/bootstrap.min.js"></script>
+    <script src="<?php echo URL; ?>recursos/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

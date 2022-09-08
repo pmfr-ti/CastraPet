@@ -13,7 +13,7 @@
 <body>
     
     <!-- CORPO -->
-    <div class="container-fluid d-grid min-vh-100 corpo">
+    <div class="d-grid min-vh-100 corpo">
 
     <?php /*Controle de menu!*/ include_once "menuControle.php";?>
     
@@ -28,7 +28,7 @@
             }
         ?>
             <div class="row h-100 align-items-center" style="max-width:100vw;">
-                <div class="p-3">
+                <div class="py-3 px-2">
                     <div class="container-fluid bg-dark text-light font-weight-bold p-3">
                         <h5 class="m-0">Consultar Castrações</h5>
                     </div>
@@ -71,7 +71,7 @@
                                         $value->status = str_replace("5", "Castração cancelada", $value->status); 
                                         $value->status = str_replace("6", "Reagendar castração", $value->status); 
                                         $value->status = str_replace("7", "Animal foi a óbito", $value->status);
-                                        $value->status = str_replace("8", "Animal Castrado (Porém suas informações devem ser editadas)", $value->status); 
+                                        $value->status = str_replace("8", "Animal Castrado (Porém suas informações devem ser editadas)", $value->status);
                                         $data = is_null($value->horario) ? '-' : date('d/m/Y', strtotime($value->horario));
                                         $hora = is_null($value->horario) ? '-' : date('H:i', strtotime($value->horario));
                                         

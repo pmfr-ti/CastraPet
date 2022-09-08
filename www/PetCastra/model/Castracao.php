@@ -164,6 +164,24 @@
             //Executando o comando SQL
             $cmd->execute();
         }
+
+        //Método cancelar
+        function cancelar()
+        {
+            //Conectando ao banco de dados
+            $con = Conexao::conectar();
+
+            //Preparar o comando SQL para atualizar
+            $cmd = $con->prepare("UPDATE castracao SET status = :status, obsclinica = :obsclinica WHERE idcastracao = :idcastracao");
+            
+            //Parâmetros SQL
+            $cmd->bindParam(":status",      $this->status);
+            $cmd->bindParam(":obsclinica",  $this->obsclinica);
+            $cmd->bindParam(":idcastracao", $this->idcastracao);
+
+            //Executando o comando SQL
+            $cmd->execute();
+        }
         
         //Método Atualizar
         function atualizar()
@@ -182,6 +200,7 @@
             //Executando o comando SQL
             $cmd->execute();
         }
+
         function reagendar()
         {
             //Conectando ao banco de dados

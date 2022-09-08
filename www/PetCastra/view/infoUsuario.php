@@ -14,7 +14,7 @@
 <body>
     
     <!-- CORPO -->
-    <div class="container-fluid d-grid min-vh-100 corpo">
+    <div class="d-grid min-vh-100 corpo">
         
         <?php /*Controle de menu!*/ include_once "menuControle.php";?>
     

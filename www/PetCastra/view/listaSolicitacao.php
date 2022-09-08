@@ -11,7 +11,7 @@
 </head>
 <body>
     <!-- CORPO -->
-    <div class="container-fluid d-grid min-vh-100 corpo">
+    <div class="d-grid min-vh-100 corpo">
         
     <?php /*Controle de menu!*/ include_once "menuControle.php";?>
     
@@ -20,7 +20,7 @@
             else{echo"<div class='bg-warning container-fluid' style='grid-area: corpo;''>";}
         ?>
             <div class="row h-100 align-items-center" style="max-width:100vw;">
-                <div class="p-3">
+                <div class="py-3 px-2">
                     <div class="container bg-dark text-light font-weight-bold p-3">
                         <h5 class="m-0">Solicitações</h5>
                     </div>

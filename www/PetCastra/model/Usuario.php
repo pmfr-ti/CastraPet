@@ -86,6 +86,25 @@
             return $cmd->fetchAll(PDO::FETCH_OBJ);
         }
 
+        //Método consultar por cpf
+        function consultarPorCpf()
+        {
+            //Conectando ao banco de dados
+            $con = Conexao::conectar();
+
+            //Preparar comando SQL para consultar
+            $cmd = $con->prepare("SELECT idusuario, login.idlogin, doccomprovante, nome, email, cpf, rg, beneficio, nis, telefone, celular, whatsapp, usucep, usubairro, usurua, usunumero, punicao 
+                                    FROM usuario JOIN login ON usuario.idlogin = login.idlogin WHERE cpf = :cpf");
+            
+            //Parâmetros SQL
+            $cmd->bindParam(":cpf", $this->cpf);
+
+            //Executando o comando SQL
+            $cmd->execute();
+
+            return $cmd->fetch(PDO::FETCH_OBJ);
+        }
+
         //Método excluir
         function excluir()
         {
