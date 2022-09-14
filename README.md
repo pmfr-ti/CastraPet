@@ -12,8 +12,14 @@ Sistema para gerenciamento de solicitações de castração de animais, desenvol
 - TICYANNE SANTANA BARBOSA 
 
 ## Instalação
-- []  Instalar Docker
-- []  Clonar repositório do projeto
+- [x]  Instalar Docker
+```
+https://docs.docker.com/get-started/
+```
+- [x]  Clonar repositório do projeto
+```
+git clone https://github.com/pmfr-ti/CastraPet.git
+```
 - [x]  Rodar o container
 ```
 sudo docker-compose up -d
