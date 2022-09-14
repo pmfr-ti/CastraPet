@@ -89,12 +89,12 @@ class AnimalController
         }
 
         //Controle de privilégio
-        if ($_SESSION["dadosLogin"]->nivelacesso ==2) {
+        if ($_SESSION["dadosLogin"]->nivelacesso == 2) {
 
             $dadosUsuario = new Usuario();
             $dadosUsuario->idusuario = $_POST["idUsuario"];
 
-            if(!$dadosUsuario->consultar()){
+            if (!$dadosUsuario->consultar()) {
                 echo "<script>alert('Usuário não encontrado'); window.location='" . URL . "consulta-usuario'; </script>";
                 return;
             }
@@ -170,6 +170,10 @@ class AnimalController
             $infoanimal->idanimal = $_POST["idanimal"];
             $dadosAnimal = $infoanimal->retornar();
 
+            $dadosUsuarioDonoAtual = new Usuario();
+            $dadosUsuarioDonoAtual->idusuario = $dadosAnimal->idusuario;
+            $dadosUsuarioDonoAtual->consultar();
+
             if ($_FILES["foto"]["error"] == 0) {
 
                 if (empty($dadosAnimal->foto)) {
@@ -219,35 +223,34 @@ class AnimalController
             $verificaanimal->idusuario = $_SESSION["dadosUsuario"]->idusuario;
             $animais = $verificaanimal->consultarAnimaisPorDono();
 
-            //verificando se o animal realmente pertence aquele dono
+            // permite editar se o animal realmente pertence aquele dono
+            // ou se o usuário for administrador
             if (in_array($_POST["idanimal"], $animais) || $_SESSION["dadosLogin"]->nivelacesso == 2) {
-                
+
                 if ($_SESSION["dadosLogin"]->nivelacesso == 2 && isset($_POST["txtCPF"]) && !empty(trim($_POST["txtCPF"]))) {
 
                     $filtros = array(".", "-", "(", ")", " ");
                     $cpfDoNovoTutor = str_replace($filtros, '', $_POST["txtCPF"]);
-    
+
                     $novoTutor = new Usuario();
                     $novoTutor->cpf = $cpfDoNovoTutor;
                     $dadosNovoTutor = $novoTutor->consultarPorCpf();
-    
+
                     if ($dadosNovoTutor != null) {
-    
+
                         $animal->idusuario = $dadosNovoTutor->idusuario;
                         $animal->atualizarEAlterarTutor();
-                        echo "<script>alert('Tutor alterado!'); window.location='" . URL . "consulta-animais/" . $_POST['idusuario'] . "'; </script>";
+                        echo "<script>alert('Tutor alterado!'); window.location='" . URL . "consulta-animais/" . $dadosUsuarioDonoAtual->idusuario  . "'; </script>";
                         return;
                     } else {
-    
-                        echo "<script>alert('CPF não encontrado!'); window.location='" . URL . "meus-animais'; </script>";
+
+                        echo "<script>alert('CPF não encontrado!'); window.location='" . URL . "consulta-animais/" . $dadosUsuarioDonoAtual->idusuario  . "'; </script>";
                         return;
                     }
                 } else {
 
                     $animal->atualizar();
                 }
-
-                
             } else {
                 echo "<script>alert('Você não tem permissão para editar esse animal'); window.location='" . URL . "meus-animais'; </script>";
                 exit();
@@ -277,7 +280,7 @@ class AnimalController
             if ($_SESSION["dadosLogin"]->nivelacesso == 0) {
                 @header("Location:" . URL . "meus-animais");
             } else {
-                @header("Location:" . URL . "consulta-animais/" . $_POST['idusuario']);
+                @header("Location:" . URL . "consulta-animais/" . $dadosUsuarioDonoAtual->idusuario);
             }
         } else {
             include_once "view/paginaNaoEncontrada.php";

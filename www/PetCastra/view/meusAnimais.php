@@ -171,7 +171,6 @@
                                                     <div class='alert alert-danger p-1'>$value->msgrecusa Para fazer uma nova solicitação, edite as informações do animal</div>
                                                     ";
                                         }
-
                                         break;
                                     case 4:
                                         echo "<span class='btn btn-sm bg-danger w-100 my-3 text-white fw-bold' style='cursor: default;'>Tutor não compareceu</span>";

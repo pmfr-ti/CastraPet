@@ -47,7 +47,7 @@
             $con = Conexao::conectar();
 
             //Preparar o comando SQL para cadastrar
-            $cmd = $con->prepare("SELECT * FROM raca");
+            $cmd = $con->prepare("SELECT * FROM raca ORDER BY raca ASC");
 
             //Executando o comando SQL
             $cmd->execute();
@@ -62,7 +62,7 @@
             $con = Conexao::conectar();
 
             //Preparar comando SQL para consultar
-            $cmd = $con->prepare("SELECT * FROM raca WHERE tipoespecie in(:tipoespecie,2) ");
+            $cmd = $con->prepare("SELECT * FROM raca WHERE tipoespecie in(:tipoespecie,2) ORDER BY raca ASC");
 
             //Parâmetros SQL
             $cmd->bindParam(":tipoespecie", $this->tipoespecie);

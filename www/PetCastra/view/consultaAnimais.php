@@ -23,7 +23,6 @@
                     <div class="container p-sm-3 p-md-3 p-lg-4 p-3 px-0 bg-white">
                         <?php
 
-
                         foreach ($dadosAnimal as $value) {
                             //Reescrevendo a espécie
                             $valorEspecie = $value->especie;
@@ -120,14 +119,77 @@
                                         </div>
                                         <div class='col'></div>
                                     </div>
-                                    <div class='col-md-2 mt-2 mt-md-0'>  
-                                        <button class='btn btn-warning' id='btnEditar' type='button' data-bs-target='#modalEditar' data-bs-toggle='modal' 
-                                                data-idanimal='$value->idanimal' data-idusuario='$value->idusuario' data-nome='$value->aninome' data-especie='$valorEspecie' 
-                                                data-sexo='$valorSexo' data-cor='$value->cor' data-raca='$value->idraca' data-idade='$value->idade' data-pelagem='$valorPelagem' 
-                                                data-porte='$valorPorte' data-comunitario='$valorComunitario' data-foto='$value->foto'>
-                                                <img src=" . URL . "recursos/img/pencil-square.svg" . ">
-                                        </button>
-                                        <a class='btn btn-danger' onClick='confirmar($value->idanimal, $value->idusuario, &apos;$value->foto&apos;)'><img src=" . URL . "recursos/img/trash3.svg" . "></a>
+                                    <div class='col-md-2 mt-2 mt-md-0>
+                                        <div class='row'>
+                                        <div class='col-md-12'>
+                                        ";
+
+                            if (!isset($value->status)) {
+                                echo "
+                                                        <button class='btn btn-success w-100 mb-2' id='btnSolicitar' type='button' data-bs-target='#modalSolicitar' data-bs-toggle='modal' data-idanimal='$value->idanimal' data-idusuario='$value->idusuario'>
+                                                            Solicitar castração
+                                                        </button>
+                                                        ";
+                            } else {
+
+                                switch ($value->status) {
+                                    case 0:
+                                        echo "<span class='btn btn-sm bg-warning w-100 my-3 text-white fw-bold' style='cursor: default;'>Solicitação em análise</span>";
+                                        break;
+                                    case 1:
+                                        echo "<span class='btn btn-sm bg-success w-100 my-3 text-white fw-bold' style='cursor: default;'>Solicitação aprovada</span>";
+                                        break;
+                                    case 2:
+                                        echo "<span class='btn btn-sm bg-success w-100 my-3 text-white fw-bold' style='cursor: default;'>Animal Castrado</span>";
+                                        break;
+                                    case 3:
+                                        echo "
+                                                        <button class='btn btn-warning w-100 mb-2' id='btnEditar' type='button' data-bs-target='#modalEditar' data-bs-toggle='modal' 
+                                                            data-idanimal='$value->idanimal' data-idusuario='$value->idusuario' data-nome='$value->aninome' data-especie='$valorEspecie' 
+                                                            data-sexo='$valorSexo' data-cor='$value->cor' data-raca='$value->idraca' data-idade='$value->idade' data-pelagem='$valorPelagem' 
+                                                            data-porte='$valorPorte' data-comunitario='$valorComunitario' data-foto='$valorFoto'>
+                                                            Editar
+                                                        </button>
+                                                        <span class='btn btn-sm bg-danger w-100 my-3 text-white fw-bold' style='cursor: default;'>Solicitação recusada</span>
+                                                        ";
+                                        if (isset($value->msgrecusa)) {
+                                            echo "
+                                                            <div class='alert alert-danger p-1'>$value->msgrecusa Para fazer uma nova solicitação, edite as informações do animal</div>
+                                                            ";
+                                        }
+                                        break;
+                                    case 4:
+                                        echo "<span class='btn btn-sm bg-danger w-100 my-3 text-white fw-bold' style='cursor: default;'>Tutor não compareceu</span>";
+                                        break;
+                                    case 5:
+                                        echo "<span class='btn btn-sm bg-danger w-100 my-3 text-white fw-bold' style='cursor: default;'>Solicitação cancelada</span>";
+                                        break;
+                                    case 6:
+                                        echo "<span class='btn btn-sm bg-warning w-100 my-3 text-white fw-bold' style='cursor: default;'>Solicitação em análise</span>";
+                                        break;
+                                    case 7:
+                                        echo "<span class='btn btn-sm bg-dark w-100 my-3 text-white fw-bold' style='cursor: default;'>Animal foi a óbito</span>";
+                                        break;
+                                    case 8:
+                                        echo "<span class='btn btn-sm bg-success w-100 my-3 text-white fw-bold' style='cursor: default;'>Animal Castrado</span>";
+                                        break;
+                                    default:
+                                        echo "<span class='btn btn-sm bg-secondary w-100 my-3 text-white fw-bold' style='cursor: default;'>Ocorreu um erro</span>";
+                                        break;
+                                }
+                            }
+
+                            echo "</div>
+                                    
+                                        <div class='col-12 mt-2'>  
+                                            <button class='btn btn-warning' id='btnEditar' type='button' data-bs-target='#modalEditar' data-bs-toggle='modal' 
+                                                    data-idanimal='$value->idanimal' data-idusuario='$value->idusuario' data-nome='$value->aninome' data-especie='$valorEspecie' 
+                                                    data-sexo='$valorSexo' data-cor='$value->cor' data-raca='$value->idraca' data-idade='$value->idade' data-pelagem='$valorPelagem' 
+                                                    data-porte='$valorPorte' data-comunitario='$valorComunitario' data-foto='$value->foto'>
+                                                    <img src=" . URL . "recursos/img/pencil-square.svg" . ">
+                                            </button>
+                                            <a class='btn btn-danger' onClick='confirmar($value->idanimal, $value->idusuario, &apos;$value->foto&apos;)'><img src=" . URL . "recursos/img/trash3.svg" . "></a>
+                                        </div>
                                     </div>
                                 </div>
                                 <hr>
@@ -155,6 +217,92 @@
     </div>
 
     <!-- /CORPO -->
+
+    <!-- MODAL: solicitar castração -->
+    <div class='modal fade' id='modalSolicitar' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true'>
+        <div class='modal-dialog modal-dialog-centered'>
+            <div class='modal-content'>
+                <form action="<?php echo URL . 'solicitar-castracao'; ?>" method='post'>
+                    <input type='hidden' id='idAnimalSolicita' name='idAnimal'>
+                    <input type="hidden" name="idusuario" id="idusuario">
+
+                    <div class='modal-header'>
+                        <h5 class='modal-title' id='staticBackdropLabel'>Solicitar castração</h5>
+                        <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                    </div>
+                    <div class='modal-body'>
+                        <div class="container mb-3">
+                            <div class="header-container mb-1">
+                                <strong style="font-size: 0.8rem;">TERMO DE RESPONSABILIDADE DE CASTRAÇÃO E DECLARAÇÃO</strong>
+                            </div>
+                            <hr />
+                            <div class="main-container p-2" style="background-color: #f0f0f0; height:300px; overflow-y: scroll;" id="TOS">
+                                Declaro que:
+                                <ul>
+                                    <li>
+                                        Mantive o(s) animal(is) acima identificado(s), em jejum de água e comida pelo período recomendado na data do agendamento;
+                                    </li>
+                                    <li>
+                                        Estou ciente dos riscos (como parada respiratória e cardíaca), podendo levar o animal a óbito;
+                                    </li>
+                                    <li>
+                                        Autorizo a realização da intervenção cirúrgica de castração em meu animal;
+                                    </li>
+                                    <li>
+                                        Estou ciente de que problemas com o animal, decorrentes do não cumprimento das orientações do pós operatórios são de minha inteira responsabilidade;
+                                    </li>
+                                    <li>
+                                        Estou ciente que o meu animal receberá uma identificação eletrônica (microchip), zelarei para o bem-estar do mesmo e comunicarei o Setor de Bem Estar Animal (4800-1926/4800-1927), sobre fuga, roubo, morte ou doação.
+                                    </li>
+                                    <li>A clínica veterinária credenciada ficará responsável pelo <u><b>contato e agendamento</b></u> da castração. <br />Seram realizadas três
+                                        (03) tentativas de contato, caso não atenda, automaticamente perderá a vaga cadastrada.</li>
+
+                                    <li>Comparecer no horário agendado pele clínica.</li>
+
+                                    <li>Deixar o animal em <u><b>JEJUM</b></u> (sólido e líquido) <u><b>08 horas antes da castração.</b></u> <br />(Ex: a castração será ás 08hs da manhã, portanto, a última refeição
+                                        deverá ser até as 23hs da noite).</li>
+
+                                    <li>É recomendado o uso de colar de proteção (elisabetano) ou a roupa cirúgica (você encontrará na clínica veterinária ou em petshops)
+                                        procure em lugares mais baratos ou até mesmo empréstimo. </li>
+
+                                    <li>A clínica veterinária já medica os animais, caso considerem necessário, a clínica poderá prescrever medicamentos
+                                        com nome genérico (menor custo) que podem ser comprados em farmácia humana.</li>
+
+                                    <li>Ter 18 anos ou mais e residir no município.</li>
+
+                                    <li>Levar cobertor ou um lençol limpo.</li>
+
+                                    <li>O proprietário que não fizer a retirada do animal no horário estipulado pela clínica estará sujeito a aplicação de
+                                        Auto de Infração, conforme o Art 29 da Resolução SIMA n° 05/2021 e demais legislações federais, estaduais e municipais.</li>
+
+                                    <li>Em caso de motivo que impeça o animal à cirurgia de castração (fugiu, doença, castrou no particular, óbito e etc),
+                                        entrar em contato imediatamente com a clínica veterinária para comunicar o cancelamento da cirurgia.</li>
+
+                                    <li><b>Impedem o procedimento cirúrgico:</b> Cio, prenhez, amamentação de filhotes com menos de 45 dias, animais muito idosos
+                                        (acima de 08 anos) ou filhotes com menos de 03 meses.</li>
+
+                                    <li>Todos os animais passarão por uma avaliação clínica pelos médicos veterinários da clínica credenciada e caso detectado
+                                        alguma alteração o procedimento poderá ser cancelado ou remarcado.</li>
+                                </ul>
+
+                            </div>
+                        </div>
+
+
+                        <label class='form-label' for='obsCastr'>Observação: (opcional)</label>
+                        <textarea name='obsCastracao' id='obsCastr' rows='5' class='form-control' placeholder="Ex: tem alegria a dipirona"></textarea>
+                        <p class="form-text">
+                            Você não poderá excluir ou editar esse animal após o envio da solicitação!
+                        </p>
+                    </div>
+                    <div class='modal-footer'>
+                        <button type='submit' class='btn btn-primary' id="acceptAndSubmitButton">Enviar solicitação</button>
+                        <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- MODAL: editar animal-->
     <div class="modal fade" id="modalEditar" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -301,6 +449,23 @@
     <script src="sweetalert2.all.min.js"></script>
     <!-- EXTENSÃO JQUERY PARA O AJAX -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- ABRIR MODAL SOLICITAR -->
+    <script>
+        var exampleModal = document.getElementById('modalSolicitar')
+        exampleModal.addEventListener('show.bs.modal', function(event) {
+            // Button that triggered the modal
+            var button = event.relatedTarget
+            // Extract info from data-bs-* attributes
+            var idanimal = button.getAttribute('data-idanimal')
+            var idusuario = button.getAttribute('data-idusuario')
+
+            $("#idAnimalSolicita").val(idanimal);
+            $("#idusuario").val(idusuario)
+        });
+    </script>
+
+
     <!-- ABRIR MODAL EDITAR -->
     <script>
         //Definindo os valores nos inputs da modal

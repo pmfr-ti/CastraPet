@@ -3,7 +3,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Favicon -->
-    <?php include_once "favicon.php"?>
+    <?php 
+    include_once "favicon.php";
+    ?>
     <!-- /Favicon-->
 
     <title>PetCastra</title>

@@ -144,23 +144,47 @@ class ClinicaController
             $castracao->status = 1;
             $castracao->horario = $_POST["horario"];
 
-            $castracao->aprovarCastracao();
+            try {
 
-            //enviar o email
-            $email = new Email();
-            $email->data = $_POST["horario"];
-            $email->nomeClinica = $_SESSION["dadosClinica"]->nome;
-            $email->ruaClinica = $_SESSION["dadosClinica"]->clirua;
-            $email->bairroClinica = $_SESSION["dadosClinica"]->clibairro;
-            $email->numeroClinica = $_SESSION["dadosClinica"]->clinumero;
-            $email->emailDestinatario = $_POST["emailDestinatario"];
-            $email->nomeDestinatario = $_POST["nomeDestinatario"];
-            $email->nomeAnimal = $_POST["aninome"];
-            $email->clitelefone = $_SESSION["dadosClinica"]->clitelefone;
+                $castracao->aprovarCastracao();
 
-            $email->enviarConfirmacao();
+            } catch (\Throwable $th) {
+                $dataTexto = date("d/m/Y H:i", strtotime($_POST["horario"]));
+                echo "<script>alert('Não foi possível realizar o agendamento pois há uma castração agendada no horário: $dataTexto.'); window.location='" . URL . "lista-solicitacao';</script>";
+                return;
+            }
+            
+            
 
-            @header("Location:" . URL . "lista-solicitacao");
+            if (isset($_POST["emailDestinatario"])) {
+                if (trim($_POST["emailDestinatario"]) !== '') {
+                    //enviar o email
+                    $email = new Email();
+                    $email->data = $_POST["horario"];
+                    $email->nomeClinica = $_SESSION["dadosClinica"]->nome;
+                    $email->ruaClinica = $_SESSION["dadosClinica"]->clirua;
+                    $email->bairroClinica = $_SESSION["dadosClinica"]->clibairro;
+                    $email->numeroClinica = $_SESSION["dadosClinica"]->clinumero;
+                    $email->emailDestinatario = $_POST["emailDestinatario"];
+                    $email->nomeDestinatario = $_POST["nomeDestinatario"];
+                    $email->nomeAnimal = $_POST["aninome"];
+                    $email->clitelefone = $_SESSION["dadosClinica"]->clitelefone;
+
+                    $email->enviarConfirmacao();
+
+                    echo "<script>alert('Agendamento realizado! Email de confirmação enviado.'); window.location='" . URL . "lista-solicitacao';</script>";
+
+
+                } else {
+                    echo "<script>alert('Agendamento realizado! Não foi possível enviar o email. O email do tutor não foi informado.'); window.location='" . URL . "lista-solicitacao';</script>";
+                    return;
+                }
+            } else {
+                echo "<script>alert('Agendamento realizado! Não foi possível enviar o email. O email do tutor não foi informado.'); window.location='" . URL . "lista-solicitacao';</script>";
+                return;
+            }
+
+            
         } else {
             include_once "view/paginaNaoEncontrada.php";
         }

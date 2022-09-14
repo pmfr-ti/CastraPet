@@ -359,7 +359,7 @@ class UsuarioController
             $nis = str_replace($filtros, '', $_POST["txtNIS"]);
 
             $consultarEmail = new Login();
-            
+
             if (isset($_POST["txtEmail"]) && !empty(trim($_POST["txtEmail"]))) {
                 $consultarEmail->email = trim($_POST["txtEmail"]);
             }
@@ -393,7 +393,7 @@ class UsuarioController
                 //Cadastro do Usuário
                 $cadastra = new Usuario();
                 $cadastra->rg = strtoupper($rg);
-                
+
                 if (!$this->validaCPF($cpf)) {
                     echo "<script>alert('Digite um CPF válido'); window.location='" . URL . "admin-cadastra-tutor'; </script>";
                     return;
@@ -447,7 +447,7 @@ class UsuarioController
                     $cadastra->beneficio = 1;
                     $cadastra->quantcastracoes = 2;
                 }
-                
+
                 $cadastra->idlogin = $login->cadastrar();
 
                 $cadastra->cadastrar();
@@ -457,7 +457,6 @@ class UsuarioController
                             window.location='" . URL . "consulta-usuario/';
                         </script>";
                 return;
-                
             } else {
                 echo "<script>alert('Já existe um perfil com esse e-mail, CPF ou NIS cadastrados'); window.location='" . URL . "admin-cadastra-tutor'; </script>";
                 return;
@@ -654,6 +653,36 @@ class UsuarioController
             } else {
                 echo "<script>alert('Seu limite de castrações foi atingido'); window.location='" . URL . "meus-animais'; </script>";
             }
+        } else if ($_SESSION["dadosLogin"]->nivelacesso == 2) {
+            $castracao = new Castracao();
+            $usuario = new Usuario();
+            $usuario->idusuario = $_POST["idusuario"];
+            $dadosUsuario = $usuario->retornar();
+
+            //Verificação de erros 
+            try {
+                $castracao->idusuario = $usuario->idusuario;
+                $castracao->idanimal = $_POST["idAnimal"];
+                $castracao->observacao = $_POST["obsCastracao"];
+                $castracao->status = 0;
+                $usuario->quantcastracoes = $usuario->quantcastracoes -1;
+
+                $castracao->cadastrar();
+                $usuario->atualizarQuantCastracoes();
+
+                if ($dadosUsuario->quantcastracoes >= 0) {
+                    echo "<script>alert('Solicitação cadastrada com sucesso. Confirme a solicitação na aba Solicitações'); window.location='" . URL .  "consulta-animais/" . $usuario->idusuario . "'; </script>";
+                } else {
+                    "<script>alert('As castrações chegaram ao limite para o usuário, porém a solicitação foi considerada.'); window.location='" . URL .  "consulta-animais/" . $usuario->idusuario . "'; </script>";
+                }
+
+                @header("Location:" . URL . "consulta-animais/" . $usuario->idusuario);
+
+            } catch (Exception $e) {
+                echo "<script>alert('Houve um erro na hora de solicitar a castração'); window.location='" . URL . "consulta-animais/" . $usuario->idusuario . "'; </script>";
+            }
+
+            echo "<script>window.location='" . URL . "consulta-animais/" . $usuario->idusuario . "'; </script>";
         } else {
             include_once "view/paginaNaoEncontrada.php";
         }

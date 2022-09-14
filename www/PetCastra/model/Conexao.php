@@ -6,7 +6,7 @@ class Conexao{
 
     static function conectar(){
         //Informações para acessar o servidor do banco de dados
-        $localhost = "mysql:host=" . ENV_CONFIG['DB']['HOST'] . ";port=" . ENV_CONFIG['DB']['PORT'] . ";dbname=" . ENV_CONFIG['DB']['NAME'];
+        $localhost = "mysql:host=" . ENV_CONFIG['DB']['HOST'] . ";port=" . ENV_CONFIG['DB']['PORT'] . ";dbname=" . ENV_CONFIG['DB']['NAME'] . ";charset=utf8mb4";
         
         $usuario = ENV_CONFIG['DB']['USER'];
         $senha = ENV_CONFIG['DB']['PASS'];
@@ -19,4 +19,3 @@ class Conexao{
         return $con;//Retorna conexão para uso
     }
 }
-?>
