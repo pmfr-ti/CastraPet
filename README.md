@@ -16,7 +16,7 @@ Sistema para gerenciamento de solicitações de castração de animais, desenvol
 - []  Clonar repositório do projeto
 - [x]  Rodar o container
 ```
-sudo docker-compose up -d.
+sudo docker-compose up -d
 ```
 
 ## Acessar o site
