@@ -15,10 +15,10 @@ const ENV_CONFIG = [
     ],
     'MAIL' => [
         'HOST' => 'smtp.office365.com',
-        'USER' => 'castrapet.franco@outlook.com',
-        'PASS' => 'pet.CastraF',
+        'USER' => '',
+        'PASS' => '',
         'PORT' => 587,
-        'NAME' => 'PetCastra'
+        'NAME' => ''
     ]
 ];
 
