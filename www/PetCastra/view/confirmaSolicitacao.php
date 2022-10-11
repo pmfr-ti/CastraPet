@@ -41,12 +41,92 @@
                                     <label for="" class="form-label">Número da solicitação:</label>
                                     <input type="text" name="idcastracao" readonly class="form-control" value="<?php echo $dadosCastracao->idcastracao;?>">
                                 </div>
+                                <!-- Nome do Animal -->
                                 <div class="row container-fluid p-0 m-0 form-group mb-2">
                                     <label for="" class="form-label">Nome do animal: </label>
                                     <input type="text" name="aninome" readonly class="form-control" value="<?php echo $dadosCastracao->aninome;?>">
                                 </div>
+                                
+                                <!-- Epescie do Animal -->
                                 <div class="row container-fluid p-0 m-0 form-group mb-2">
-                                    <label for="" class="form-label">CPF do responsável:</label>
+                                    <label for="" class="form-label">Especie do animal: </label>
+                                    <input type="text" name="especie" readonly class="form-control" value="<?php if($dadosCastracao->especie == 1){ 
+                                                echo 'Felina';
+                                            }else{ 
+                                                echo'Canina';
+                                            };
+                                        ?>">
+                                </div>
+
+                                <!-- Sexo do Animal -->
+                                <div class="row container-fluid p-0 m-0 form-group mb-2">
+                                    <label for="" class="form-label">Sexo do animal: </label>
+                                    <input type="text" name="sexo" readonly class="form-control" value="<?php if($dadosCastracao->sexo == 1){ 
+                                                echo 'Macho';
+                                            }else{ 
+                                                echo'Femea';
+                                            };
+                                        ?>">
+                                </div>
+
+                                <!--Pelagem do animal -->
+                                <div class="row container-fluid p-0 m-0 form-group mb-2">
+                                    <label for="" class="form-label">Pelagem do Animal: </label>
+                                    <input type="text" name="polagem" readonly class="form-control" value="<?php if($dadosCastracao->polagem == 0){ 
+                                                echo 'Curta';
+                                            }else if($dadosCastracao->pelagem == 1){ 
+                                                echo'Médio';
+                                            }else if($dadosCastracao->pelagem == 2){ 
+                                                echo'Alta';
+                                            };
+                                        ?>">
+                                </div>
+
+                                <!--Porte do animal -->
+                                <div class="row container-fluid p-0 m-0 form-group mb-2">
+                                    <label for="" class="form-label">Porte do animal: </label>
+                                    <input type="text" name="porte" readonly class="form-control" value="<?php if($dadosCastracao->porte == 0){ 
+                                                echo 'Pequeno';
+                                            }else if($dadosCastracao->porte == 1){ 
+                                                echo 'Médio';
+                                            }else if($dadosCastracao->porte == 2){ 
+                                                echo'Grande';
+                                            };
+                                        ?>">
+                                </div>
+                                
+                                <!-- Idade do Animal -->
+                                <div class="row container-fluid p-0 m-0 form-group mb-2">
+                                    <label for="" class="form-label">Idade do animal: </label>
+                                    <input type="text" name="idade" readonly class="form-control" value="<?php echo $dadosCastracao->idade;?>">
+                                </div>
+
+                                <!-- Raça do Animal -->
+                                <div class="row container-fluid p-0 m-0 form-group mb-2">
+                                    <label for="" class="form-label">Raça do animal: </label>
+                                    <input type="text" name="raca" readonly class="form-control" value="<?php echo $dadosCastracao->raca;?>">
+                                </div>
+                                
+                                <!-- Nome do tutor -->
+                                 <div class="row container-fluid p-0 m-0 form-group mb-2">
+                                    <label for="" class="form-label">Nome do Tutor: </label>
+                                    <input type="text" name="nomeTutor" readonly class="form-control" value="<?php echo $dadosCastracao->nome;?>">
+                                </div>
+
+                                <!-- celular do tutor -->
+                                <div class="row container-fluid p-0 m-0 form-group mb-2">
+                                    <label for="" class="form-label">Celular do Tutor: </label>
+                                    <input type="text" name="nomeTutor" readonly class="form-control" value="<?php echo $dadosCastracao->celular;?>">
+                                </div>
+
+                                <!-- telefone do tutor -->
+                                <div class="row container-fluid p-0 m-0 form-group mb-2">
+                                    <label for="" class="form-label">Telefone do Tutor: </label>
+                                    <input type="text" name="nomeTutor" readonly class="form-control" value="<?php echo $dadosCastracao->telefone;?>">
+                                </div>
+
+                                <div class="row container-fluid p-0 m-0 form-group mb-2">
+                                    <label for="" class="form-label">CPF do Tutor:</label>
                                     <?php 
 
                                         if($_SESSION["dadosLogin"]->nivelacesso == 2)
@@ -64,6 +144,9 @@
                                     <label for="" class="form-label">Observações do tutor: </label>
                                     <textarea class="form-control" name="txtarea" readonly><?php echo $dadosCastracao->observacao;?></textarea>  
                                 </div>
+
+                               
+
                             </div>
                             <div  class="col-sm-6 px-3">
                                 <div class="row w-100 justify-content-center m-0">
@@ -87,7 +170,7 @@
                                         {
                                             echo"
                                                 <label for='horario' class='form-label'>Selecione a data e hora da castracao</label>
-                                                <input type='datetime-local' name='horario' id='horario' class='form-control' required>
+                                                <input type='datetime-local' name='horario' id='horario' class='form-control'>
                                                 ";
                                         }
                                         ?>
@@ -114,7 +197,13 @@
                                             {
                                                 echo"
                                                 <!-- Botão confirmar solicitação -->
-                                                <input type='submit' value='Confirmar' class='btn btn-success float-end me-1'>";
+                                                <input type='submit' value='Confirmar' class='btn btn-success'>";
+                                            
+                                                echo"
+                                                    <!-- Botão recusar solicitação -->
+                                                    
+                                                    <button type='button' class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#modalRecusar'>Recusar</button>
+                                                    ";
                                             }
                                             ?>
 
@@ -123,7 +212,8 @@
                             </div>
                             <?php
                             
-                            if($_SESSION["dadosLogin"]->nivelacesso == 2)
+                            if($_SESSION["dadosLogin"]->nivelacesso == 2 || 
+                               $_SESSION["dadosLogin"]->nivelacesso == 1)
                             {
                                 echo "
                                     <div class='modal fade' id='modalRecusar' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>

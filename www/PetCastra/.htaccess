@@ -1,4 +1,8 @@
-RewriteEngine On
+RewriteEngine on
+
+# RewriteCond %{REMOTE_ADDR} !^191\.240\.150\.178
+# RewriteRule ^index.*$ https://www.francodarocha.sp.gov.br/
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php?url=$1

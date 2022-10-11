@@ -63,7 +63,7 @@
                                     {
                                         
 
-                                        $value->status = str_replace("0", "Solicitação em análise", $value->status);
+                                        $value->status = str_replace("0", "Solicitação em análise de documentos", $value->status);
                                         $value->status = str_replace("1", "Solicitação aprovada", $value->status);
                                         $value->status = str_replace("2", "Animal castrado", $value->status);
                                         $value->status = str_replace("3", "Solicitação reprovada", $value->status);
@@ -133,7 +133,7 @@
                                     foreach($dadosCastracaoClinica as $value)
                                     {
                                         $valorStatus = $value->status;
-                                        $value->status = str_replace("0", "Solicitação em análise", $value->status);
+                                        $value->status = str_replace("0", "Solicitação em análise de documentos", $value->status);
                                         $value->status = str_replace("1", "Solicitação aprovada", $value->status);
                                         $value->status = str_replace("2", "Animal castrado", $value->status);
                                         $value->status = str_replace("3", "Solicitação reprovada", $value->status);
@@ -228,7 +228,7 @@
                                     </div>
                                     <div class='form-group mb-4'>
                                         <label class='form-label' for='codChip'>Número do chip:</label>
-                                        <input type='text' name='codChip' id='codChip' class='form-control' maxlength='15'>
+                                        <input type='text' name='codChip' id='codChip' class='form-control' maxlength='15' required>
                                     <div>
                                     <div class='form-group'>
                                         <label class='form-label' for='obsClinica'>Observação:</label>

@@ -134,7 +134,7 @@
 
                                 switch ($value->status) {
                                     case 0:
-                                        echo "<span class='btn btn-sm bg-warning w-100 my-3 text-white fw-bold' style='cursor: default;'>Solicitação em análise</span>";
+                                        echo "<span class='btn btn-sm bg-warning w-100 my-3 text-white fw-bold' style='cursor: default;'>Solicitação em análise de documentos</span>";
                                         break;
                                     case 1:
                                         echo "<span class='btn btn-sm bg-success w-100 my-3 text-white fw-bold' style='cursor: default;'>Solicitação aprovada</span>";

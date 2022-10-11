@@ -43,6 +43,47 @@
                         <div class="row mt-3">
                             <div class="col-md-6">
                                 <div class="p-sm-3 p-md-3 p-lg-4 p-3 bg-white">
+
+                                <h5 class="mt-4">Quais documentos são necessários?</h5>
+                                    <ul class="mt-2">
+                                        <li>
+                                            Comprovante de endereço* atualizado (emitido em até 90 dias) e no próprio nome do tutor (responsável) pelo(s) animal(is);
+                                        </li>       
+                                        
+                                        <b>*Documentos aceitos como comprovante de endereço:</b>
+                                        <ul>
+                                            <li>
+                                                Contas de água, de luz, de gás ou de telefone (com endereço) emitidas em até 90 dias;
+                                            </li>
+                                            
+                                            <li>
+                                                Correspondência bancária, comercial (carnês e boletos) ou oficial (proveniente do serviço público, civil ou militar) entregue pelo correio emitida em até 90 dias;
+                                            </li>
+                                            
+                                            <li>
+                                                Contrato de locação do imóvel vigente;
+                                            </li>
+                                            
+                                            <li>
+                                                Estes comprovantes podem estar em nome do(a) cônjuge/companheiro(a) quando acompanhados da certidão de casamento ou declaração de união estável ;
+                                            </li>
+                                                
+                                        </ul>
+                                        
+                                       
+                                        <li>
+                                             Foto do animal que deseja castrar, a foto deve ser uma imagem (jpg. jpeg ou png ) ;
+                                        </li>    
+                                        
+                                    </ul>
+
+                                    Requisitos:
+                                    <ul>
+                                        <li> Ter idade igual ou superior a 18 anos;</li>
+                                        <li> Morar na cidade de Franco da Rocha;</li>
+                                    </ul>
+
+                                    <!-- Orientações sobre a castração -->
                                     <h4 class="mb-4">Orientações Sobre a Castração</h4>
                                     <p>
                                     <ul>
@@ -111,6 +152,9 @@
                                     </p>
                                 </div>
                             </div>
+
+
+
                             <div class="col-md-6">
                                 <div class="p-sm-3 p-md-3 p-lg-4 p-3 mt-3 mt-md-0 bg-white">
                                     <div class="card">
@@ -265,6 +309,17 @@
                                                 <div class="card card-body border-primary">
                                                     <p>
                                                         <span class="fw-bold">R:</span> Não, o programa de castração é reservado apenas para moradores de Franco da Rocha.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            
+                                            <a class="list-group-item" data-bs-toggle="collapse" href="#pergunta12" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                                <li class="ms-3">O que é microchip?</li>
+                                            </a>
+                                            <div class="collapse" id="pergunta12">
+                                                <div class="card card-body border-primary">
+                                                    <p>
+                                                        <span class="fw-bold">R:</span>  O microchip para animais, que é do tamanho de um grão de arroz, serve para armazenar as principais informações do pet, como nome, espécie, sexo, cor, idade, raça e os dados do pai humano.  Microchipar seu animal de estimação é uma maneira de aumentar as chances de que você terá seu cão ou gato perdido de volta.  Se você mudar de endereço ou o seu número de telefone mudar e você não notificar o Núcleo de Bem Estar Animal, o microchip de seu animal de estimação terá informações desatualizadas. Se o seu animal de estimação sair vagando e for encontrado ,  não terá como entrar em contato com você, por isso, certifique-se sempre de manter suas informações de contato atualizada
                                                     </p>
                                                 </div>
                                             </div>

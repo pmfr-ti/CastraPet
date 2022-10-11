@@ -3,6 +3,7 @@ include_once "model/Animal.php";
 include_once "model/Castracao.php";
 include_once "model/Raca.php";
 include_once "model/Usuario.php";
+include_once "model/Login.php";
 
 class AnimalController
 {
@@ -256,9 +257,64 @@ class AnimalController
                 exit();
             }
 
-            // ? nao descobri o motivo deste codigo existir aqui, portanto, comentado
-            /*
-            //Excluir a castração caso exista
+            /* $castracao = new Castracao();
+            $castracao->idanimal = $_POST["idanimal"];
+            $castracaoFull = $castracao->retornarCastracaoReprovadaPorAnimal();
+
+            if ($castracaoFull){
+
+                $usuario = new Login();
+                $usuario->idlogin = $_SESSION['dadosLogin']->idlogin;
+                $usuarioFull = $usuario->retornarUsuario();
+            
+               
+
+                if($usuarioFull->beneficio == 0){
+                    if (isset($castracaoFull)) {
+                        $castracaoFull->excluir();
+                        
+                        if($usuarioFull->quantcastracoes < 2){
+                          $usuarioFull->quantcastracoes = (intval($usuarioFull->quantcastracoes) + 1);
+
+                        }
+
+                        $usuarioFull->atualizarQuantCastracoes();
+                    }
+
+                }else if($usuarioFull->beneficio == 1){ //Verifico o tipo de benificio para sabermos até quanto pode-se incrementar
+
+                    if (isset($castracaoFull)) {
+                        
+                        $castracaoPExcluir = new Castracao();
+                        $castracaoPExcluir->idcastracao = $castracaoFull->idcastracao;
+                        return;
+                        $castracaoPExcluir->excluir();
+                    
+                        if($usuarioFull->quantcastracoes < 2){//Verificando se as castrações são menores que duas
+                            $usuarioFull->quantcastracoes = (intval($usuarioFull->quantcastracoes) + 1);
+                        }
+                
+                        $upUsuario->atualizarQuantCastracoes();
+                    }
+
+                }else if($usuarioFull->beneficio == 2){
+                    
+                    if (isset($castracaoFull)) {
+
+                        $castracaoFull->excluir();
+                        
+                        if($usuarioFull->quantcastracoes < 5){
+                            $upUsuario->quantcastracoes = (intval($upUsuario->quantcastracoes) + 1);
+                        }
+                        
+                    
+                        $upUsuario->atualizarQuantCastracoes();
+                    }
+                }
+            } */
+
+
+            //Excluir a castração caso exista com esse animal
             $castracao = new Castracao();
             $castracao->idanimal = $_POST["idanimal"];
             $idcastracao = $castracao->retornarid();
@@ -275,7 +331,6 @@ class AnimalController
 
                 $usuario->atualizarQuantCastracoes();
             }
-            */
 
             if ($_SESSION["dadosLogin"]->nivelacesso == 0) {
                 @header("Location:" . URL . "meus-animais");

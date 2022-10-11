@@ -30,8 +30,8 @@
                                 }
                             ?>
                             <div class="form-group">
-                                <label for="email">E-mail:</label>
-                                <input type="email" id="email" name="txtEmail" class="form-control" placeholder="" required>
+                                <label for="email">Usuário: </label>
+                                <input placeholder="E-mail ou CPF" type="input" id="email" name="txtEmail" class="form-control" placeholder="" required>
                             </div>
                             <div class="form-group my-4">
                                 <label for="senha">Senha:</label>
