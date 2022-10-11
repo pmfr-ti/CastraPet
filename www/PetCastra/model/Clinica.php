@@ -72,6 +72,8 @@
 
             return $cmd->fetchAll(PDO::FETCH_OBJ);
         }
+
+
         function consultarComVagas()
         {
             //Conectando ao banco de dados
@@ -160,6 +162,21 @@
 
             //Executando o comando SQL
             $cmd->execute();
+        }
+
+        /* Pegando todas as clínicas */
+        function retornarClinicasCVagas(){
+            //Conectando ao banco de dados
+            $con = Conexao::conectar();
+
+            //Preparar comando SQL para retornar
+            $cmd = $con->prepare("SELECT * FROM clinica WHERE vagas > 0");
+             
+            //Executando o comando SQL
+            $cmd->execute();
+ 
+            return $cmd->fetchall(PDO::FETCH_OBJ);
+
         }
     }
 ?>

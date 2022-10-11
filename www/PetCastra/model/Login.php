@@ -156,10 +156,14 @@
                 $con = Conexao::conectar();
 
                 //Preparar comando SQL para retornar
-                $cmd = $con->prepare("SELECT * FROM login WHERE email = :email");
+                //Usuário pode logar por e-mail ou CPF
+                $cmd = $con->prepare("SELECT login.* FROM login
+                        LEFT JOIN usuario on login.idlogin = usuario.idlogin  
+                            WHERE email = :email || usuario.cpf = :cpf");
                 
                 //Parâmetros SQL
                 $cmd->bindParam(":email", $this->email);
+                $cmd->bindParam(":cpf", preg_replace('/[^0-9]/','',$this->email));
 
                 //Executando o comando SQL
                 $cmd->execute();

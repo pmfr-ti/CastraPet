@@ -20,7 +20,7 @@
                         <form method="post" class="p-sm-3 p-md-3 p-lg-4 p-3 px-0 row m-0" action="cadastrar-tutor" enctype="multipart/form-data">
                             <div class="col-md-6 mb-lg-0 mb-5 p-0 pe-md-3">
                                 <div class="form-group row-6 mb-3">
-                                    <label for="txtNome" class="form-label">Nome:<font color="red"> *</font></label>
+                                    <label for="txtNome" class="form-label">Nome Completo:<font color="red"> *</font></label>
                                     <input  class="form-control" type="text" name="txtNome" id="txtNome" maxlength="70" required>
                                 </div>
                                 <div class="form-group row-6 mb-3">

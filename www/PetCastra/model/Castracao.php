@@ -72,13 +72,15 @@
                                         join animal on animal.idanimal = castracao.idanimal 
                                         join usuario on usuario.idusuario = animal.idusuario 
                                         join login on login.idlogin = usuario.idlogin 
-                                    WHERE castracao.idclinica = :idclinica AND horario IS NULL");
+                                    WHERE castracao.idclinica = :idclinica AND horario IS NULL And castracao.status = '8'");
 
             $cmd->bindParam(":idclinica", $this->idclinica);
         
             $cmd->execute();
+            
 
-            return $cmd->fetchAll(PDO::FETCH_OBJ);
+            $result = $cmd->fetchAll(PDO::FETCH_OBJ);
+            return $result;
         }
 
         function aprovarCastracao()
@@ -107,6 +109,7 @@
 
             $cmd->execute();
         }
+
         //Método consultar
         function consultar()
         {
@@ -225,8 +228,9 @@
             $con = Conexao::conectar();
 
             //Preparar comando SQL para retornar
-            $cmd = $con->prepare("SELECT idcastracao, aninome, cpf, observacao, status, foto, email, nome, animal.idanimal FROM castracao 
-                                        JOIN animal ON animal.idanimal = castracao.idanimal 
+            $cmd = $con->prepare("SELECT idcastracao, aninome, cpf, observacao, status, foto, email, nome, animal.idanimal, especie, sexo, idade, pelagem, porte, raca.raca, usuario.idusuario, telefone, celular, nome   FROM castracao 
+                                        JOIN animal ON animal.idanimal = castracao.idanimal
+                                        JOIN raca ON animal.idraca = raca.idraca  
                                         JOIN usuario ON usuario.idusuario = animal.idusuario
                                         JOIN login ON usuario.idlogin = login.idlogin 
                                     WHERE castracao.idcastracao = :idcastracao");
@@ -239,6 +243,63 @@
 
             return $cmd->fetch(PDO::FETCH_OBJ);
         }
+
+        //Retornar castrações reprovadas por usuário
+        function retornarCastracaoReprovadasByUser($idusuario){
+
+            //Conectando ao banco de dados
+            $con = Conexao::conectar();
+
+            //Preparar comando SQL para retornar
+            $cmd = $con->prepare("SELECT idcastracao, aninome, cpf, observacao, status, 
+                                         foto, email, nome, animal.idanimal, especie, sexo, 
+                                         idade, porte, raca.raca, usuario.idusuario   
+                                        FROM castracao 
+                                        JOIN animal ON animal.idanimal = castracao.idanimal
+                                        JOIN raca ON animal.idraca = raca.idraca  
+                                        JOIN usuario ON usuario.idusuario = animal.idusuario
+                                        JOIN login ON usuario.idlogin = login.idlogin 
+                                    WHERE usuario.idusuario = :idusuario AND castracao.status = 3");
+            
+            //Parâmetros SQL
+            $cmd->bindParam(":idusuario", $idusuario);
+
+            //Executando o comando SQL
+            $cmd->execute();
+
+            return $cmd->fetchAll(PDO::FETCH_OBJ);
+        
+
+         }
+
+         //Retornar castrações reprovadas por animal
+        function retornarCastracaoReprovadaPorAnimal(){
+
+            //Conectando ao banco de dados
+            $con = Conexao::conectar();
+
+            //Preparar comando SQL para retornar
+            $cmd = $con->prepare("SELECT idcastracao, aninome, cpf, observacao, status, 
+                                         foto, email, nome, animal.idanimal, especie, sexo, 
+                                         idade, porte, raca.raca, usuario.idusuario   
+                                        FROM castracao 
+                                        JOIN animal ON animal.idanimal = castracao.idanimal
+                                        JOIN raca ON animal.idraca = raca.idraca  
+                                        JOIN usuario ON usuario.idusuario = animal.idusuario
+                                        JOIN login ON usuario.idlogin = login.idlogin 
+                                    WHERE animal.idanimal = :idanimal AND castracao.status = 3");
+            
+            //Parâmetros SQL
+            $cmd->bindParam(":idanimal", $this->idanimal);
+
+            //Executando o comando SQL
+            $cmd->execute();
+
+            return $cmd->fetch(PDO::FETCH_OBJ);
+        
+
+         }
+
         function retornarid()
         {
             //Conectando ao banco de dados

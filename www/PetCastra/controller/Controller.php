@@ -68,6 +68,7 @@ class Controller
         }
         else{ include_once "view/paginaNaoEncontrada.php"; }
     }
+
     function abrirCadAnimal(){
         //caso o usuário não esteja logado
         if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
@@ -81,6 +82,7 @@ class Controller
         }
         else{ include_once "view/paginaNaoEncontrada.php"; }
     }
+
     function abrirAdmCadAnimal($idLoginTutor){
         //caso o usuário não esteja logado
         if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
@@ -157,7 +159,9 @@ class Controller
         //Caso o usuário não esteja logado
         if(!isset($_SESSION["dadosLogin"])) { @header("Location:".URL."login"); return; }
         //Controle de privilégio
-        if($_SESSION["dadosLogin"]->nivelacesso == 2) { include_once "view/adminCadTutor.php"; }
+        if($_SESSION["dadosLogin"]->nivelacesso == 2) { 
+            include_once "view/adminCadTutor.php"; 
+        }
         else{ include_once "view/paginaNaoEncontrada.php"; }
     }
     #CONSULTAS
