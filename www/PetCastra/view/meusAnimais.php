@@ -148,7 +148,7 @@
                             } else {
                                 switch ($value->status) {
                                     case 0:
-                                        echo "<span class='btn btn-sm bg-warning w-100 my-3 text-white fw-bold' style='cursor: default;'>Solicitação em análise</span>";
+                                        echo "<span class='btn btn-sm bg-warning w-100 my-3 text-white fw-bold' style='cursor: default;'>Solicitação em análise de documentos</span>";
                                         break;
                                     case 1:
                                         echo "<span class='btn btn-sm bg-success w-100 my-3 text-white fw-bold' style='cursor: default;'>Solicitação aprovada</span>";
@@ -165,10 +165,11 @@
                                                     Editar
                                                 </button>
                                                 <span class='btn btn-sm bg-danger w-100 my-3 text-white fw-bold' style='cursor: default;'>Solicitação recusada</span>
+                                          
                                                 ";
                                         if (isset($value->msgrecusa)) {
                                             echo "
-                                                    <div class='alert alert-danger p-1'>$value->msgrecusa Para fazer uma nova solicitação, edite as informações do animal</div>
+                                                    <div class='alert alert-danger p-1'>$value->msgrecusa</div>
                                                     ";
                                         }
                                         break;
@@ -185,7 +186,19 @@
                                         echo "<span class='btn btn-sm bg-dark w-100 my-3 text-white fw-bold' style='cursor: default;'>Animal foi a óbito</span>";
                                         break;
                                     case 8:
-                                        echo "<span class='btn btn-sm bg-success w-100 my-3 text-white fw-bold' style='cursor: default;'>Animal Castrado</span>";
+                                        echo "<span class='btn btn-sm bg-warning w-100 my-3 text-white fw-bold' style='cursor: default;'>Documentos aprovados. Aguardando aprovação da clínica.</span>";
+                                        break;
+                                    case 9:
+                                        echo "
+                                        <button class='btn btn-warning w-100 mb-2' id='btnEditar' type='button' data-bs-target='#modalEditar' data-bs-toggle='modal' 
+                                            data-idanimal='$value->idanimal' data-idusuario='$value->idusuario' data-nome='$value->aninome' data-especie='$valorEspecie' 
+                                            data-sexo='$valorSexo' data-cor='$value->cor' data-raca='$value->idraca' data-idade='$value->idade' data-pelagem='$valorPelagem' 
+                                            data-porte='$valorPorte' data-comunitario='$valorComunitario' data-foto='$valorFoto'>
+                                            Editar
+                                        </button>
+                                        <span class='btn btn-sm bg-danger w-100 my-3 text-white fw-bold' style='cursor: default;'>Animal castrado, porém informações devem ser atualizadas</span>
+                                  
+                                        ";
                                         break;
                                     default:
                                         echo "<span class='btn btn-sm bg-secondary w-100 my-3 text-white fw-bold' style='cursor: default;'>Ocorreu um erro</span>";
@@ -304,6 +317,8 @@
             </div>
         </div>
         <!-- /MODAL -->
+
+       
         <!-- MODAL: editar animal-->
         <div class="modal fade" id="modalEditar" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -426,6 +441,23 @@
     <!-- ABRIR MODAL SOLICITAR -->
     <script>
         var exampleModal = document.getElementById('modalSolicitar')
+        exampleModal.addEventListener('show.bs.modal', function(event) {
+            // Button that triggered the modal
+            var button = event.relatedTarget
+            // Extract info from data-bs-* attributes
+            var idanimal = button.getAttribute('data-idanimal')
+            var idusuario = button.getAttribute('data-idusuario')
+
+            $("#idAnimalSolicita").val(idanimal);
+            $("#idusuario").val(idusuario)
+        });
+    </script>
+
+   
+
+     <!-- ABRIR MODAL SOLICITAR Novamente -->
+     <script>
+        var exampleModal = document.getElementById('modalSolicitarNovamente')
         exampleModal.addEventListener('show.bs.modal', function(event) {
             // Button that triggered the modal
             var button = event.relatedTarget

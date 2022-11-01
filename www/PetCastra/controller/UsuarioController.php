@@ -81,9 +81,18 @@ class UsuarioController
             $cpf = str_replace($filtros, '', $_POST["txtCPF"]);
             $cep = str_replace($filtros, '', $_POST["txtCEP"]);
             $rg = str_replace($filtros, '', $_POST["txtRG"]);
-            $tel = str_replace($filtros, '', $_POST["txtTel"]);
+
+            if (isset($_POST["txtTel"])) {
+                $tel = str_replace($filtros, '', $_POST["txtTel"]);
+            }
+
             $celular = str_replace($filtros, '', $_POST["txtCelular"]);
-            $nis = str_replace($filtros, '', $_POST["txtNIS"]);
+
+            if (isset($_POST["txtNIS"])) {
+                $nis = str_replace($filtros, '', $_POST["txtNIS"]);
+            }
+
+
 
             $consultarEmail = new Login();
             $consultarEmail->email = $_POST["txtEmail"];
@@ -91,18 +100,26 @@ class UsuarioController
             $consultarCPF = new Usuario();
             $consultarCPF->cpf = $cpf;
 
+
             //Verificando o NIS
-            if ($_POST["chkNIS"] == "sim" && isset($nis)) {
-                if (strlen($nis) == 11) {
-                    $consultarNIS = new Usuario();
-                    $consultarNIS->nis = $nis;
-                    $dadosConsultaNIS = $consultarNIS->verificarNis();
-                } else {
-                    echo "<script>alert('Digite um NIS válido'); window.location='" . URL . "cadastra-tutor'; </script>";
-                    return;
-                }
-            } else
-                $dadosConsultaNIS = null;
+            if (isset($_POST["chkNIS"])) {
+
+
+                if ($_POST["chkNIS"] == "sim" && isset($nis)) {
+                    if (strlen($nis) == 11) {
+                        $consultarNIS = new Usuario();
+                        $consultarNIS->nis = $nis;
+                        $dadosConsultaNIS = $consultarNIS->verificarNis();
+                    } else {
+                        echo "<script>alert('Digite um NIS válido'); window.location='" . URL . "cadastra-tutor'; </script>";
+                        return;
+                    }
+                } else
+                    $dadosConsultaNIS = null;
+            }
+
+
+
 
             //verificando se o email ou cpf ou nis já existem no banco ou não     
             if ($consultarEmail->logar() == null && $consultarCPF->verificarCPF() == null && $dadosConsultaNIS == null) {
@@ -170,7 +187,8 @@ class UsuarioController
                 $cadastra->idlogin = $login->cadastrar();
                 $cadastra->cadastrar();
                 $this->logar();
-                @header("Location:" . URL);
+                /* @header("Location:" . URL . "home-usuario"); */
+                echo "<script>alert('Usuário Cadastrado com sucesso'); window.location='" . URL . "'; </script>";
             } else {
                 echo "<script>alert('Já existe um perfil com esse e-mail, CPF ou NIS cadastrados'); window.location='" . URL . "cadastra-tutor'; </script>";
                 return;
@@ -245,10 +263,14 @@ class UsuarioController
 
             $usu->beneficio = 0;
             if (isset($_POST["chkNIS"])) {
+                //linha adicionada na matenunção para colocar direito a duas castrações no beneficio do nis
                 $usu->beneficio = $_POST["chkNIS"];
+                $usu->quantcastracoes = 2;
             }
             if (isset($_POST["chkProtetor"])) {
                 $usu->beneficio = $_POST["chkProtetor"];
+                //Linha adicionada na manutenção para colocar 5 castrações como protetor de animal 
+                $usu->quantcastracoes = 5;
             }
 
             $usu->telefone =  $tel;
@@ -431,6 +453,8 @@ class UsuarioController
                     echo "<script>alert('O comprovante de endereço deve ser enviado em formato jpg, png ou jpeg'); window.location='" . URL . "admin-cadastra-tutor'; </script>";
                     return;
                 }
+
+
                 //gerar novo nome
                 $novoNomeComprovante = md5(microtime()) . ".$extensao";
 
@@ -483,7 +507,11 @@ class UsuarioController
             $rg = str_replace($filtros, '', $_POST["txtRG"]);
             $tel = str_replace($filtros, '', $_POST["txtTel"]);
             $celular = str_replace($filtros, '', $_POST["txtCelular"]);
-            $nis = str_replace($filtros, '', $_POST["txtNIS"]);
+
+            if (isset($_POST["txtNIS"])) {
+                $nis = str_replace($filtros, '', $_POST["txtNIS"]);
+            }
+
 
             $login = new Login();
             $login->idlogin = $_SESSION["dadosLogin"]->idlogin;
@@ -493,6 +521,7 @@ class UsuarioController
             //Verificando se o Email já existe e se é diferente do atual
             $verificaEmail = $login->logar();
             $dadosLogin = $login->retornar();
+
             if ($verificaEmail == null || $dadosLogin->email == $_POST["txtEmail"]) {
                 $usu = new Usuario();
                 $usu->idusuario = $_SESSION["dadosUsuario"]->idusuario;
@@ -514,8 +543,11 @@ class UsuarioController
                     $usu->nis = $nis;
                 }
 
+
                 $login->atualizarLogin();
                 $usu->atualizarDadosUsuario();
+
+
 
                 echo "<script>
                         alert('Dados alterados com sucesso!');
@@ -579,11 +611,98 @@ class UsuarioController
                 unlink("recursos/img/docComprovantes/$dadosUsuario->doccomprovante"); //excluir o arquivo
             }
 
+            //Verificando se o usuário possui castração reprovada
+            //Pegando Castrações reprovadas do usuário
+            $castracao = new Castracao();
+            $castracoesReprovadas =  $castracao->retornarCastracaoReprovadasByUser($dadosUsuario->idusuario);
+
+
+
+
+            if (is_null($castracoesReprovadas)) {
+                echo 'Castrações Reprovadas nulas' . $castracoesReprovadas;
+            } else if (is_array($castracoesReprovadas)) {
+
+                for ($i = 0; $i < count($castracoesReprovadas); $i++) {
+                    if ($dadosUsuario->beneficio == 0 && $dadosUsuario->quantcastracoes < 1) {
+                        $castracaoPExcluir = new Castracao();
+                        $castracaoPExcluir->idcastracao = $castracoesReprovadas[$i]->idcastracao;
+                        $castracaoPExcluir->excluir();
+
+                        $_SESSION["dadosUsuario"]->quantcastracoes++;
+                        $userForAddQtsCastra = new Usuario();
+                        $userForAddQtsCastra->idusuario =  $_SESSION["dadosUsuario"]->idusuario;
+                        $userForAddQtsCastra->quantcastracoes = $_SESSION["dadosUsuario"]->quantcastracoes;
+                        $userForAddQtsCastra->atualizarQuantCastracoes();
+                    }
+
+                    if ($dadosUsuario->beneficio == 1 && $dadosUsuario->quantcastracoes < 2) {
+                        $castracaoPExcluir = new Castracao();
+                        $castracaoPExcluir->idcastracao = $castracoesReprovadas[$i]->idcastracao;
+                        $castracaoPExcluir->excluir();
+
+                        $_SESSION["dadosUsuario"]->quantcastracoes++;
+                        $userForAddQtsCastra = new Usuario();
+                        $userForAddQtsCastra->idusuario =  $_SESSION["dadosUsuario"]->idusuario;
+                        $userForAddQtsCastra->quantcastracoes = $_SESSION["dadosUsuario"]->quantcastracoes;
+                        $userForAddQtsCastra->atualizarQuantCastracoes();
+                    }
+                    if ($dadosUsuario->beneficio == 2 && $dadosUsuario->quantcastracoes < 5) {
+
+                        $castracaoPExcluir = new Castracao();
+                        $castracaoPExcluir->idcastracao = $castracoesReprovadas[$i]->idcastracao;
+                        $castracaoPExcluir->excluir();
+
+                        $_SESSION["dadosUsuario"]->quantcastracoes++;
+                        $userForAddQtsCastra = new Usuario();
+                        $userForAddQtsCastra->idusuario =  $_SESSION["dadosUsuario"]->idusuario;
+                        $userForAddQtsCastra->quantcastracoes = $_SESSION["dadosUsuario"]->quantcastracoes;
+                        $userForAddQtsCastra->atualizarQuantCastracoes();
+                    }
+                }
+            } else if (is_object($castracoesReprovadas)) {
+                if ($dadosUsuario->beneficio == 0 && $dadosUsuario->quantcastracoes < 1) {
+                    $castracaoPExcluir = new Castracao();
+                    $castracaoPExcluir->idcastracao = $castracoesReprovadas->idcastracao;
+                    $castracaoPExcluir->excluir();
+
+                    $_SESSION["dadosUsuario"]->quantcastracoes++;
+                    $userForAddQtsCastra = new Usuario();
+                    $userForAddQtsCastra->idusuario =  $_SESSION["dadosUsuario"]->idusuario;
+                    $userForAddQtsCastra->quantcastracoes = $_SESSION["dadosUsuario"]->quantcastracoes;
+                    $userForAddQtsCastra->atualizarQuantCastracoes();
+                }
+
+                if ($dadosUsuario->beneficio == 1 && $dadosUsuario->quantcastracoes < 2) {
+                    $castracaoPExcluir = new Castracao();
+                    $castracaoPExcluir->idcastracao = $castracoesReprovadas->idcastracao;
+                    $castracaoPExcluir->excluir();
+
+                    $_SESSION["dadosUsuario"]->quantcastracoes++;
+                    $userForAddQtsCastra = new Usuario();
+                    $userForAddQtsCastra->idusuario =  $_SESSION["dadosUsuario"]->idusuario;
+                    $userForAddQtsCastra->quantcastracoes = $_SESSION["dadosUsuario"]->quantcastracoes;
+                    $userForAddQtsCastra->atualizarQuantCastracoes();
+                }
+                if ($dadosUsuario->beneficio == 2 && $dadosUsuario->quantcastracoes < 5) {
+                    $castracaoPExcluir = new Castracao();
+                    $castracaoPExcluir->idcastracao = $castracoesReprovadas->idcastracao;
+                    $castracaoPExcluir->excluir();
+
+                    $_SESSION["dadosUsuario"]->quantcastracoes++;
+                    $userForAddQtsCastra = new Usuario();
+                    $userForAddQtsCastra->idusuario =  $_SESSION["dadosUsuario"]->idusuario;
+                    $userForAddQtsCastra->quantcastracoes = $_SESSION["dadosUsuario"]->quantcastracoes;
+                    $userForAddQtsCastra->atualizarQuantCastracoes();
+                }
+            }
+
+
             try {
                 $usu->atualizarEnderecoUsuario();
 
                 echo "<script>
-                        alert('Endereço com sucesso!');
+                        alert('Endereço alterado com sucesso!');
                         window.location='" . URL . "perfil';
                     </script>";
             } catch (Exception $e) {
@@ -630,28 +749,39 @@ class UsuarioController
             $usuario->idusuario = $_SESSION["dadosUsuario"]->idusuario;
             $dadosUsuario = $usuario->retornar();
 
-            if ($dadosUsuario->quantcastracoes >= 0) {
+            //Instancio uma clinica
+            $clinica = new Clinica();
+            //Pego todas as clinicas que possuem castracao
+            $clinicasComVagas = $clinica->retornarClinicasCVagas();
 
-                //Verificação de erros 
-                try {
-                    $castracao->idusuario = $usuario->idusuario;
-                    $castracao->idanimal = $_POST["idAnimal"];
-                    $castracao->observacao = $_POST["obsCastracao"];
-                    $castracao->status = 0;
-                    $_SESSION["dadosUsuario"]->quantcastracoes--;
-                    $usuario->quantcastracoes = $_SESSION["dadosUsuario"]->quantcastracoes;
+            //Verifico que se são mais que zero
+            if (count($clinicasComVagas) > 0) {
 
-                    $castracao->cadastrar();
-                    $usuario->atualizarQuantCastracoes();
+                if ($dadosUsuario->quantcastracoes >= 0) {
 
-                    @header("Location:" . URL . "meus-animais");
-                } catch (Exception $e) {
-                    echo "<script>alert('Houve um erro na hora de solicitar a castração'); window.location='" . URL . "meus-animais'; </script>";
+                    //Verificação de erros 
+                    try {
+                        $castracao->idusuario = $usuario->idusuario;
+                        $castracao->idanimal = $_POST["idAnimal"];
+                        $castracao->observacao = $_POST["obsCastracao"];
+                        $castracao->status = 0;
+                        $_SESSION["dadosUsuario"]->quantcastracoes = $dadosUsuario->quantcastracoes - 1;
+                        $usuario->quantcastracoes = $_SESSION["dadosUsuario"]->quantcastracoes;
+
+                        $castracao->cadastrar();
+                        $usuario->atualizarQuantCastracoes();
+
+                        @header("Location:" . URL . "meus-animais");
+                    } catch (Exception $e) {
+                        echo "<script>alert('Houve um erro na hora de solicitar a castração'); window.location='" . URL . "meus-animais'; </script>";
+                    }
+
+                    echo "<script>window.location='" . URL . "meus-animais'; </script>";
+                } else {
+                    echo "<script>alert('Seu limite de castrações foi atingido'); window.location='" . URL . "meus-animais'; </script>";
                 }
-
-                echo "<script>window.location='" . URL . "meus-animais'; </script>";
             } else {
-                echo "<script>alert('Seu limite de castrações foi atingido'); window.location='" . URL . "meus-animais'; </script>";
+                echo "<script>alert('No momento estamos sem castrações disponiveis'); window.location='" . URL . "meus-animais'; </script>";
             }
         } else if ($_SESSION["dadosLogin"]->nivelacesso == 2) {
             $castracao = new Castracao();
@@ -659,32 +789,42 @@ class UsuarioController
             $usuario->idusuario = $_POST["idusuario"];
             $dadosUsuario = $usuario->retornar();
 
-            //Verificação de erros 
-            try {
-                $castracao->idusuario = $usuario->idusuario;
-                $castracao->idanimal = $_POST["idAnimal"];
-                $castracao->observacao = $_POST["obsCastracao"];
-                $castracao->status = 0;
-                $usuario->quantcastracoes = $usuario->quantcastracoes -1;
+            //Instancio uma clinica
+            $clinica = new Clinica();
+            //Pego todas as clinicas que possuem castracao
+            $clinicasComVagas = $clinica->retornarClinicasCVagas();
 
-                $castracao->cadastrar();
-                $usuario->atualizarQuantCastracoes();
+            //Verifico que se são mais que zero
+            if (count($clinicasComVagas) > 0) {
 
-                if ($dadosUsuario->quantcastracoes >= 0) {
-                    echo "<script>alert('Solicitação cadastrada com sucesso. Confirme a solicitação na aba Solicitações'); window.location='" . URL .  "consulta-animais/" . $usuario->idusuario . "'; </script>";
-                } else {
-                    "<script>alert('As castrações chegaram ao limite para o usuário, porém a solicitação foi considerada.'); window.location='" . URL .  "consulta-animais/" . $usuario->idusuario . "'; </script>";
+                //Verificação de erros 
+                try {
+                    $castracao->idusuario = $usuario->idusuario;
+                    $castracao->idanimal = $_POST["idAnimal"];
+                    $castracao->observacao = $_POST["obsCastracao"];
+                    $castracao->status = 0;
+                    $usuario->quantcastracoes = $usuario->quantcastracoes - 1;
+
+                    $castracao->cadastrar();
+                    $usuario->atualizarQuantCastracoes();
+
+                    if ($dadosUsuario->quantcastracoes >= 0) {
+                        echo "<script>alert('Solicitação cadastrada com sucesso. Confirme a solicitação na aba Solicitações'); window.location='" . URL .  "consulta-animais/" . $usuario->idusuario . "'; </script>";
+                    } else {
+                        "<script>alert('As castrações chegaram ao limite para o usuário, porém a solicitação foi considerada.'); window.location='" . URL .  "consulta-animais/" . $usuario->idusuario . "'; </script>";
+                    }
+
+                    @header("Location:" . URL . "consulta-animais/" . $usuario->idusuario);
+                } catch (Exception $e) {
+                    echo "<script>alert('Houve um erro na hora de solicitar a castração'); window.location='" . URL . "consulta-animais/" . $usuario->idusuario . "'; </script>";
                 }
 
-                @header("Location:" . URL . "consulta-animais/" . $usuario->idusuario);
-
-            } catch (Exception $e) {
-                echo "<script>alert('Houve um erro na hora de solicitar a castração'); window.location='" . URL . "consulta-animais/" . $usuario->idusuario . "'; </script>";
+                echo "<script>window.location='" . URL . "consulta-animais/" . $usuario->idusuario . "'; </script>";
+            } else {
+                include_once "view/paginaNaoEncontrada.php";
             }
-
-            echo "<script>window.location='" . URL . "consulta-animais/" . $usuario->idusuario . "'; </script>";
         } else {
-            include_once "view/paginaNaoEncontrada.php";
+            echo "<script>alert('No momento estamos sem castrações disponiveis'); window.location='" . URL . "meus-animais'; </script>";
         }
     }
 
@@ -707,7 +847,7 @@ class UsuarioController
                     $castracao = new Castracao();
 
                     $castracao->idclinica = $_POST["selectClinica"];
-                    $castracao->status = 1;
+                    $castracao->status = 8;
                     $castracao->idcastracao = $idcastracao;
                     $castracao->aprovarCastracao();
 
@@ -748,6 +888,10 @@ class UsuarioController
         //Controle de privilégio
         if ($_SESSION["dadosLogin"]->nivelacesso == 1) {
 
+            $codchip = trim($_POST["codChip"]);
+            $dataCastracao = trim($_POST["dataCastracao"]);
+
+
             $castracao = new Castracao();
             $castracao->idcastracao = $_POST["idCastracao"];
             $castracao->obsclinica = isset($_POST["obsClinica"]) ? $_POST["obsClinica"] : '';
@@ -757,6 +901,10 @@ class UsuarioController
             switch ($_POST["statusAtualizado"]) {
                 case 2:
                     // Animal castrado
+                    if ($codchip == '' || $codchip == null) {
+                        echo "<script>alert('Campo de microchip vazio'); window.location='" . URL . "consulta-castracao'; </script>";
+                        return;
+                    }
 
                     $castracao->status = 2;
                     $castracao->atualizar();
@@ -778,9 +926,14 @@ class UsuarioController
                 case 4:
                     // Não compareceu 
 
-                    //Adicionar o status de que o animal não compareceu à castração
+                    $animal = new Animal();
+                    $animal->idanimal = $_POST["idAnimal"];
+                    $animal->codchip = null;
+                    $animal->atualizarCastrado();
+
                     $castracao->status = 4;
                     $castracao->atualizar();
+                    $castracaoData = $castracao->retornar();
 
                     //Aplicar uma punição ao tutor que não compareceu à castração
                     $usuario = new Usuario();
@@ -790,10 +943,15 @@ class UsuarioController
 
                     //Enviar aviso ao usuário dizendo que não compareceu à castração
                     $email = new Email();
-                    $email->emailDestinatario = $_POST["emailTutor"];
-                    $email->nomeDestinatario =  $_POST["nomeTutor"];
-                    $email->nomeAnimal =        $_POST["nomeAnimal"];
-                    $email->data =              $_POST["dataCastracao"];
+                    $email->emailDestinatario =     $_POST["emailTutor"];
+                    $email->nomeDestinatario =      $_POST["nomeTutor"];
+                    $email->nomeAnimal =            $_POST["nomeAnimal"];
+                    $email->data =                  date("Y-m-d H:i:s", strtotime($castracaoData->horario));
+                    $email->nomeClinica =           $_SESSION["dadosClinica"]->nome;
+                    $email->ruaClinica =            $_SESSION["dadosClinica"]->clirua;
+                    $email->bairroClinica =         $_SESSION["dadosClinica"]->clibairro;
+                    $email->numeroClinica =         $_SESSION["dadosClinica"]->clinumero;
+                    $email->clitelefone =           $_SESSION["dadosClinica"]->clitelefone;
                     $email->enviarAviso();
 
                     if ($_POST["status"] != 4 && $_POST["status"] != 7) {
@@ -808,6 +966,11 @@ class UsuarioController
                 case 5:
                     // Castração cancelada
 
+                    $animal = new Animal();
+                    $animal->idanimal = $_POST["idAnimal"];
+                    $animal->codchip = null;
+                    $animal->atualizarCastrado();
+
                     $castracao->status = 5;
                     $castracao->cancelar();
 
@@ -821,20 +984,48 @@ class UsuarioController
                     }
                     break;
                 case 6:
-                    // Reagendar castração
+                    try {
+                        // Reagendar castração
+                        if ($dataCastracao == '' || $dataCastracao == null) {
+                            echo "<script>alert('Campo de nova data de castração vazio'); window.location='" . URL . "consulta-castracao'; </script>";
+                            return;
+                        }
 
-                    //Adicionar o status de que o animal retornou para a análise da castração
-                    $castracao->status = 6;
-                    $castracao->obsclinica = $_POST["obsClinica"];
-                    $castracao->reagendar();
+                        $animal = new Animal();
+                        $animal->idanimal = $_POST["idAnimal"];
+                        $animal->codchip = null;
+                        $animal->atualizarCastrado();
 
-                    if ($_POST["status"] != 4 && $_POST["status"] != 7) {
-                        //Liberar a vaga de castração para a clínica
-                        $clinica = new Clinica();
-                        $clinica->idclinica = $_SESSION["dadosClinica"]->idclinica;
-                        $dadosClinica = $clinica->retornar();
-                        $clinica->vagas = $dadosClinica->vagas + 1;
-                        $clinica->alterarVagas();
+                        //Adicionar o status de que o animal retornou para a análise da castração
+                        $castracao->status = 6;
+                        $castracao->obsclinica = $_POST["obsClinica"];
+                        $castracao->horario = date("Y-m-d H:i:s", strtotime($dataCastracao));
+                        $castracao->reagendar();
+
+                        //Enviar aviso ao usuário dizendo que a castração foi reagendada
+                        $email = new Email();
+                        $email->emailDestinatario =     $_POST["emailTutor"];
+                        $email->nomeDestinatario =      $_POST["nomeTutor"];
+                        $email->nomeAnimal =            $_POST["nomeAnimal"];
+                        $email->data =                  $_POST["dataCastracao"];
+                        $email->nomeClinica =           $_SESSION["dadosClinica"]->nome;
+                        $email->ruaClinica =            $_SESSION["dadosClinica"]->clirua;
+                        $email->bairroClinica =         $_SESSION["dadosClinica"]->clibairro;
+                        $email->numeroClinica =         $_SESSION["dadosClinica"]->clinumero;
+                        $email->clitelefone =           $_SESSION["dadosClinica"]->clitelefone;
+                        $email->reagendarConfirmacao();
+
+
+                        if ($_POST["status"] != 4 && $_POST["status"] != 7) {
+                            //Liberar a vaga de castração para a clínica
+                            $clinica = new Clinica();
+                            $clinica->idclinica = $_SESSION["dadosClinica"]->idclinica;
+                            $dadosClinica = $clinica->retornar();
+                            $clinica->vagas = $dadosClinica->vagas + 1;
+                            $clinica->alterarVagas();
+                        }
+                    } catch (\Throwable $th) {
+                        var_dump($th);
                     }
                     break;
                 case 7:
@@ -842,6 +1033,11 @@ class UsuarioController
 
                     $castracao->status = 7;
                     $castracao->atualizar();
+
+                    $animal = new Animal();
+                    $animal->idanimal = $_POST["idAnimal"];
+                    $animal->codchip = $_POST["codChip"];
+                    $animal->atualizarCastrado();
 
                     if ($_POST["status"] != 4 && $_POST["status"] != 7) {
                         //Liberar a vaga de castração para a clínica
@@ -854,6 +1050,10 @@ class UsuarioController
                     break;
                 case 8:
                     // Animal castrado(mas com alterações)
+                    if ($codchip == '' || $codchip == null) {
+                        echo "<script>alert('Campo de microchip vazio'); window.location='" . URL . "consulta-castracao'; </script>";
+                        return;
+                    }
 
                     $castracao->status = 8;
                     $castracao->obsclinica = $_POST["obsClinica"];
@@ -873,6 +1073,33 @@ class UsuarioController
                         $clinica->alterarVagas();
                     }
                     break;
+
+                case 9:
+                    // Animal castrado(mas com alterações)
+                    if ($codchip == '' || $codchip == null) {
+                        echo "<script>alert('Campo de microchip vazio'); window.location='" . URL . "consulta-castracao'; </script>";
+                        return;
+                    }
+
+                    $castracao->status = 9;
+                    $castracao->obsclinica = $_POST["obsClinica"];
+                    $castracao->atualizar();
+
+                    $animal = new Animal();
+                    $animal->idanimal = $_POST["idAnimal"];
+                    $animal->codchip = $_POST["codChip"];
+                    $animal->atualizarCastrado();
+
+                    if ($_POST["status"] == 4 || $_POST["status"] == 7) {
+                        //Liberar a vaga de castração para a clínica
+                        $clinica = new Clinica();
+                        $clinica->idclinica = $_SESSION["dadosClinica"]->idclinica;
+                        $dadosClinica = $clinica->retornar();
+                        $clinica->vagas = $dadosClinica->vagas - 1;
+                        $clinica->alterarVagas();
+                    }
+                    break;
+
                 default:
                     echo "<script>alert('Insira um valor válido'); window.location='" . URL . "consulta-castracao'; </script>";
                     return;
@@ -930,7 +1157,7 @@ class UsuarioController
                     $_SESSION["dadosUsuario"] = $dadosUsuario;
                     $_SESSION["dadosAnimais"] = $dadosAnimais;
 
-                    echo "<script>alert('Usuário Logado'); window.location='" . URL . "home-usuario'; </script>";
+                    echo "<script>alert('Usuário Logado'); window.location='" . URL . "meus-animais'; </script>";
                     break;
 
                     //caso seja clínica

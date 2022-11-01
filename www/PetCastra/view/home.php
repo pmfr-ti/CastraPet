@@ -14,7 +14,7 @@
 
         <div class="bg-primary container-fluid" style="grid-area: corpo;">
             <div class="row h-100 align-items-center">
-                <div class="py-3 px-2">
+                <div class="py-3 pb-5 px-2">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-12">
@@ -24,22 +24,84 @@
                                         <strong>O projeto PetCastra</strong> é o site em que você pode se cadastrar para agendar uma castração gratuita para seu gato ou cachorro
                                         através do programa gratuito da Prefeitura de Franco da Rocha.
                                     </p>
-                                    <h5 class="mt-4">Você sabe a importância da castração?</h5>
-                                    <p>
-                                        Como a reprodução de cães e gatos é muito rápida, o descuido com os
-                                        animais em casa e os animais deixados soltos nas ruas é a principal
-                                        causa da grande reprodução e do aumento do número de animais
-                                        abandonados. Além do risco de contrair doenças e transmiti-las, ser
-                                        atropelado, provocar acidentes de carros, receber maus-tratos, como
-                                        pedradas, pauladas, chutes, etc., cães e gatos na rua cruzam e podem
-                                        ter 12 ou mais filhotes ao ano. Abandonados por seus guardiões, eles
-                                        acabam por sofrer, sentir fome, sede, frio, medo, ficar doentes e
-                                        transmitir doenças para as pessoas e outros animais.
-                                    </p>
+                                    
+                                    <h5 class="mt-4">Quais documentos são necessários?</h5>
+                                    <ul class="mt-2">
+                                        <li>
+                                            Comprovante de endereço* atualizado (emitido em até 90 dias) e no próprio nome do tutor (responsável) pelo(s) animal(is);
+                                        </li>       
+                                        
+                                        <b>*Documentos aceitos como comprovante de endereço:</b>
+                                        <ul>
+                                            <li>
+                                                Contas de água, de luz, de gás ou de telefone (com endereço) emitidas em até 90 dias;
+                                            </li>
+                                            
+                                            <li>
+                                                Correspondência bancária, comercial (carnês e boletos) ou oficial (proveniente do serviço público, civil ou militar) entregue pelo correio emitida em até 90 dias;
+                                            </li>
+                                            
+                                            <li>
+                                                Contrato de locação do imóvel vigente;
+                                            </li>
+                                            
+                                            <li>
+                                                Estes comprovantes podem estar em nome do(a) cônjuge/companheiro(a) quando acompanhados da certidão de casamento ou declaração de união estável ;
+                                            </li>
+                                                
+                                        </ul>
+                                        
+                                       
+                                        <li>
+                                             Foto do animal que deseja castrar, a foto deve ser uma imagem (jpg. jpeg ou png ) ;
+                                        </li>    
+                                        
+                                    </ul>
+
+                                    Requisitos:
+                                    <ul>
+                                        <li> Ter idade igual ou superior a 18 anos;</li>
+                                        <li> Morar na cidade de Franco da Rocha;</li>
+                                    </ul>
+
+                                    <h5 class="mt-4 text-danger text-uppercase">Atenção</h5>
+                                    <ul class="mt-2">
+                                        <li>A identificação de incongruência(s) nas informações prestadas poderá resultar no cancelamento do cadastro(s) do(s) animal(is).</li>
+                                        <li>O deferimento do cadastramento do(s) animal(is) dependerá dos fatores prioritários e não da ordem de inscrição.</li>
+                                        <li>O contato será realizado pelo telefone cadastrado na inscrição. O contato será feito próximo do dia do agendamento. Pedimos que aguardem o contato das Clínicas Veterinárias.</li>
+                                        <li>Toda a atividade do serviço da Castração por parte do Bem Estar Animal é totalmente gratuita.</li>
+                                    </ul>
+
+                                    
+                                    <h5 class="mt-4">Como realizar o cadastro?</h5>
+                                    <p>Abaixo segue  um vídeo com as instruções</p>
+
+                                    <video class="video" preload="auto" controls="controls"  width="100%" height="400">
+                                        <source src="https://drive.google.com/uc?export=download&id=1hNDwz25conf-RN17v1HzTi4Qd0b06Tl-" type='video/mp4'>
+                                    </video>
+                                    <h5 class="mt-4">Como verificar a solicitação?</h5>
+                                    <p>Abaixo segue  um vídeo com as instruções</p>
+
+                                    <video class="video" preload="auto" controls="controls"  width="100%" height="400">
+                                        <source src="https://drive.google.com/uc?export=download&id=1j-fE1hBhlQmZ0jDg1o2GfsroNLQ8u_mB" type='video/mp4'>
+                                    </video>
+
+                                    <h5 class="mt-4">Como alterar o comprovante de residência?</h5>
+                                    <p>Abaixo segue  um vídeo com as instruções</p>
+                                    <video class="video" preload="auto" controls="controls"  width="100%" height="400">
+                                        <source src="https://drive.google.com/uc?export=download&id=1yZ_44I8DFdF6On_06Uy7C5WFBG8oMUAf" type='video/mp4'>
+                                    </video>
+
+                                  
+
+                                    
+                                  
                                 </div>
                             </div>
                         </div>
+
                         <div class="row mt-4">
+                            <!-- 
                             <div class="col-md-6">
                                 <div class="p-sm-3 p-md-3 p-lg-4 p-3 bg-white">
                                     <h4 class="mb-4">Orientações Sobre a Castração</h4>
@@ -109,8 +171,9 @@
                                     </ul>
                                     </p>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
+                            </div> 
+                            -->
+                            <div class="col-md-12">
                                 <div class="p-sm-3 p-md-3 p-lg-4 p-3 mt-4 mt-md-0 bg-white">
                                     <div class="card">
                                         <h4 class="card-header">Perguntas Frequentes:</h4>
@@ -267,11 +330,24 @@
                                                     </p>
                                                 </div>
                                             </div>
+
+                                            <a class="list-group-item" data-bs-toggle="collapse" href="#pergunta12" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                                <li class="ms-3">O que é microchip?</li>
+                                            </a>
+                                            <div class="collapse" id="pergunta12">
+                                                <div class="card card-body border-primary">
+                                                    <p>
+                                                        <span class="fw-bold">R:</span>  O microchip para animais, que é do tamanho de um grão de arroz, serve para armazenar as principais informações do pet, como nome, espécie, sexo, cor, idade, raça e os dados do pai humano.  Microchipar seu animal de estimação é uma maneira de aumentar as chances de que você terá seu cão ou gato perdido de volta.  Se você mudar de endereço ou o seu número de telefone mudar e você não notificar o Núcleo de Bem Estar Animal, o microchip de seu animal de estimação terá informações desatualizadas. Se o seu animal de estimação sair vagando e for encontrado ,  não terá como entrar em contato com você, por isso, certifique-se sempre de manter suas informações de contato atualizada
+                                                    </p>
+                                                </div>
+                                            </div>
                                         </ol>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -290,6 +366,7 @@
     <!--<script src="<?php echo URL; ?>recursos/js/popper.min.js"></script> Ultrapassado-->
     <script src="<?php echo URL; ?>recursos/js/bootstrap.min.js"></script>
     <script src="<?php echo URL; ?>recursos/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>

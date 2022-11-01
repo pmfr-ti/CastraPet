@@ -262,11 +262,11 @@
                                 </div>
                                 <div class="row mb-3">
                                     <div class="form-group col-sm-4">
-                                        <input type="checkbox" name="chkNIS" id="chkNIS" value="sim">
+                                        <input type="checkbox" name="chkNIS" id="chkNIS" value="1">
                                         <label for="chkNIS" class="form-label">Tenho o benefício do NIS</label>
                                     </div>
                                     <div class="form-group col-sm-8">
-                                        <input class="form-control col-6" type="text" name="txtNIS" id="txtNIS" placeholder="Número do NIS" maxlength="11" disabled>
+                                        <input class="form-control col-6" type="text" name="txtNIS" id="txtNIS" placeholder="Número do NIS" maxlength="11">
                                     </div>
                                 </div>
                             </div>

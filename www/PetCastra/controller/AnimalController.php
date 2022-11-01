@@ -3,6 +3,7 @@ include_once "model/Animal.php";
 include_once "model/Castracao.php";
 include_once "model/Raca.php";
 include_once "model/Usuario.php";
+include_once "model/Login.php";
 
 class AnimalController
 {
@@ -256,26 +257,106 @@ class AnimalController
                 exit();
             }
 
-            // ? nao descobri o motivo deste codigo existir aqui, portanto, comentado
-            /*
-            //Excluir a castração caso exista
+            /* $castracao = new Castracao();
+            $castracao->idanimal = $_POST["idanimal"];
+            $castracaoFull = $castracao->retornarCastracaoReprovadaPorAnimal();
+
+            if ($castracaoFull){
+
+                $usuario = new Login();
+                $usuario->idlogin = $_SESSION['dadosLogin']->idlogin;
+                $usuarioFull = $usuario->retornarUsuario();
+            
+               
+
+                if($usuarioFull->beneficio == 0){
+                    if (isset($castracaoFull)) {
+                        $castracaoFull->excluir();
+                        
+                        if($usuarioFull->quantcastracoes < 2){
+                          $usuarioFull->quantcastracoes = (intval($usuarioFull->quantcastracoes) + 1);
+
+                        }
+
+                        $usuarioFull->atualizarQuantCastracoes();
+                    }
+
+                }else if($usuarioFull->beneficio == 1){ //Verifico o tipo de benificio para sabermos até quanto pode-se incrementar
+
+                    if (isset($castracaoFull)) {
+                        
+                        $castracaoPExcluir = new Castracao();
+                        $castracaoPExcluir->idcastracao = $castracaoFull->idcastracao;
+                        return;
+                        $castracaoPExcluir->excluir();
+                    
+                        if($usuarioFull->quantcastracoes < 2){//Verificando se as castrações são menores que duas
+                            $usuarioFull->quantcastracoes = (intval($usuarioFull->quantcastracoes) + 1);
+                        }
+                
+                        $upUsuario->atualizarQuantCastracoes();
+                    }
+
+                }else if($usuarioFull->beneficio == 2){
+                    
+                    if (isset($castracaoFull)) {
+
+                        $castracaoFull->excluir();
+                        
+                        if($usuarioFull->quantcastracoes < 5){
+                            $upUsuario->quantcastracoes = (intval($upUsuario->quantcastracoes) + 1);
+                        }
+                        
+                    
+                        $upUsuario->atualizarQuantCastracoes();
+                    }
+                }
+            } */
+
+
+            //Excluir a castração caso exista com esse animal
             $castracao = new Castracao();
             $castracao->idanimal = $_POST["idanimal"];
             $idcastracao = $castracao->retornarid();
+            
+            $castracao->idcastracao =  $idcastracao->idcastracao;
+            $castracaoObj = $castracao->retornar();
+
+            /* 
+                Pegando atributos da castracação para fazer as devidas comparações
+            */
+            $castracao->idcastracao = $castracaoObj->idcastracao;
+            $castracao->idanimal = $castracaoObj->idanimal;
+            $castracao->idclinica = $castracaoObj->idclinica;
+            $castracao->horario = $castracaoObj->horario;
+            $castracao->status = $castracaoObj->status;
+            $castracao->observacao = $castracaoObj->observacao;
+            $castracao->obsclinica = $castracaoObj->obsclinica;
+            $castracao->msgrecusa = $castracaoObj->msgrecusa;
+            
 
             if (isset($idcastracao->idcastracao)) {
-                $castracao->idcastracao = $idcastracao->idcastracao;
-                $castracao->excluir();
-
-                $_SESSION["dadosUsuario"]->quantcastracoes++;
-
-                $usuario = new Usuario();
-                $usuario->idusuario = $_SESSION["dadosUsuario"]->idusuario;
-                $usuario->quantcastracoes = $_SESSION["dadosUsuario"]->quantcastracoes;
-
-                $usuario->atualizarQuantCastracoes();
+                if($castracao->status == 3){
+                    $castracao->idcastracao = $idcastracao->idcastracao;
+                    $castracao->excluir();
+    
+                    $_SESSION["dadosUsuario"]->quantcastracoes++;
+    
+                    $usuario = new Usuario();
+                    $usuario->idusuario = $_SESSION["dadosUsuario"]->idusuario;
+                    $usuario->quantcastracoes = $_SESSION["dadosUsuario"]->quantcastracoes;
+    
+                    $usuario->atualizarQuantCastracoes();
+                
+                }else if($castracao->status == 9){
+                    var_dump($castracao);
+                    echo "<br>";
+                    $castracao->status = 2;
+                    var_dump($castracao);
+                    $castracao->atualizarStatus();
+                } 
+               
             }
-            */
 
             if ($_SESSION["dadosLogin"]->nivelacesso == 0) {
                 @header("Location:" . URL . "meus-animais");

@@ -28,7 +28,7 @@
                         <table id="tbLista" class="table table-hover">
                             <thead>
                                 <tr>
-                                    <td>#</td>
+                                    <td>#Solicitação</td>
                                     <td>Animal</td>
                                     <td>Tutor</td>
                                     <td>Solicitação</td>
@@ -40,7 +40,7 @@
                                     {
                                         echo"
                                             <tr>
-                                                <td>Solicitação $value->idcastracao</td>
+                                                <td>$value->idcastracao</td>
                                                 <td>$value->aninome</td>
                                                 <td>$value->nome</td>
                                                 <td><a href='".URL."agendamento/$value->idcastracao' class='btn btn-info'>Analisar</a></td>

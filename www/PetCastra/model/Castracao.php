@@ -72,13 +72,15 @@
                                         join animal on animal.idanimal = castracao.idanimal 
                                         join usuario on usuario.idusuario = animal.idusuario 
                                         join login on login.idlogin = usuario.idlogin 
-                                    WHERE castracao.idclinica = :idclinica AND horario IS NULL");
+                                    WHERE castracao.idclinica = :idclinica AND horario IS NULL And castracao.status = '8'");
 
             $cmd->bindParam(":idclinica", $this->idclinica);
         
             $cmd->execute();
+            
 
-            return $cmd->fetchAll(PDO::FETCH_OBJ);
+            $result = $cmd->fetchAll(PDO::FETCH_OBJ);
+            return $result;
         }
 
         function aprovarCastracao()
@@ -107,6 +109,7 @@
 
             $cmd->execute();
         }
+
         //Método consultar
         function consultar()
         {
@@ -114,7 +117,7 @@
             $con = Conexao::conectar();
 
             //Preparar comando SQL para consultar
-            $cmd = $con->prepare("SELECT idcastracao, foto, aninome, horario, status, observacao, cpf, usubairro, usurua, usunumero, cnpj, nome AS 'nomeclinica', obsclinica, animal.idanimal FROM castracao 
+            $cmd = $con->prepare("SELECT idcastracao, foto, aninome, horario, status, observacao, cpf, usubairro, usurua, usunumero, cnpj, nome AS 'nomeclinica', obsclinica, animal.idanimal, animal.codchip FROM castracao 
                                     JOIN animal ON castracao.idanimal = animal.idanimal 
                                     JOIN usuario ON animal.idusuario = usuario.idusuario  
                                     LEFT JOIN clinica ON castracao.idclinica = clinica.idclinica 
@@ -133,7 +136,7 @@
 
             //Preparar comando SQL para consultar
             //$cmd = $con->prepare("SELECT * FROM castracao");
-            $cmd = $con->prepare("SELECT idcastracao, clinica.idclinica, animal.foto, animal.aninome, nome AS 'nometutor', horario, status, observacao, obsclinica, cpf, usuario.idusuario, email, rg, telefone, celular, whatsapp, animal.idanimal 
+            $cmd = $con->prepare("SELECT idcastracao, clinica.idclinica, animal.foto, animal.aninome, nome AS 'nometutor', horario, status, observacao, obsclinica, cpf, usuario.idusuario, email, rg, telefone, celular, whatsapp, animal.idanimal, animal.codchip
                                     FROM castracao 
                                         JOIN animal ON castracao.idanimal = animal.idanimal 
                                         JOIN usuario ON animal.idusuario = usuario.idusuario 
@@ -183,23 +186,57 @@
             $cmd->execute();
         }
         
+   
         //Método Atualizar
         function atualizar()
-        {
-            //Conectando ao banco de dados
-            $con = Conexao::conectar();
+        {   
+            try {
+                //Conectando ao banco de dados
+                $con = Conexao::conectar();
 
-            //Preparar o comando SQL para atualizar
-            $cmd = $con->prepare("UPDATE castracao SET status = :status, obsclinica = :obsclinica WHERE idcastracao = :idcastracao");
-            
-            //Parâmetros SQL
-            $cmd->bindParam(":status",      $this->status);
-            $cmd->bindParam(":obsclinica",  $this->obsclinica);
-            $cmd->bindParam(":idcastracao", $this->idcastracao);
+                //Preparar o comando SQL para atualizar
+                $cmd = $con->prepare("UPDATE castracao SET status = :status, obsclinica = :obsclinica WHERE idcastracao = :idcastracao");
+                
+                //Parâmetros SQL
+                $cmd->bindParam(":status",      $this->status);
+                $cmd->bindParam(":obsclinica",  $this->obsclinica);
+                $cmd->bindParam(":idcastracao", $this->idcastracao);
 
-            //Executando o comando SQL
-            $cmd->execute();
+                //Executando o comando SQL
+                $cmd->execute();
+            } catch (\Throwable $th) {
+                //throw $th;
+                echo ($th);
+            }
+          
         }
+
+        
+        //Método Atualizar Status
+        function atualizarStatus()
+        {   
+            try {
+                
+                //Conectando ao banco de dados
+                $con = Conexao::conectar();
+
+                //Preparar o comando SQL para atualizar
+                $cmd = $con->prepare("UPDATE castracao SET status = :status WHERE idcastracao = :idcastracao");
+                
+                //Parâmetros SQL
+                $cmd->bindParam(":status", $this->status);
+                $cmd->bindParam(":idcastracao", $this->idcastracao);
+
+                //Executando o comando SQL
+                $cmd->execute();
+
+            } catch (\Throwable $th) {
+                //throw $th;
+                echo ($th);
+            } 
+          
+        }
+
 
         function reagendar()
         {
@@ -207,12 +244,14 @@
             $con = Conexao::conectar();
 
             //Preparar o comando SQL para atualizar
-            $cmd = $con->prepare("UPDATE castracao SET idclinica = null, horario = null, status = :status, obsclinica = :obsclinica WHERE idcastracao = :idcastracao");
-            
+            $cmd = $con->prepare("UPDATE castracao SET horario = :horario, status = :status, obsclinica = :obsclinica WHERE idcastracao = :idcastracao");
+
+            $horario = $this->horario ? $this->horario : null;
             //Parâmetros SQL
             $cmd->bindParam(":status",      $this->status);
             $cmd->bindParam(":obsclinica",  $this->obsclinica);
             $cmd->bindParam(":idcastracao", $this->idcastracao);
+            $cmd->bindParam(":horario", $horario );
 
             //Executando o comando SQL
             $cmd->execute();
@@ -225,8 +264,9 @@
             $con = Conexao::conectar();
 
             //Preparar comando SQL para retornar
-            $cmd = $con->prepare("SELECT idcastracao, aninome, cpf, observacao, status, foto, email, nome, animal.idanimal FROM castracao 
-                                        JOIN animal ON animal.idanimal = castracao.idanimal 
+            $cmd = $con->prepare("SELECT idcastracao, aninome, horario, cpf, observacao, status, foto, email, nome, animal.idanimal, especie, sexo, idade, pelagem, porte, raca.raca, usuario.idusuario, telefone, celular, nome   FROM castracao 
+                                        JOIN animal ON animal.idanimal = castracao.idanimal
+                                        JOIN raca ON animal.idraca = raca.idraca  
                                         JOIN usuario ON usuario.idusuario = animal.idusuario
                                         JOIN login ON usuario.idlogin = login.idlogin 
                                     WHERE castracao.idcastracao = :idcastracao");
@@ -239,6 +279,63 @@
 
             return $cmd->fetch(PDO::FETCH_OBJ);
         }
+
+        //Retornar castrações reprovadas por usuário
+        function retornarCastracaoReprovadasByUser($idusuario){
+
+            //Conectando ao banco de dados
+            $con = Conexao::conectar();
+
+            //Preparar comando SQL para retornar
+            $cmd = $con->prepare("SELECT idcastracao, aninome, cpf, observacao, status, 
+                                         foto, email, nome, animal.idanimal, especie, sexo, 
+                                         idade, porte, raca.raca, usuario.idusuario   
+                                        FROM castracao 
+                                        JOIN animal ON animal.idanimal = castracao.idanimal
+                                        JOIN raca ON animal.idraca = raca.idraca  
+                                        JOIN usuario ON usuario.idusuario = animal.idusuario
+                                        JOIN login ON usuario.idlogin = login.idlogin 
+                                    WHERE usuario.idusuario = :idusuario AND castracao.status = 3");
+            
+            //Parâmetros SQL
+            $cmd->bindParam(":idusuario", $idusuario);
+
+            //Executando o comando SQL
+            $cmd->execute();
+
+            return $cmd->fetchAll(PDO::FETCH_OBJ);
+        
+
+         }
+
+         //Retornar castrações reprovadas por animal
+        function retornarCastracaoReprovadaPorAnimal(){
+
+            //Conectando ao banco de dados
+            $con = Conexao::conectar();
+
+            //Preparar comando SQL para retornar
+            $cmd = $con->prepare("SELECT idcastracao, aninome, cpf, observacao, status, 
+                                         foto, email, nome, animal.idanimal, especie, sexo, 
+                                         idade, porte, raca.raca, usuario.idusuario   
+                                        FROM castracao 
+                                        JOIN animal ON animal.idanimal = castracao.idanimal
+                                        JOIN raca ON animal.idraca = raca.idraca  
+                                        JOIN usuario ON usuario.idusuario = animal.idusuario
+                                        JOIN login ON usuario.idlogin = login.idlogin 
+                                    WHERE animal.idanimal = :idanimal AND castracao.status = 3");
+            
+            //Parâmetros SQL
+            $cmd->bindParam(":idanimal", $this->idanimal);
+
+            //Executando o comando SQL
+            $cmd->execute();
+
+            return $cmd->fetch(PDO::FETCH_OBJ);
+        
+
+         }
+
         function retornarid()
         {
             //Conectando ao banco de dados
