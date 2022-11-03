@@ -74,6 +74,8 @@ try {
             case "home-usuario":
                 $usuario = new Controller();
                 $usuario->abrirHomeUsuario();
+                
+                
                 break;
             case "perfil":
                 $usuario = new Controller();
