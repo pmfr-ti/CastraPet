@@ -7,6 +7,8 @@ include_once "model/Castracao.php";
 include_once "model/Email.php";
 include_once "model/Clinica.php";
 
+require_once "shared/TiposStatusCastracao.php";
+
 class UsuarioController
 {
     function novoMes()
@@ -71,12 +73,12 @@ class UsuarioController
 
     function cadastrarUsuario()
     {
-        //Cadastro do Login
+        // * Cadastro do Login
 
-        //verificando se o comprovante de endereço foi enviado corretamente
+        // * verificando se o comprovante de endereço foi enviado corretamente
         if ($_FILES["btnComprovante"]["error"] == 0) {
 
-            //filtrando a mascara dos inputs
+            // * filtrando a mascara dos inputs
             $filtros = array(".", "-", "(", ")", " ");
             $cpf = str_replace($filtros, '', $_POST["txtCPF"]);
             $cep = str_replace($filtros, '', $_POST["txtCEP"]);
@@ -101,7 +103,7 @@ class UsuarioController
             $consultarCPF->cpf = $cpf;
 
 
-            //Verificando o NIS
+            // * Verificando o NIS
             if (isset($_POST["chkNIS"])) {
 
 
@@ -121,7 +123,7 @@ class UsuarioController
 
 
 
-            //verificando se o email ou cpf ou nis já existem no banco ou não     
+            // * verificando se o email ou cpf ou nis já existem no banco ou não     
             if ($consultarEmail->logar() == null && $consultarCPF->verificarCPF() == null && $dadosConsultaNIS == null) {
                 $login = new Login();
                 $login->nome =  $_POST["txtNome"];
@@ -129,7 +131,7 @@ class UsuarioController
                 $login->senha = password_hash($_POST["txtSenha"], PASSWORD_DEFAULT);
                 $login->nivelacesso = 0;
 
-                //Cadastro do Usuário
+                // * Cadastro do Usuário
                 $cadastra = new Usuario();
                 $cadastra->rg = strtoupper($rg);
                 if (!$this->validaCPF($cpf)) {
@@ -154,12 +156,12 @@ class UsuarioController
                 else
                     $cadastra->whatsapp = 0;
 
-                //TRATANDO O COMPROVANTE DE ENDEREÇO
-                //Tratar o envio da imagem
-                $docComprovante = $_FILES["btnComprovante"]["name"];       //Nome do arquivo
-                $docComprovanteTemp = $_FILES["btnComprovante"]["tmp_name"];      //nome temporário
+                // * TRATANDO O COMPROVANTE DE ENDEREÇO
+                // * Tratar o envio da imagem
+                $docComprovante = $_FILES["btnComprovante"]["name"];       // * Nome do arquivo
+                $docComprovanteTemp = $_FILES["btnComprovante"]["tmp_name"];      // * nome temporário
 
-                //pegar a extensão do arquivo
+                // * pegar a extensão do arquivo
                 $info = new SplFileInfo($docComprovante);
                 $extensao = $info->getExtension();
 
@@ -167,11 +169,11 @@ class UsuarioController
                     echo "<script>alert('O comprovante de endereço deve ser enviado em formato jpg, png ou jpeg'); window.location='" . URL . "cadastra-tutor'; </script>";
                     return;
                 }
-                //gerar novo nome
+                // * gerar novo nome
                 $novoNomeComprovante = md5(microtime()) . ".$extensao";
 
-                $pastaDestino = "recursos/img/docComprovantes/$novoNomeComprovante";    //pasta destino
-                move_uploaded_file($docComprovanteTemp, $pastaDestino);       //mover o arquivo 
+                $pastaDestino = "recursos/img/docComprovantes/$novoNomeComprovante";    // * pasta destino
+                move_uploaded_file($docComprovanteTemp, $pastaDestino);       // * mover o arquivo 
                 $cadastra->doccomprovante = $novoNomeComprovante;
 
                 $cadastra->quantcastracoes = 1;
@@ -202,17 +204,17 @@ class UsuarioController
     function validaCPF($cpf)
     {
 
-        // Verifica se foi informado todos os digitos corretamente
+        // * Verifica se foi informado todos os digitos corretamente
         if (strlen($cpf) != 11) {
             return false;
         }
 
-        // Verifica se foi informada uma sequência de digitos repetidos. Ex: 111.111.111-11
+        // * Verifica se foi informada uma sequência de digitos repetidos. Ex: 111.111.111-11
         if (preg_match('/(\d)\1{10}/', $cpf)) {
             return false;
         }
 
-        // Faz o calculo para validar o CPF
+        // * Faz o calculo para validar o CPF
         for ($t = 9; $t < 11; $t++) {
             for ($d = 0, $c = 0; $c < $t; $c++) {
                 $d += $cpf[$c] * (($t + 1) - $c);
@@ -228,16 +230,16 @@ class UsuarioController
 
     function atualizarUsuario()
     {
-        //caso não usuário não esteja logado
+        // * caso não usuário não esteja logado
         if (!isset($_SESSION["dadosLogin"])) {
             @header("Location:" . URL . "login");
             return;
         }
 
-        //Controle de privilégio
+        // * Controle de privilégio
         if ($_SESSION["dadosLogin"]->nivelacesso == 2) {
 
-            //filtrando a mascara dos inputs
+            // * filtrando a mascara dos inputs
             $filtros = array(".", "-", "(", ")", " ");
             $cpf = str_replace($filtros, '', $_POST["txtCPF"]);
             $cep = str_replace($filtros, '', $_POST["txtCEP"]);
@@ -263,13 +265,13 @@ class UsuarioController
 
             $usu->beneficio = 0;
             if (isset($_POST["chkNIS"])) {
-                //linha adicionada na matenunção para colocar direito a duas castrações no beneficio do nis
+                // * linha adicionada na matenunção para colocar direito a duas castrações no beneficio do nis
                 $usu->beneficio = $_POST["chkNIS"];
                 $usu->quantcastracoes = 2;
             }
             if (isset($_POST["chkProtetor"])) {
                 $usu->beneficio = $_POST["chkProtetor"];
-                //Linha adicionada na manutenção para colocar 5 castrações como protetor de animal 
+                // * Linha adicionada na manutenção para colocar 5 castrações como protetor de animal 
                 $usu->quantcastracoes = 5;
             }
 
@@ -284,7 +286,7 @@ class UsuarioController
             $usu->usunumero = $_POST["txtNumero"];
             $usu->usucep =    $cep;
 
-            // NIS
+            // * NIS
             if (empty($nis)) {
                 $usu->nis = "";
             } else {
@@ -307,7 +309,7 @@ class UsuarioController
         /*
         else if($_SESSION["dadosLogin"]->nivelacesso == 0) {
             
-            //filtrando a mascara dos inputs
+            // * filtrando a mascara dos inputs
             $filtros = array(".", "-", "(", ")", " ");
             $cpf = str_replace($filtros,'',$_POST["txtCPF"]);
             $cep = str_replace($filtros,'',$_POST["txtCEP"]);
@@ -327,7 +329,7 @@ class UsuarioController
             $usu->rg =        strtoupper($rg);
             $usu->cpf =       $cpf;
 
-            // Que tipo de benefício tem
+            // * Que tipo de benefício tem
             if (isset($_POST["chkProtetor"])) {
                 $usu->beneficio = $_POST["chkProtetor"];
             }
@@ -343,7 +345,7 @@ class UsuarioController
             $usu->usunumero = $_POST["txtNumero"];
             $usu->usucep =    $cep;
             
-                // NIS
+                // * NIS
                 if(empty($nis)){
                     $usu->nis = "";
                 }
@@ -363,15 +365,15 @@ class UsuarioController
 
     function adminCadastrarUsuario()
     {
-        //caso não usuário não esteja logado
+        // * caso não usuário não esteja logado
         if (!isset($_SESSION["dadosLogin"])) {
             @header("Location:" . URL . "login");
             return;
         }
-        //Controle de privilégio
+        // * Controle de privilégio
         if ((int)$_SESSION["dadosLogin"]->nivelacesso === 2) {
 
-            //filtrando a mascara dos inputs
+            // * filtrando a mascara dos inputs
             $filtros = array(".", "-", "(", ")", " ");
             $cpf = str_replace($filtros, '', $_POST["txtCPF"]);
             $cep = str_replace($filtros, '', $_POST["txtCEP"]);
@@ -389,7 +391,7 @@ class UsuarioController
             $consultarCPF = new Usuario();
             $consultarCPF->cpf = $cpf;
 
-            //Verificando o NIS
+            // * Verificando o NIS
             if ($_POST["chkNIS"] == "sim" && isset($nis)) {
                 if (strlen($nis) == 11) {
                     $consultarNIS = new Usuario();
@@ -403,7 +405,7 @@ class UsuarioController
                 $dadosConsultaNIS = null;
             }
 
-            //verificando se o email ou cpf ou nis já existem no banco ou não     
+            // * verificando se o email ou cpf ou nis já existem no banco ou não     
             if (!$consultarEmail->logar() && !$consultarCPF->verificarCPF() && $dadosConsultaNIS == null) {
 
                 $login = new Login();
@@ -412,7 +414,7 @@ class UsuarioController
                 $login->senha = password_hash($_POST["txtSenha"], PASSWORD_DEFAULT);
                 $login->nivelacesso = 0;
 
-                //Cadastro do Usuário
+                // * Cadastro do Usuário
                 $cadastra = new Usuario();
                 $cadastra->rg = strtoupper($rg);
 
@@ -440,12 +442,12 @@ class UsuarioController
                 else
                     $cadastra->whatsapp = 0;
 
-                //TRATANDO O COMPROVANTE DE ENDEREÇO
-                //Tratar o envio da imagem
-                $docComprovante = $_FILES["btnComprovante"]["name"];       //Nome do arquivo
-                $docComprovanteTemp = $_FILES["btnComprovante"]["tmp_name"];      //nome temporário
+                // * TRATANDO O COMPROVANTE DE ENDEREÇO
+                // * Tratar o envio da imagem
+                $docComprovante = $_FILES["btnComprovante"]["name"];       // * Nome do arquivo
+                $docComprovanteTemp = $_FILES["btnComprovante"]["tmp_name"];      // * nome temporário
 
-                //pegar a extensão do arquivo
+                // * pegar a extensão do arquivo
                 $info = new SplFileInfo($docComprovante);
                 $extensao = $info->getExtension();
 
@@ -455,11 +457,11 @@ class UsuarioController
                 }
 
 
-                //gerar novo nome
+                // * gerar novo nome
                 $novoNomeComprovante = md5(microtime()) . ".$extensao";
 
-                $pastaDestino = "recursos/img/docComprovantes/$novoNomeComprovante";    //pasta destino
-                move_uploaded_file($docComprovanteTemp, $pastaDestino);       //mover o arquivo 
+                $pastaDestino = "recursos/img/docComprovantes/$novoNomeComprovante";    // * pasta destino
+                move_uploaded_file($docComprovanteTemp, $pastaDestino);       // * mover o arquivo 
                 $cadastra->doccomprovante = $novoNomeComprovante;
 
                 $cadastra->quantcastracoes = 1;
@@ -493,16 +495,16 @@ class UsuarioController
 
     function atualizarDadosUsuario()
     {
-        //caso não usuário não esteja logado
+        // * caso não usuário não esteja logado
         if (!isset($_SESSION["dadosLogin"])) {
             @header("Location:" . URL . "login");
             return;
         }
 
-        //Controle de privilégio
+        // * Controle de privilégio
         if ($_SESSION["dadosLogin"]->nivelacesso == 0) {
 
-            //filtrando a mascara dos inputs
+            // * filtrando a mascara dos inputs
             $filtros = array(".", "-", "(", ")", " ");
             $rg = str_replace($filtros, '', $_POST["txtRG"]);
             $tel = str_replace($filtros, '', $_POST["txtTel"]);
@@ -518,7 +520,7 @@ class UsuarioController
             $login->nome =    $_POST["txtNome"];
             $login->email =   $_POST["txtEmail"];
 
-            //Verificando se o Email já existe e se é diferente do atual
+            // * Verificando se o Email já existe e se é diferente do atual
             $verificaEmail = $login->logar();
             $dadosLogin = $login->retornar();
 
@@ -564,16 +566,16 @@ class UsuarioController
 
     function atualizarEnderecoUsuario()
     {
-        //caso não usuário não esteja logado
+        // * caso não usuário não esteja logado
         if (!isset($_SESSION["dadosLogin"])) {
             @header("Location:" . URL . "login");
             return;
         }
 
-        //Controle de privilégio
+        // * Controle de privilégio
         if ($_SESSION["dadosLogin"]->nivelacesso == 0) {
 
-            //filtrando a mascara dos inputs
+            // * filtrando a mascara dos inputs
             $filtros = array(".", "-", "(", ")", " ");
             $cep = str_replace($filtros, '', $_POST["txtCEP"]);
 
@@ -584,12 +586,12 @@ class UsuarioController
             $usu->usunumero = $_POST["txtNumero"];
             $usu->usucep =    $cep;
 
-            //TRATANDO O COMPROVANTE DE ENDEREÇO
-            //Tratar o envio da imagem
-            $docComprovante = $_FILES["btnComprovante"]["name"];       //Nome do arquivo
-            $docComprovanteTemp = $_FILES["btnComprovante"]["tmp_name"];      //nome temporário
+            // * TRATANDO O COMPROVANTE DE ENDEREÇO
+            // * Tratar o envio da imagem
+            $docComprovante = $_FILES["btnComprovante"]["name"];       // * Nome do arquivo
+            $docComprovanteTemp = $_FILES["btnComprovante"]["tmp_name"];      // * nome temporário
 
-            //pegar a extensão do arquivo
+            // * pegar a extensão do arquivo
             $info = new SplFileInfo($docComprovante);
             $extensao = $info->getExtension();
 
@@ -597,22 +599,22 @@ class UsuarioController
                 echo "<script>alert('O comprovante de endereço deve ser enviado em formato jpg, png ou jpeg'); window.location='" . URL . "perfil'; </script>";
                 return;
             }
-            //gerar novo nome
+            // * gerar novo nome
             $novoNomeComprovante = md5(microtime()) . ".$extensao";
 
-            $pastaDestino = "recursos/img/docComprovantes/$novoNomeComprovante";    //pasta destino
-            move_uploaded_file($docComprovanteTemp, $pastaDestino);       //mover o arquivo 
+            $pastaDestino = "recursos/img/docComprovantes/$novoNomeComprovante";    // * pasta destino
+            move_uploaded_file($docComprovanteTemp, $pastaDestino);       // * mover o arquivo 
             $usu->doccomprovante = $novoNomeComprovante;
 
-            //Removendo o Comprovante  de endereço antigo
+            // * Removendo o Comprovante  de endereço antigo
             $dadosUsuario = $usu->retornar();
-            if (is_file("recursos/img/docComprovantes/$dadosUsuario->doccomprovante")) //verificar se o arquivo existe
+            if (is_file("recursos/img/docComprovantes/$dadosUsuario->doccomprovante")) // * verificar se o arquivo existe
             {
-                unlink("recursos/img/docComprovantes/$dadosUsuario->doccomprovante"); //excluir o arquivo
+                unlink("recursos/img/docComprovantes/$dadosUsuario->doccomprovante"); // * excluir o arquivo
             }
 
-            //Verificando se o usuário possui castração reprovada
-            //Pegando Castrações reprovadas do usuário
+            // * Verificando se o usuário possui castração reprovada
+            // * Pegando Castrações reprovadas do usuário
             $castracao = new Castracao();
             $castracoesReprovadas =  $castracao->retornarCastracaoReprovadasByUser($dadosUsuario->idusuario);
 
@@ -715,13 +717,13 @@ class UsuarioController
 
     function alterarSenha()
     {
-        //caso não usuário não esteja logado
+        // * caso não usuário não esteja logado
         if (!isset($_SESSION["dadosLogin"])) {
             @header("Location:" . URL . "login");
             return;
         }
 
-        //Controle de privilégio
+        // * Controle de privilégio
         if ($_SESSION["dadosLogin"]->nivelacesso == 0) {
 
             $alterar = new Login();
@@ -736,30 +738,30 @@ class UsuarioController
 
     function solicitarCastracao()
     {
-        //caso não usuário não esteja logado
+        // * caso não usuário não esteja logado
         if (!isset($_SESSION["dadosLogin"])) {
             @header("Location:" . URL . "login");
             return;
         }
 
-        //Controle de privilégio
+        // * Controle de privilégio
         if ($_SESSION["dadosLogin"]->nivelacesso == 0) {
             $castracao = new Castracao();
             $usuario = new Usuario();
             $usuario->idusuario = $_SESSION["dadosUsuario"]->idusuario;
             $dadosUsuario = $usuario->retornar();
 
-            //Instancio uma clinica
+            // * Instancio uma clinica
             $clinica = new Clinica();
-            //Pego todas as clinicas que possuem castracao
+            // * Pego todas as clinicas que possuem castracao
             $clinicasComVagas = $clinica->retornarClinicasCVagas();
 
-            //Verifico que se são mais que zero
+            // * Verifico que se são mais que zero
             if (count($clinicasComVagas) > 0) {
 
                 if ($dadosUsuario->quantcastracoes >= 0) {
 
-                    //Verificação de erros 
+                    // * Verificação de erros 
                     try {
                         $castracao->idusuario = $usuario->idusuario;
                         $castracao->idanimal = $_POST["idAnimal"];
@@ -789,15 +791,15 @@ class UsuarioController
             $usuario->idusuario = $_POST["idusuario"];
             $dadosUsuario = $usuario->retornar();
 
-            //Instancio uma clinica
+            // * Instancio uma clinica
             $clinica = new Clinica();
-            //Pego todas as clinicas que possuem castracao
+            // * Pego todas as clinicas que possuem castracao
             $clinicasComVagas = $clinica->retornarClinicasCVagas();
 
-            //Verifico que se são mais que zero
+            // * Verifico que se são mais que zero
             if (count($clinicasComVagas) > 0) {
 
-                //Verificação de erros 
+                // * Verificação de erros 
                 try {
                     $castracao->idusuario = $usuario->idusuario;
                     $castracao->idanimal = $_POST["idAnimal"];
@@ -830,18 +832,18 @@ class UsuarioController
 
     function agendarClinicaCastracao()
     {
-        //caso não usuário não esteja logado
+        // * caso não usuário não esteja logado
         if (!isset($_SESSION["dadosLogin"])) {
             @header("Location:" . URL . "login");
             return;
         }
 
-        //Controle de privilégio
+        // * Controle de privilégio
         if ($_SESSION["dadosLogin"]->nivelacesso == 2) {
 
             $idcastracao = $_POST["idcastracao"];
 
-            //Caso o botão recusado não seja apertado
+            // * Caso o botão recusado não seja apertado
             if (!isset($_POST["btnRecusa"])) {
                 if ($_POST["selectClinica"] != 0) {
                     $castracao = new Castracao();
@@ -877,15 +879,16 @@ class UsuarioController
         }
     }
 
+    // * Ler docs > AtualizarStatusCastracao.MD 
     function atualizarCastracao()
     {
-        //caso não usuário não esteja logado
+        // * caso não usuário não esteja logado
         if (!isset($_SESSION["dadosLogin"])) {
             @header("Location:" . URL . "login");
             return;
         }
 
-        //Controle de privilégio
+        // * Controle de privilégio
         if ($_SESSION["dadosLogin"]->nivelacesso == 1) {
 
             $codchip = trim($_POST["codChip"]);
@@ -899,14 +902,15 @@ class UsuarioController
             $_POST["statusAtualizado"] = (int) $_POST["statusAtualizado"];
 
             switch ($_POST["statusAtualizado"]) {
-                case 2:
-                    // Animal castrado
+                
+                case TIPOS_STATUS_CASTRACAO["castrado"]["id"]:
+                    // * Animal castrado
                     if ($codchip == '' || $codchip == null) {
                         echo "<script>alert('Campo de microchip vazio'); window.location='" . URL . "consulta-castracao'; </script>";
                         return;
                     }
 
-                    $castracao->status = 2;
+                    $castracao->status = TIPOS_STATUS_CASTRACAO["castrado"]["id"];
                     $castracao->atualizar();
 
                     $animal = new Animal();
@@ -914,8 +918,12 @@ class UsuarioController
                     $animal->codchip = $_POST["codChip"];
                     $animal->atualizarCastrado();
 
-                    if ($_POST["status"] == 4 || $_POST["status"] == 7) {
-                        //Liberar a vaga de castração para a clínica
+                    if (
+                        $_POST["status"] == TIPOS_STATUS_CASTRACAO["nao_compareceu"]["id"]
+                        || $_POST["status"] == TIPOS_STATUS_CASTRACAO["cancelado"]["id"]
+                        || $_POST["status"] == TIPOS_STATUS_CASTRACAO["obito_nao_castrado"]["id"]
+                    ) {
+                        // * Liberar a vaga de castração para a clínica
                         $clinica = new Clinica();
                         $clinica->idclinica = $_SESSION["dadosClinica"]->idclinica;
                         $dadosClinica = $clinica->retornar();
@@ -923,25 +931,25 @@ class UsuarioController
                         $clinica->alterarVagas();
                     }
                     break;
-                case 4:
-                    // Não compareceu 
 
+                case TIPOS_STATUS_CASTRACAO["nao_compareceu"]["id"]:
+                    // * Não compareceu 
                     $animal = new Animal();
                     $animal->idanimal = $_POST["idAnimal"];
                     $animal->codchip = null;
                     $animal->atualizarCastrado();
 
-                    $castracao->status = 4;
+                    $castracao->status = TIPOS_STATUS_CASTRACAO["nao_compareceu"]["id"];
                     $castracao->atualizar();
                     $castracaoData = $castracao->retornar();
 
-                    //Aplicar uma punição ao tutor que não compareceu à castração
+                    // * Aplicar uma punição ao tutor que não compareceu à castração
                     $usuario = new Usuario();
                     $usuario->idusuario = $_POST["idTutor"];
                     $usuario->punicao = 2;
                     $usuario->aplicarPunicao();
 
-                    //Enviar aviso ao usuário dizendo que não compareceu à castração
+                    // * Enviar aviso ao usuário dizendo que não compareceu à castração
                     $email = new Email();
                     $email->emailDestinatario =     $_POST["emailTutor"];
                     $email->nomeDestinatario =      $_POST["nomeTutor"];
@@ -954,8 +962,12 @@ class UsuarioController
                     $email->clitelefone =           $_SESSION["dadosClinica"]->clitelefone;
                     $email->enviarAviso();
 
-                    if ($_POST["status"] != 4 && $_POST["status"] != 7) {
-                        //Liberar a vaga de castração para a clínica
+                    if (
+                        $_POST["status"] != TIPOS_STATUS_CASTRACAO["nao_compareceu"]["id"]
+                        && $_POST["status"] != TIPOS_STATUS_CASTRACAO["obito_nao_castrado"]["id"]
+                        && $_POST["status"] != TIPOS_STATUS_CASTRACAO["cancelado"]["id"]
+                    ) {
+                        // * Liberar a vaga de castração para a clínica
                         $clinica = new Clinica();
                         $clinica->idclinica = $_SESSION["dadosClinica"]->idclinica;
                         $dadosClinica = $clinica->retornar();
@@ -963,9 +975,8 @@ class UsuarioController
                         $clinica->alterarVagas();
                     }
                     break;
-                case 5:
-                    // Castração cancelada
-
+                case TIPOS_STATUS_CASTRACAO["cancelado"]["id"]:
+                    // * Castração cancelada
                     $animal = new Animal();
                     $animal->idanimal = $_POST["idAnimal"];
                     $animal->codchip = null;
@@ -974,8 +985,12 @@ class UsuarioController
                     $castracao->status = 5;
                     $castracao->cancelar();
 
-                    if ($_POST["status"] != 4 && $_POST["status"] != 7) {
-                        //Liberar a vaga de castração para a clínica
+                    if (
+                        $_POST["status"] != TIPOS_STATUS_CASTRACAO["nao_compareceu"]["id"]
+                        && $_POST["status"] != TIPOS_STATUS_CASTRACAO["obito_nao_castrado"]["id"]
+                        && $_POST["status"] != TIPOS_STATUS_CASTRACAO["cancelado"]["id"]
+                    ) {
+                        // * Liberar a vaga de castração para a clínica
                         $clinica = new Clinica();
                         $clinica->idclinica = $_SESSION["dadosClinica"]->idclinica;
                         $dadosClinica = $clinica->retornar();
@@ -983,9 +998,9 @@ class UsuarioController
                         $clinica->alterarVagas();
                     }
                     break;
-                case 6:
+                case TIPOS_STATUS_CASTRACAO["reagendado"]["id"]:
                     try {
-                        // Reagendar castração
+                        // * Reagendar castração
                         if ($dataCastracao == '' || $dataCastracao == null) {
                             echo "<script>alert('Campo de nova data de castração vazio'); window.location='" . URL . "consulta-castracao'; </script>";
                             return;
@@ -996,13 +1011,13 @@ class UsuarioController
                         $animal->codchip = null;
                         $animal->atualizarCastrado();
 
-                        //Adicionar o status de que o animal retornou para a análise da castração
+                        // * Adicionar o status de que o animal retornou para a análise da castração
                         $castracao->status = 6;
                         $castracao->obsclinica = $_POST["obsClinica"];
                         $castracao->horario = date("Y-m-d H:i:s", strtotime($dataCastracao));
                         $castracao->reagendar();
 
-                        //Enviar aviso ao usuário dizendo que a castração foi reagendada
+                        // * Enviar aviso ao usuário dizendo que a castração foi reagendada
                         $email = new Email();
                         $email->emailDestinatario =     $_POST["emailTutor"];
                         $email->nomeDestinatario =      $_POST["nomeTutor"];
@@ -1016,20 +1031,25 @@ class UsuarioController
                         $email->reagendarConfirmacao();
 
 
-                        if ($_POST["status"] != 4 && $_POST["status"] != 7) {
-                            //Liberar a vaga de castração para a clínica
+                        if (
+                            $_POST["status"] == TIPOS_STATUS_CASTRACAO["nao_compareceu"]["id"]
+                            || $_POST["status"] == TIPOS_STATUS_CASTRACAO["obito_nao_castrado"]["id"]
+                            || $_POST["status"] == TIPOS_STATUS_CASTRACAO["cancelado"]["id"]
+                        ) {
+                            // * Liberar a vaga de castração para a clínica
                             $clinica = new Clinica();
                             $clinica->idclinica = $_SESSION["dadosClinica"]->idclinica;
                             $dadosClinica = $clinica->retornar();
-                            $clinica->vagas = $dadosClinica->vagas + 1;
+                            $clinica->vagas = $dadosClinica->vagas - 1;
                             $clinica->alterarVagas();
                         }
+
                     } catch (\Throwable $th) {
                         var_dump($th);
                     }
                     break;
-                case 7:
-                    // Animal veio a óbito
+                case TIPOS_STATUS_CASTRACAO["obito_castrado"]["id"]:
+                    // * Animal veio a óbito depois da castracao
 
                     $castracao->status = 7;
                     $castracao->atualizar();
@@ -1039,33 +1059,12 @@ class UsuarioController
                     $animal->codchip = $_POST["codChip"];
                     $animal->atualizarCastrado();
 
-                    if ($_POST["status"] != 4 && $_POST["status"] != 7) {
-                        //Liberar a vaga de castração para a clínica
-                        $clinica = new Clinica();
-                        $clinica->idclinica = $_SESSION["dadosClinica"]->idclinica;
-                        $dadosClinica = $clinica->retornar();
-                        $clinica->vagas = $dadosClinica->vagas + 1;
-                        $clinica->alterarVagas();
-                    }
-                    break;
-                case 8:
-                    // Animal castrado(mas com alterações)
-                    if ($codchip == '' || $codchip == null) {
-                        echo "<script>alert('Campo de microchip vazio'); window.location='" . URL . "consulta-castracao'; </script>";
-                        return;
-                    }
-
-                    $castracao->status = 8;
-                    $castracao->obsclinica = $_POST["obsClinica"];
-                    $castracao->atualizar();
-
-                    $animal = new Animal();
-                    $animal->idanimal = $_POST["idAnimal"];
-                    $animal->codchip = $_POST["codChip"];
-                    $animal->atualizarCastrado();
-
-                    if ($_POST["status"] == 4 || $_POST["status"] == 7) {
-                        //Liberar a vaga de castração para a clínica
+                    if (
+                        $_POST["status"] == TIPOS_STATUS_CASTRACAO["nao_compareceu"]["id"]
+                        || $_POST["status"] == TIPOS_STATUS_CASTRACAO["obito_nao_castrado"]["id"]
+                        || $_POST["status"] == TIPOS_STATUS_CASTRACAO["cancelado"]["id"]
+                    ) {
+                        // * Liberar a vaga de castração para a clínica
                         $clinica = new Clinica();
                         $clinica->idclinica = $_SESSION["dadosClinica"]->idclinica;
                         $dadosClinica = $clinica->retornar();
@@ -1074,8 +1073,33 @@ class UsuarioController
                     }
                     break;
 
-                case 9:
-                    // Animal castrado(mas com alterações)
+                    case TIPOS_STATUS_CASTRACAO["obito_nao_castrado"]["id"]:
+                        // * Animal veio a óbito antes da castracao
+                        $castracao->status = 10;
+                        $castracao->atualizar();
+    
+                        $animal = new Animal();
+                        $animal->idanimal = $_POST["idAnimal"];
+                        $animal->codchip = $_POST["codChip"];
+                        $animal->atualizarCastrado();
+    
+                        if (
+                            $_POST["status"] == TIPOS_STATUS_CASTRACAO["castrado"]["id"]
+                            || $_POST["status"] == TIPOS_STATUS_CASTRACAO["cadastrado_editar"]["id"]
+                            || $_POST["status"] == TIPOS_STATUS_CASTRACAO["obito_castrado"]["id"]
+                            || $_POST["status"] == TIPOS_STATUS_CASTRACAO["reagendado"]["id"]
+                        ) {
+                            // * Liberar a vaga de castração para a clínica
+                            $clinica = new Clinica();
+                            $clinica->idclinica = $_SESSION["dadosClinica"]->idclinica;
+                            $dadosClinica = $clinica->retornar();
+                            $clinica->vagas = $dadosClinica->vagas + 1;
+                            $clinica->alterarVagas();
+                        }
+                        break;
+
+                case TIPOS_STATUS_CASTRACAO["cadastrado_editar"]["id"]:
+                    // * Animal castrado(mas com alterações)
                     if ($codchip == '' || $codchip == null) {
                         echo "<script>alert('Campo de microchip vazio'); window.location='" . URL . "consulta-castracao'; </script>";
                         return;
@@ -1090,8 +1114,12 @@ class UsuarioController
                     $animal->codchip = $_POST["codChip"];
                     $animal->atualizarCastrado();
 
-                    if ($_POST["status"] == 4 || $_POST["status"] == 7) {
-                        //Liberar a vaga de castração para a clínica
+                    if (
+                        $_POST["status"] == TIPOS_STATUS_CASTRACAO["nao_compareceu"]["id"]
+                        || $_POST["status"] == TIPOS_STATUS_CASTRACAO["cancelado"]["id"]
+                        || $_POST["status"] == TIPOS_STATUS_CASTRACAO["obito_nao_castrado"]["id"]
+                    ) {
+                        // * Liberar a vaga de castração para a clínica
                         $clinica = new Clinica();
                         $clinica->idclinica = $_SESSION["dadosClinica"]->idclinica;
                         $dadosClinica = $clinica->retornar();
@@ -1111,16 +1139,16 @@ class UsuarioController
         }
     }
 
-    //Excluir Castração
+    // * Excluir Castração
     function excluirCastracao($id)
     {
-        //caso não usuário não esteja logado
+        // * caso não usuário não esteja logado
         if (!isset($_SESSION["dadosLogin"])) {
             @header("Location:" . URL . "login");
             return;
         }
 
-        //Controle de privilégio
+        // * Controle de privilégio
         if ($_SESSION["dadosLogin"]->nivelacesso == 2) {
 
             $castracao = new Castracao();
@@ -1143,7 +1171,7 @@ class UsuarioController
             $_SESSION["dadosLogin"] = $dadosLogin;
 
             switch ($dadosLogin->nivelacesso) {
-                    //caso seja usuário
+                    // * caso seja usuário
                 case 0:
 
                     $usuario = new Login();
@@ -1160,20 +1188,20 @@ class UsuarioController
                     echo "<script>alert('Usuário Logado'); window.location='" . URL . "meus-animais'; </script>";
                     break;
 
-                    //caso seja clínica
+                    // * caso seja clínica
                 case 1:
-                    //Buscando as informações da clínica
+                    // * Buscando as informações da clínica
                     $clinica = new Login();
                     $clinica->idlogin = $dadosLogin->idlogin;
                     $dadosClinica = $clinica->retornarClinica();
 
-                    //Colocando em uma Sessão
+                    // * Colocando em uma Sessão
                     $_SESSION["dadosClinica"] = $dadosClinica;
 
                     echo "<script>alert('Usuário Clínica Logado'); window.location='" . URL . "home-clinica'; </script>";
                     break;
 
-                    //caso seja adm
+                    // * caso seja adm
                 case 2:
                     echo "<script>alert('Usuário Administrador Logado'); window.location='" . URL . "home-adm'; </script>";
                     break;
@@ -1196,13 +1224,13 @@ class UsuarioController
 
     function excluir($idUsuario, $idLogin)
     {
-        //caso não usuário não esteja logado
+        // * caso não usuário não esteja logado
         if (!isset($_SESSION["dadosLogin"])) {
             @header("Location:" . URL . "login");
             return;
         }
 
-        //Controle de privilégio
+        // * Controle de privilégio
         if ($_SESSION["dadosLogin"]->nivelacesso == 2) {
 
             $usuario = new Usuario();
@@ -1256,12 +1284,12 @@ class UsuarioController
         }
 
 
-        //RESETAR O COOKIE QUE LIMITA A QUANTITADE DE TENTATIVAS PARA O CÓDIGO. USAR PARA DEBUGAR
-        //@setcookie("tentativas", "", time() - 1000, "/");
+        // * RESETAR O COOKIE QUE LIMITA A QUANTITADE DE TENTATIVAS PARA O CÓDIGO. USAR PARA DEBUGAR
+        // * @setcookie("tentativas", "", time() - 1000, "/");
 
         if ($_COOKIE["tentativas"] < 5) {
             if (isset($codigo) && strlen($codigo) === 6 && $codigo === $dadosConfirmacao->codsenha) {
-                //cookie para permitir o usuário de abrir a tela alterarsenha
+                // * cookie para permitir o usuário de abrir a tela alterarsenha
                 @setcookie("tentativas", "", time() - 1000, "/");
                 @setcookie("confirmacao", $dadosConfirmacao->idlogin);
                 @header("Location:" . URL . "alterar-senha/$dadosConfirmacao->idlogin");
@@ -1281,7 +1309,7 @@ class UsuarioController
     {
 
         if (isset($_SESSION["dadosLogin"]) && $_SESSION["dadosLogin"]->nivelacesso == 0) {
-            //redefinir senha e limpar o campo codsenha
+            // * redefinir senha e limpar o campo codsenha
             $login = new Login();
             $login->idlogin = $_SESSION["dadosLogin"]->idlogin;
             $login->senha = password_hash($_POST["confSenha"], PASSWORD_DEFAULT);
@@ -1292,7 +1320,7 @@ class UsuarioController
 
             @header("Location:" . URL . "login");
         } else if (!isset($_SESSION["dadosLogin"]) && $_COOKIE["confirmacao"] == $_SESSION["idlogin"]) {
-            //redefinir senha e limpar o campo codsenha
+            // * redefinir senha e limpar o campo codsenha
             $login = new Login();
             $login->idlogin = $_SESSION["idlogin"];
             $login->senha = password_hash($_POST["confSenha"], PASSWORD_DEFAULT);

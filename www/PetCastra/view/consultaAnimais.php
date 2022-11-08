@@ -61,37 +61,37 @@
                                             <div class='col-md-7'>
                                                 <div class='row'>
                                                     <p>
-                                                        Nome:
+                                                        Nome':
                                                         " . $value->aninome . "
                                                     </p>
                                                 </div>
                                                 <div class='row'>
                                                     <p>
-                                                        Espécie:
+                                                        Espécie':
                                                         " . $value->especie . "
                                                     </p>
                                                 </div>
                                                 <div class='row'>
                                                     <p>
-                                                        Sexo:
+                                                        Sexo':
                                                         " . $value->sexo . "
                                                     </p>
                                                 </div>
                                                 <div class='row'>
                                                     <p>
-                                                        Pelagem:
+                                                        Pelagem':
                                                         " . $value->pelagem . "
                                                     </p>
                                                 </div>
                                                 <div class='row'>
                                                     <p>
-                                                        Porte:
+                                                        Porte':
                                                         " . $value->porte . "
                                                     </p>
                                                 </div>
                                                 <div class='row'>
                                                     <p class='mb-md-0'>
-                                                        Animal Comunitário:
+                                                        Animal Comunitário':
                                                         " . $value->comunitario . "
                                                     </p>
                                                 </div>
@@ -99,19 +99,19 @@
                                             <div class='col-md-5'>
                                                 <div class='row'>
                                                     <p>
-                                                        Idade:
+                                                        Idade':
                                                         " . $value->idade . "
                                                     </p>
                                                 </div>
                                                 <div class='row'>
                                                     <p>
-                                                        Cor:
+                                                        Cor':
                                                         " . $value->cor . "
                                                     </p>
                                                 </div>
                                                 <div class='row'>
                                                     <p class='mb-0'>
-                                                        Raça:
+                                                        Raça':
                                                         " . $value->raca . "
                                                     </p>
                                                 </div>
@@ -132,17 +132,17 @@
                                                         ";
                             } else {
 
-                                switch ($value->status) {
-                                    case 0:
+                                switch (strval($value->status)) {
+                                    case '0':
                                         echo "<span class='btn btn-sm bg-warning w-100 my-3 text-white fw-bold' style='cursor: default;'>Solicitação em análise de documentos</span>";
                                         break;
-                                    case 1:
+                                    case '1':
                                         echo "<span class='btn btn-sm bg-success w-100 my-3 text-white fw-bold' style='cursor: default;'>Solicitação aprovada</span>";
                                         break;
-                                    case 2:
+                                    case '2':
                                         echo "<span class='btn btn-sm bg-success w-100 my-3 text-white fw-bold' style='cursor: default;'>Animal Castrado</span>";
                                         break;
-                                    case 3:
+                                    case '3':
                                         echo "
                                                         <button class='btn btn-warning w-100 mb-2' id='btnEditar' type='button' data-bs-target='#modalEditar' data-bs-toggle='modal' 
                                                             data-idanimal='$value->idanimal' data-idusuario='$value->idusuario' data-nome='$value->aninome' data-especie='$valorEspecie' 
@@ -158,19 +158,22 @@
                                                             ";
                                         }
                                         break;
-                                    case 4:
+                                    case '4':
                                         echo "<span class='btn btn-sm bg-danger w-100 my-3 text-white fw-bold' style='cursor: default;'>Tutor não compareceu</span>";
                                         break;
-                                    case 5:
+                                    case '5':
                                         echo "<span class='btn btn-sm bg-danger w-100 my-3 text-white fw-bold' style='cursor: default;'>Solicitação cancelada</span>";
                                         break;
-                                    case 6:
+                                    case '6':
                                         echo "<span class='btn btn-sm bg-warning w-100 my-3 text-white fw-bold' style='cursor: default;'>Solicitação em análise</span>";
                                         break;
-                                    case 7:
-                                        echo "<span class='btn btn-sm bg-dark w-100 my-3 text-white fw-bold' style='cursor: default;'>Animal foi a óbito</span>";
+                                    case '7':
+                                        echo "<span class='btn btn-sm bg-dark w-100 my-3 text-white fw-bold' style='cursor: default;'>Animal castrado foi a óbito</span>";
                                         break;
-                                    case 8:
+                                    case '10':
+                                        echo "<span class='btn btn-sm bg-dark w-100 my-3 text-white fw-bold' style='cursor: default;'>Animal foi a óbito antes da castração</span>";
+                                        break;
+                                    case '8':
                                         echo "<span class='btn btn-sm bg-success w-100 my-3 text-white fw-bold' style='cursor: default;'>Animal Castrado</span>";
                                         break;
                                     default:
@@ -237,7 +240,7 @@
                             </div>
                             <hr />
                             <div class="main-container p-2" style="background-color: #f0f0f0; height:300px; overflow-y: scroll;" id="TOS">
-                                Declaro que:
+                                Declaro que':
                                 <ul>
                                     <li>
                                         Mantive o(s) animal(is) acima identificado(s), em jejum de água e comida pelo período recomendado na data do agendamento;
@@ -547,9 +550,9 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     Swal.fire(
-                        'Excluído!', //title:
-                        'Animal apagado com sucesso.', //text:
-                        'success', //icon:
+                        'Excluído!', //title':
+                        'Animal apagado com sucesso.', //text':
+                        'success', //icon':
                     ).then(() => {
                         window.location = '<?php echo URL; ?>excluir-animal/' + idani + '/' + idusu + '/' + foto;
                     })

@@ -59,18 +59,47 @@
                                         <tbody>
                                         ";
                             foreach ($dadosCastracao as $value) {
+                                if ($value->status == 0) {
+                                    $value->status = str_replace("0", "Solicitação em análise de documentos", $value->status);
+                                }
+                                if ($value->status == 1) {
 
+                                    $value->status = str_replace("1", "Solicitação aprovada", $value->status);
+                                }
+                                if ($value->status == 2) {
 
-                                $value->status = str_replace("0", "Solicitação em análise de documentos", $value->status);
-                                $value->status = str_replace("1", "Solicitação aprovada", $value->status);
-                                $value->status = str_replace("2", "Animal castrado", $value->status);
-                                $value->status = str_replace("3", "Solicitação reprovada", $value->status);
-                                $value->status = str_replace("4", "Tutor não compareceu", $value->status);
-                                $value->status = str_replace("5", "Castração cancelada", $value->status);
-                                $value->status = str_replace("6", "Reagendar castração", $value->status);
-                                $value->status = str_replace("7", "Animal foi a óbito", $value->status);
-                                $value->status = str_replace("8", "Solicitação aprovada e enviada a clinica", $value->status);
-                                $value->status = str_replace("9", "Animal Castrado (Porém suas informações devem ser editadas)", $value->status);
+                                    $value->status = str_replace("2", "Animal castrado", $value->status);
+                                }
+                                if ($value->status == 3) {
+
+                                    $value->status = str_replace("3", "Solicitação reprovada", $value->status);
+                                }
+                                if ($value->status == 4) {
+
+                                    $value->status = str_replace("4", "Tutor não compareceu", $value->status);
+                                }
+                                if ($value->status == 5) {
+
+                                    $value->status = str_replace("5", "Castração cancelada", $value->status);
+                                }
+                                if ($value->status == 6) {
+
+                                    $value->status = str_replace("6", "Reagendar castração", $value->status);
+                                }
+                                if ($value->status == 7) {
+
+                                    $value->status = str_replace("7", "Animal castrado foi a óbito", $value->status);
+                                }
+                                if ($value->status == 8) {
+                                    $value->status = str_replace("8", "Solicitação aprovada e enviada a clinica", $value->status);
+                                }
+                                if ($value->status == 9) {
+                                    $value->status = str_replace("9", "Animal Castrado (Porém suas informações devem ser editadas)", $value->status);
+                                }
+                                if ($value->status == 10) {
+                                    $value->status = str_replace("10", "Animal foi a óbito antes da castração", $value->status);
+                                }
+                                
                                 $data = is_null($value->horario) ? '-' : date('d/m/Y', strtotime($value->horario));
                                 $hora = is_null($value->horario) ? '-' : date('H:i', strtotime($value->horario));
 
@@ -130,16 +159,46 @@
 
                             foreach ($dadosCastracaoClinica as $value) {
                                 $valorStatus = $value->status;
-                                $value->status = str_replace("0", "Solicitação em análise de documentos", $value->status);
-                                $value->status = str_replace("1", "Solicitação aprovada", $value->status);
-                                $value->status = str_replace("2", "Animal castrado", $value->status);
-                                $value->status = str_replace("3", "Solicitação reprovada", $value->status);
-                                $value->status = str_replace("4", "Tutor não compareceu", $value->status);
-                                $value->status = str_replace("5", "Castração cancelada", $value->status);
-                                $value->status = str_replace("6", "Reagendar castração", $value->status);
-                                $value->status = str_replace("7", "Animal foi a óbito", $value->status);
-                                $value->status = str_replace("9", "Animal Castrado (Suas informações devem ser editadas)", $value->status);
+                                if ($value->status == 0) {
+                                    $value->status = str_replace("0", "Solicitação em análise de documentos", $value->status);
+                                }
+                                if ($value->status == 1) {
 
+                                    $value->status = str_replace("1", "Solicitação aprovada", $value->status);
+                                }
+                                if ($value->status == 2) {
+
+                                    $value->status = str_replace("2", "Animal castrado", $value->status);
+                                }
+                                if ($value->status == 3) {
+
+                                    $value->status = str_replace("3", "Solicitação reprovada", $value->status);
+                                }
+                                if ($value->status == 4) {
+
+                                    $value->status = str_replace("4", "Tutor não compareceu", $value->status);
+                                }
+                                if ($value->status == 5) {
+
+                                    $value->status = str_replace("5", "Castração cancelada", $value->status);
+                                }
+                                if ($value->status == 6) {
+
+                                    $value->status = str_replace("6", "Reagendar castração", $value->status);
+                                }
+                                if ($value->status == 7) {
+
+                                    $value->status = str_replace("7", "Animal castrado foi a óbito", $value->status);
+                                }
+                                if ($value->status == 8) {
+                                    $value->status = str_replace("8", "Solicitação aprovada e enviada a clinica", $value->status);
+                                }
+                                if ($value->status == 9) {
+                                    $value->status = str_replace("9", "Animal Castrado (Porém suas informações devem ser editadas)", $value->status);
+                                }
+                                if ($value->status == 10) {
+                                    $value->status = str_replace("10", "Animal foi a óbito antes da castração", $value->status);
+                                }
                                 $value->whatsapp == 1 ? $value->whatsapp = "<a href='https://api.whatsapp.com/send?phone=55$value->celular&text=Olá $value->nometutor! Somos da clínica " . $_SESSION['dadosLogin']->nome . "' target='_blank'><img src='" . URL . "recursos/img/whatsapp.png'></a>" : $value->whatsapp = "";
 
                                 $value->observacao = preg_replace("/^$/", "-", $value->observacao);
@@ -221,7 +280,8 @@
                                             <option value='4'>Tutor não compareceu</option>
                                             <option value='5'>Castração cancelada</option>
                                             <option value='6'>Reagendar castração</option>
-                                            <option value='7'>Animal foi a óbito</option>
+                                            <option value='7'>Animal castrado foi a óbito</option>
+                                            <option value='10'>Animal foi a óbito antes da castração</option>
                                             <option value='9'>Animal Castrado (Suas informações devem ser editadas)</option>
                                         </select>
                                         <small class='form-text text-muted'>Coloque em \"Animal Castrado (Suas informações devem ser editadas)\",
@@ -300,7 +360,7 @@
     <script src="sweetalert2.all.min.js"></script>
 
     <?php
-    if ($_SESSION["dadosLogin"]->nivelacesso == 2) {
+    if ($_SESSION["dadosLogin"]->nivelacesso == 2 || $_SESSION["dadosLogin"]->nivelacesso == 1) {
         echo "
             <script type='text/javascript' charset='utf8' src='https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js'></script>
             <script type='text/javascript' charset='utf8' src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'></script>
@@ -391,7 +451,7 @@
                 if (statusCastracao == 2 || statusCastracao == 9) {
                     codChipWrapper.required = true;
                 }
-                
+
             }
         }
 
